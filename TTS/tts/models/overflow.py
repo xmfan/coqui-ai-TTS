@@ -1,3 +1,4 @@
+import logging
 import os
 from typing import Dict, List, Union
 
@@ -19,6 +20,8 @@ from TTS.tts.utils.text.tokenizer import TTSTokenizer
 from TTS.tts.utils.visual import plot_alignment, plot_spectrogram
 from TTS.utils.generic_utils import format_aux_input
 from TTS.utils.io import load_fsspec
+
+logger = logging.getLogger(__name__)
 
 
 class Overflow(BaseTTS):
@@ -282,14 +285,17 @@ class Overflow(BaseTTS):
             dataloader = trainer.get_train_dataloader(
                 training_assets=None, samples=trainer.train_samples, verbose=False
             )
-            print(
-                f" | > Data parameters not found for: {trainer.config.mel_statistics_parameter_path}. Computing mel normalization parameters..."
+            logger.info(
+                "Data parameters not found for: %s. Computing mel normalization parameters...",
+                trainer.config.mel_statistics_parameter_path,
             )
             data_mean, data_std, init_transition_prob = OverflowUtils.get_data_parameters_for_flat_start(
                 dataloader, trainer.config.out_channels, trainer.config.state_per_phone
             )
-            print(
-                f" | > Saving data parameters to: {trainer.config.mel_statistics_parameter_path}: value: {data_mean, data_std, init_transition_prob}"
+            logger.info(
+                "Saving data parameters to: %s: value: %s",
+                trainer.config.mel_statistics_parameter_path,
+                (data_mean, data_std, init_transition_prob),
             )
             statistics = {
                 "mean": data_mean.item(),
@@ -299,8 +305,9 @@ class Overflow(BaseTTS):
             torch.save(statistics, trainer.config.mel_statistics_parameter_path)
 
         else:
-            print(
-                f" | > Data parameters found for: {trainer.config.mel_statistics_parameter_path}. Loading mel normalization parameters..."
+            logger.info(
+                "Data parameters found for: %s. Loading mel normalization parameters...",
+                trainer.config.mel_statistics_parameter_path,
             )
             statistics = torch.load(trainer.config.mel_statistics_parameter_path)
             data_mean, data_std, init_transition_prob = (
@@ -308,7 +315,7 @@ class Overflow(BaseTTS):
                 statistics["std"],
                 statistics["init_transition_prob"],
             )
-            print(f" | > Data parameters loaded with value: {data_mean, data_std, init_transition_prob}")
+            logger.info("Data parameters loaded with value: %s", (data_mean, data_std, init_transition_prob))
 
         trainer.config.flat_start_params["transition_p"] = (
             init_transition_prob.item() if torch.is_tensor(init_transition_prob) else init_transition_prob
@@ -334,7 +341,7 @@ class Overflow(BaseTTS):
         }
 
         # sample one item from the batch -1 will give the smalles item
-        print(" | > Synthesising audio from the model...")
+        logger.info("Synthesising audio from the model...")
         inference_output = self.inference(
             batch["text_input"][-1].unsqueeze(0), aux_input={"x_lengths": batch["text_lengths"][-1].unsqueeze(0)}
         )

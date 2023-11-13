@@ -8,6 +8,8 @@ from packaging.version import Version
 from TTS.tts.utils.text.phonemizers.base import BasePhonemizer
 from TTS.tts.utils.text.punctuation import Punctuation
 
+logger = logging.getLogger(__name__)
+
 
 def is_tool(name):
     from shutil import which
@@ -53,7 +55,7 @@ def _espeak_exe(espeak_lib: str, args: List, sync=False) -> List[str]:
         "1",  # UTF8 text encoding
     ]
     cmd.extend(args)
-    logging.debug("espeakng: executing %s", repr(cmd))
+    logger.debug("espeakng: executing %s", repr(cmd))
 
     with subprocess.Popen(
         cmd,
@@ -189,7 +191,7 @@ class ESpeak(BasePhonemizer):
         # compute phonemes
         phonemes = ""
         for line in _espeak_exe(self._ESPEAK_LIB, args, sync=True):
-            logging.debug("line: %s", repr(line))
+            logger.debug("line: %s", repr(line))
             ph_decoded = line.decode("utf8").strip()
             # espeak:
             #   version 1.48.15: " p_ɹ_ˈaɪ_ɚ t_ə n_oʊ_v_ˈɛ_m_b_ɚ t_w_ˈɛ_n_t_i t_ˈuː\n"
@@ -227,7 +229,7 @@ class ESpeak(BasePhonemizer):
                 lang_code = cols[1]
                 lang_name = cols[3]
                 langs[lang_code] = lang_name
-            logging.debug("line: %s", repr(line))
+            logger.debug("line: %s", repr(line))
             count += 1
         return langs
 
@@ -240,7 +242,7 @@ class ESpeak(BasePhonemizer):
         args = ["--version"]
         for line in _espeak_exe(self.backend, args, sync=True):
             version = line.decode("utf8").strip().split()[2]
-            logging.debug("line: %s", repr(line))
+            logger.debug("line: %s", repr(line))
             return version
 
     @classmethod

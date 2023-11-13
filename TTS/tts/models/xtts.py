@@ -1,3 +1,4 @@
+import logging
 import os
 from dataclasses import dataclass
 
@@ -14,6 +15,8 @@ from TTS.tts.layers.xtts.tokenizer import VoiceBpeTokenizer, split_sentence
 from TTS.tts.layers.xtts.xtts_manager import LanguageManager, SpeakerManager
 from TTS.tts.models.base_tts import BaseTTS
 from TTS.utils.io import load_fsspec
+
+logger = logging.getLogger(__name__)
 
 init_stream_support()
 
@@ -82,7 +85,7 @@ def load_audio(audiopath, sampling_rate):
     # Check some assumptions about audio range. This should be automatically fixed in load_wav_to_torch, but might not be in some edge cases, where we should squawk.
     # '10' is arbitrarily chosen since it seems like audio will often "overdrive" the [-1,1] bounds.
     if torch.any(audio > 10) or not torch.any(audio < 0):
-        print(f"Error with {audiopath}. Max={audio.max()} min={audio.min()}")
+        logger.error("Error with %s. Max=%.2f min=%.2f", audiopath, audio.max(), audio.min())
     # clip audio invalid values
     audio.clip_(-1, 1)
     return audio

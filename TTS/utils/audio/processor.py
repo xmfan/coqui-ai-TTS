@@ -1,3 +1,4 @@
+import logging
 from io import BytesIO
 from typing import Dict, Tuple
 
@@ -25,6 +26,8 @@ from TTS.utils.audio.numpy_transforms import (
     trim_silence,
     volume_norm,
 )
+
+logger = logging.getLogger(__name__)
 
 # pylint: disable=too-many-public-methods
 
@@ -229,9 +232,9 @@ class AudioProcessor(object):
         ), f" [!] win_length cannot be larger than fft_size - {self.win_length} vs {self.fft_size}"
         members = vars(self)
         if verbose:
-            print(" > Setting up Audio Processor...")
+            logger.info("Setting up Audio Processor...")
             for key, value in members.items():
-                print(" | > {}:{}".format(key, value))
+                logger.info(" | %s: %s", key, value)
         # create spectrogram utils
         self.mel_basis = build_mel_basis(
             sample_rate=self.sample_rate,
@@ -595,7 +598,7 @@ class AudioProcessor(object):
             try:
                 x = self.trim_silence(x)
             except ValueError:
-                print(f" [!] File cannot be trimmed for silence - {filename}")
+                logger.exception("File cannot be trimmed for silence - %s", filename)
         if self.do_sound_norm:
             x = self.sound_norm(x)
         if self.do_rms_norm:

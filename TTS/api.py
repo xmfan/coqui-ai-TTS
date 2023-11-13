@@ -1,3 +1,4 @@
+import logging
 import tempfile
 import warnings
 from pathlib import Path
@@ -8,6 +9,8 @@ from TTS.config import load_config
 from TTS.utils.audio.numpy_transforms import save_wav
 from TTS.utils.manage import ModelManager
 from TTS.utils.synthesizer import Synthesizer
+
+logger = logging.getLogger(__name__)
 
 
 class TTS(nn.Module):

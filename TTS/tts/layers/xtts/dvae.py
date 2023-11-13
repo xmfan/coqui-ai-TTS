@@ -1,4 +1,5 @@
 import functools
+import logging
 from math import sqrt
 
 import torch
@@ -7,6 +8,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torchaudio
 from einops import rearrange
+
+logger = logging.getLogger(__name__)
 
 
 def default(val, d):
@@ -79,7 +82,7 @@ class Quantize(nn.Module):
             self.embed_avg = (ea * ~mask + rand_embed).permute(1, 0)
             self.cluster_size = self.cluster_size * ~mask.squeeze()
             if torch.any(mask):
-                print(f"Reset {torch.sum(mask)} embedding codes.")
+                logger.info("Reset %d embedding codes.", torch.sum(mask))
                 self.codes = None
                 self.codes_full = False
 

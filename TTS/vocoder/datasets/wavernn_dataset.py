@@ -1,8 +1,12 @@
+import logging
+
 import numpy as np
 import torch
 from torch.utils.data import Dataset
 
 from TTS.utils.audio.numpy_transforms import mulaw_encode, quantize
+
+logger = logging.getLogger(__name__)
 
 
 class WaveRNNDataset(Dataset):
@@ -60,7 +64,7 @@ class WaveRNNDataset(Dataset):
             else:
                 min_audio_len = audio.shape[0] + (2 * self.pad * self.hop_len)
             if audio.shape[0] < min_audio_len:
-                print(" [!] Instance is too short! : {}".format(wavpath))
+                logger.warning("Instance is too short: %s", wavpath)
                 audio = np.pad(audio, [0, min_audio_len - audio.shape[0] + self.hop_len])
             mel = self.ap.melspectrogram(audio)
 
@@ -80,7 +84,7 @@ class WaveRNNDataset(Dataset):
             mel = np.load(feat_path.replace("/quant/", "/mel/"))
 
             if mel.shape[-1] < self.mel_len + 2 * self.pad:
-                print(" [!] Instance is too short! : {}".format(wavpath))
+                logger.warning("Instance is too short: %s", wavpath)
                 self.item_list[index] = self.item_list[index + 1]
                 feat_path = self.item_list[index]
                 mel = np.load(feat_path.replace("/quant/", "/mel/"))

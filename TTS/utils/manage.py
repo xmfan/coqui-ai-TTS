@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 import re
 import tarfile
@@ -13,6 +14,8 @@ from tqdm import tqdm
 
 from TTS.config import load_config, read_json_with_comments
 from TTS.utils.generic_utils import get_user_data_dir
+
+logger = logging.getLogger(__name__)
 
 LICENSE_URLS = {
     "cc by-nc-nd 4.0": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
@@ -69,18 +72,17 @@ class ModelManager(object):
 
     def _list_models(self, model_type, model_count=0):
         if self.verbose:
-            print("\n Name format: type/language/dataset/model")
+            logger.info("")
+            logger.info("Name format: type/language/dataset/model")
         model_list = []
         for lang in self.models_dict[model_type]:
             for dataset in self.models_dict[model_type][lang]:
                 for model in self.models_dict[model_type][lang][dataset]:
                     model_full_name = f"{model_type}--{lang}--{dataset}--{model}"
-                    output_path = os.path.join(self.output_prefix, model_full_name)
                     if self.verbose:
-                        if os.path.exists(output_path):
-                            print(f" {model_count}: {model_type}/{lang}/{dataset}/{model} [already downloaded]")
-                        else:
-                            print(f" {model_count}: {model_type}/{lang}/{dataset}/{model}")
+                        output_path = Path(self.output_prefix) / model_full_name
+                        downloaded = " [already downloaded]" if output_path.is_dir() else ""
+                        logger.info(" %2d: %s/%s/%s/%s%s", model_count, model_type, lang, dataset, model, downloaded)
                     model_list.append(f"{model_type}/{lang}/{dataset}/{model}")
                     model_count += 1
         return model_list
@@ -197,18 +199,18 @@ class ModelManager(object):
 
     def list_langs(self):
         """Print all the available languages"""
-        print(" Name format: type/language")
+        logger.info("Name format: type/language")
         for model_type in self.models_dict:
             for lang in self.models_dict[model_type]:
-                print(f" >: {model_type}/{lang} ")
+                logger.info("  %s/%s", model_type, lang)
 
     def list_datasets(self):
         """Print all the datasets"""
-        print(" Name format: type/language/dataset")
+        logger.info("Name format: type/language/dataset")
         for model_type in self.models_dict:
             for lang in self.models_dict[model_type]:
                 for dataset in self.models_dict[model_type][lang]:
-                    print(f" >: {model_type}/{lang}/{dataset}")
+                    logger.info("  %s/%s/%s", model_type, lang, dataset)
 
     @staticmethod
     def print_model_license(model_item: Dict):
@@ -218,13 +220,13 @@ class ModelManager(object):
             model_item (dict): model item in the models.json
         """
         if "license" in model_item and model_item["license"].strip() != "":
-            print(f" > Model's license - {model_item['license']}")
+            logger.info("Model's license - %s", model_item["license"])
             if model_item["license"].lower() in LICENSE_URLS:
-                print(f" > Check {LICENSE_URLS[model_item['license'].lower()]} for more info.")
+                logger.info("Check %s for more info.", LICENSE_URLS[model_item["license"].lower()])
             else:
-                print(" > Check https://opensource.org/licenses for more info.")
+                logger.info("Check https://opensource.org/licenses for more info.")
         else:
-            print(" > Model's license - No license information available")
+            logger.info("Model's license - No license information available")
 
     def _download_github_model(self, model_item: Dict, output_path: str):
         if isinstance(model_item["github_rls_url"], list):
@@ -336,7 +338,7 @@ class ModelManager(object):
             if not self.ask_tos(output_path):
                 os.rmdir(output_path)
                 raise Exception(" [!] You must agree to the terms of service to use this model.")
-        print(f" > Downloading model to {output_path}")
+        logger.info("Downloading model to %s", output_path)
         try:
             if "fairseq" in model_name:
                 self.download_fairseq_model(model_name, output_path)
@@ -346,7 +348,7 @@ class ModelManager(object):
                 self._download_hf_model(model_item, output_path)
 
         except requests.RequestException as e:
-            print(f" > Failed to download the model file to {output_path}")
+            logger.exception("Failed to download the model file to %s", output_path)
             rmtree(output_path)
             raise e
         self.print_model_license(model_item=model_item)
@@ -364,7 +366,7 @@ class ModelManager(object):
             config_remote = json.load(f)
 
         if not config_local == config_remote:
-            print(f" > {model_name} is already downloaded however it has been changed. Redownloading it...")
+            logger.info("%s is already downloaded however it has been changed. Redownloading it...", model_name)
             self.create_dir_and_download_model(model_name, model_item, output_path)
 
     def download_model(self, model_name):
@@ -390,12 +392,12 @@ class ModelManager(object):
                 if os.path.isfile(md5sum_file):
                     with open(md5sum_file, mode="r") as f:
                         if not f.read() == md5sum:
-                            print(f" > {model_name} has been updated, clearing model cache...")
+                            logger.info("%s has been updated, clearing model cache...", model_name)
                             self.create_dir_and_download_model(model_name, model_item, output_path)
                         else:
-                            print(f" > {model_name} is already downloaded.")
+                            logger.info("%s is already downloaded.", model_name)
                 else:
-                    print(f" > {model_name} has been updated, clearing model cache...")
+                    logger.info("%s has been updated, clearing model cache...", model_name)
                     self.create_dir_and_download_model(model_name, model_item, output_path)
             # if the configs are different, redownload it
             # ToDo: we need a better way to handle it
@@ -405,7 +407,7 @@ class ModelManager(object):
                 except:
                     pass
             else:
-                print(f" > {model_name} is already downloaded.")
+                logger.info("%s is already downloaded.", model_name)
         else:
             self.create_dir_and_download_model(model_name, model_item, output_path)
 
@@ -544,7 +546,7 @@ class ModelManager(object):
                 z.extractall(output_folder)
             os.remove(temp_zip_name)  # delete zip after extract
         except zipfile.BadZipFile:
-            print(f" > Error: Bad zip file - {file_url}")
+            logger.exception("Bad zip file - %s", file_url)
             raise zipfile.BadZipFile  # pylint: disable=raise-missing-from
         # move the files to the outer path
         for file_path in z.namelist():
@@ -580,7 +582,7 @@ class ModelManager(object):
                 tar_names = t.getnames()
             os.remove(temp_tar_name)  # delete tar after extract
         except tarfile.ReadError:
-            print(f" > Error: Bad tar file - {file_url}")
+            logger.exception("Bad tar file - %s", file_url)
             raise tarfile.ReadError  # pylint: disable=raise-missing-from
         # move the files to the outer path
         for file_path in os.listdir(os.path.join(output_folder, tar_names[0])):

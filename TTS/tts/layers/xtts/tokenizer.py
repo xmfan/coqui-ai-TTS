@@ -1,3 +1,4 @@
+import logging
 import os
 import re
 import textwrap
@@ -16,6 +17,8 @@ from spacy.lang.zh import Chinese
 from tokenizers import Tokenizer
 
 from TTS.tts.layers.xtts.zh_num2words import TextNorm as zh_num2words
+
+logger = logging.getLogger(__name__)
 
 
 def get_spacy_lang(lang):
@@ -623,8 +626,10 @@ class VoiceBpeTokenizer:
         lang = lang.split("-")[0]  # remove the region
         limit = self.char_limits.get(lang, 250)
         if len(txt) > limit:
-            print(
-                f"[!] Warning: The text length exceeds the character limit of {limit} for language '{lang}', this might cause truncated audio."
+            logger.warning(
+                "The text length exceeds the character limit of %d for language '%s', this might cause truncated audio.",
+                limit,
+                lang,
             )
 
     def preprocess_text(self, txt, lang):

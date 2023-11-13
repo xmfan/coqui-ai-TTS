@@ -1,4 +1,5 @@
 import csv
+import logging
 import os
 import re
 import xml.etree.ElementTree as ET
@@ -7,6 +8,8 @@ from pathlib import Path
 from typing import List
 
 from tqdm import tqdm
+
+logger = logging.getLogger(__name__)
 
 ########################
 # DATASETS
@@ -23,7 +26,7 @@ def cml_tts(root_path, meta_file, ignored_speakers=None):
     num_cols = len(lines[0].split("|"))  # take the first row as reference
     for idx, line in enumerate(lines[1:]):
         if len(line.split("|")) != num_cols:
-            print(f" > Missing column in line {idx + 1} -> {line.strip()}")
+            logger.warning("Missing column in line %d -> %s", idx + 1, line.strip())
     # load metadata
     with open(Path(root_path) / meta_file, newline="", encoding="utf-8") as f:
         reader = csv.DictReader(f, delimiter="|")
@@ -50,7 +53,7 @@ def cml_tts(root_path, meta_file, ignored_speakers=None):
             }
         )
     if not_found_counter > 0:
-        print(f" | > [!] {not_found_counter} files not found")
+        logger.warning("%d files not found", not_found_counter)
     return items
 
 
@@ -63,7 +66,7 @@ def coqui(root_path, meta_file, ignored_speakers=None):
     num_cols = len(lines[0].split("|"))  # take the first row as reference
     for idx, line in enumerate(lines[1:]):
         if len(line.split("|")) != num_cols:
-            print(f" > Missing column in line {idx + 1} -> {line.strip()}")
+            logger.warning("Missing column in line %d -> %s", idx + 1, line.strip())
     # load metadata
     with open(Path(root_path) / meta_file, newline="", encoding="utf-8") as f:
         reader = csv.DictReader(f, delimiter="|")
@@ -90,7 +93,7 @@ def coqui(root_path, meta_file, ignored_speakers=None):
             }
         )
     if not_found_counter > 0:
-        print(f" | > [!] {not_found_counter} files not found")
+        logger.warning("%d files not found", not_found_counter)
     return items
 
 
@@ -173,7 +176,7 @@ def mailabs(root_path, meta_files=None, ignored_speakers=None):
         if isinstance(ignored_speakers, list):
             if speaker_name in ignored_speakers:
                 continue
-        print(" | > {}".format(csv_file))
+        logger.info(csv_file)
         with open(txt_file, "r", encoding="utf-8") as ttf:
             for line in ttf:
                 cols = line.split("|")
@@ -188,7 +191,7 @@ def mailabs(root_path, meta_files=None, ignored_speakers=None):
                     )
                 else:
                     # M-AI-Labs have some missing samples, so just print the warning
-                    print("> File %s does not exist!" % (wav_file))
+                    logger.warning("File %s does not exist!", wav_file)
     return items
 
 
@@ -253,7 +256,7 @@ def sam_accenture(root_path, meta_file, **kwargs):  # pylint: disable=unused-arg
         text = item.text
         wav_file = os.path.join(root_path, "vo_voice_quality_transformation", item.get("id") + ".wav")
         if not os.path.exists(wav_file):
-            print(f" [!] {wav_file} in metafile does not exist. Skipping...")
+            logger.warning("%s in metafile does not exist. Skipping...", wav_file)
             continue
         items.append({"text": text, "audio_file": wav_file, "speaker_name": speaker_name, "root_path": root_path})
     return items
@@ -374,7 +377,7 @@ def custom_turkish(root_path, meta_file, **kwargs):  # pylint: disable=unused-ar
                 continue
             text = cols[1].strip()
             items.append({"text": text, "audio_file": wav_file, "speaker_name": speaker_name, "root_path": root_path})
-    print(f" [!] {len(skipped_files)} files skipped. They don't exist...")
+    logger.warning("%d files skipped. They don't exist...")
     return items
 
 
@@ -442,7 +445,7 @@ def vctk(root_path, meta_files=None, wavs_path="wav48_silence_trimmed", mic="mic
                 {"text": text, "audio_file": wav_file, "speaker_name": "VCTK_" + speaker_id, "root_path": root_path}
             )
         else:
-            print(f" [!] wav files don't exist - {wav_file}")
+            logger.warning("Wav file doesn't exist - %s", wav_file)
     return items
 
 

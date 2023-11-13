@@ -1,4 +1,6 @@
 # adopted from https://github.com/jik876/hifi-gan/blob/master/models.py
+import logging
+
 import torch
 from torch import nn
 from torch.nn import Conv1d, ConvTranspose1d
@@ -7,6 +9,8 @@ from torch.nn.utils.parametrizations import weight_norm
 from torch.nn.utils.parametrize import remove_parametrizations
 
 from TTS.utils.io import load_fsspec
+
+logger = logging.getLogger(__name__)
 
 LRELU_SLOPE = 0.1
 
@@ -282,7 +286,7 @@ class HifiganGenerator(torch.nn.Module):
         return self.forward(c)
 
     def remove_weight_norm(self):
-        print("Removing weight norm...")
+        logger.info("Removing weight norm...")
         for l in self.ups:
             remove_parametrizations(l, "weight")
         for l in self.resblocks:

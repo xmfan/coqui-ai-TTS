@@ -109,7 +109,6 @@ class GANDataset(Dataset):
         if self.compute_feat:
             # compute features from wav
             wavpath = self.item_list[idx]
-            # print(wavpath)
 
             if self.use_cache and self.cache[idx] is not None:
                 audio, mel = self.cache[idx]

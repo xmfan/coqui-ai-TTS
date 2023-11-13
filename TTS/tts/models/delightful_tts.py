@@ -1,3 +1,4 @@
+import logging
 import os
 from dataclasses import dataclass, field
 from itertools import chain
@@ -35,6 +36,8 @@ from TTS.utils.io import load_fsspec
 from TTS.vocoder.layers.losses import MultiScaleSTFTLoss
 from TTS.vocoder.models.hifigan_generator import HifiganGenerator
 from TTS.vocoder.utils.generic_utils import plot_results
+
+logger = logging.getLogger(__name__)
 
 
 def id_to_torch(aux_id, cuda=False):
@@ -162,9 +165,9 @@ def _wav_to_spec(y, n_fft, hop_length, win_length, center=False):
     y = y.squeeze(1)
 
     if torch.min(y) < -1.0:
-        print("min value is ", torch.min(y))
+        logger.info("min value is %.3f", torch.min(y))
     if torch.max(y) > 1.0:
-        print("max value is ", torch.max(y))
+        logger.info("max value is %.3f", torch.max(y))
 
     global hann_window  # pylint: disable=global-statement
     dtype_device = str(y.dtype) + "_" + str(y.device)
@@ -253,9 +256,9 @@ def wav_to_mel(y, n_fft, num_mels, sample_rate, hop_length, win_length, fmin, fm
     y = y.squeeze(1)
 
     if torch.min(y) < -1.0:
-        print("min value is ", torch.min(y))
+        logger.info("min value is %.3f", torch.min(y))
     if torch.max(y) > 1.0:
-        print("max value is ", torch.max(y))
+        logger.info("max value is %.3f", torch.max(y))
 
     global mel_basis, hann_window  # pylint: disable=global-statement
     mel_basis_key = name_mel_basis(y, n_fft, fmax)
@@ -408,7 +411,7 @@ class ForwardTTSE2eDataset(TTSDataset):
         try:
             token_ids = self.get_token_ids(idx, item["text"])
         except:
-            print(idx, item)
+            logger.exception("%s %s", idx, item)
             # pylint: disable=raise-missing-from
             raise OSError
         f0 = None
@@ -773,7 +776,7 @@ class DelightfulTTS(BaseTTSE2E):
     def _init_speaker_embedding(self):
         # pylint: disable=attribute-defined-outside-init
         if self.num_speakers > 0:
-            print(" > initialization of speaker-embedding layers.")
+            logger.info("Initialization of speaker-embedding layers.")
             self.embedded_speaker_dim = self.args.speaker_embedding_channels
             self.args.embedded_speaker_dim = self.args.speaker_embedding_channels
 
@@ -1291,7 +1294,7 @@ class DelightfulTTS(BaseTTSE2E):
         Returns:
             Tuple[Dict, Dict]: Test figures and audios to be projected to Tensorboard.
         """
-        print(" | > Synthesizing test sentences.")
+        logger.info("Synthesizing test sentences.")
         test_audios = {}
         test_figures = {}
         test_sentences = self.config.test_sentences
@@ -1405,14 +1408,14 @@ class DelightfulTTS(BaseTTSE2E):
         data_items = dataset.samples
         if getattr(config, "use_weighted_sampler", False):
             for attr_name, alpha in config.weighted_sampler_attrs.items():
-                print(f" > Using weighted sampler for attribute '{attr_name}' with alpha '{alpha}'")
+                logger.info("Using weighted sampler for attribute '%s' with alpha %.2f", attr_name, alpha)
                 multi_dict = config.weighted_sampler_multipliers.get(attr_name, None)
-                print(multi_dict)
+                logger.info(multi_dict)
                 weights, attr_names, attr_weights = get_attribute_balancer_weights(
                     attr_name=attr_name, items=data_items, multi_dict=multi_dict
                 )
                 weights = weights * alpha
-                print(f" > Attribute weights for '{attr_names}' \n | > {attr_weights}")
+                logger.info("Attribute weights for '%s' \n | > %s", attr_names, attr_weights)
 
         if weights is not None:
             sampler = WeightedRandomSampler(weights, len(weights))

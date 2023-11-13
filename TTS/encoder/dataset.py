@@ -1,9 +1,12 @@
+import logging
 import random
 
 import torch
 from torch.utils.data import Dataset
 
 from TTS.encoder.utils.generic_utils import AugmentWAV
+
+logger = logging.getLogger(__name__)
 
 
 class EncoderDataset(Dataset):
@@ -51,12 +54,12 @@ class EncoderDataset(Dataset):
                 self.gaussian_augmentation_config = augmentation_config["gaussian"]
 
         if self.verbose:
-            print("\n > DataLoader initialization")
-            print(f" | > Classes per Batch: {num_classes_in_batch}")
-            print(f" | > Number of instances : {len(self.items)}")
-            print(f" | > Sequence length: {self.seq_len}")
-            print(f" | > Num Classes: {len(self.classes)}")
-            print(f" | > Classes: {self.classes}")
+            logger.info("DataLoader initialization")
+            logger.info(" | Classes per batch: %d", num_classes_in_batch)
+            logger.info(" | Number of instances: %d", len(self.items))
+            logger.info(" | Sequence length: %d", self.seq_len)
+            logger.info(" | Number of classes: %d", len(self.classes))
+            logger.info(" | Classes: %d", self.classes)
 
     def load_wav(self, filename):
         audio = self.ap.load_wav(filename, sr=self.ap.sample_rate)

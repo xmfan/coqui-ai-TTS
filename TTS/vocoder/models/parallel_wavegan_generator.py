@@ -1,3 +1,4 @@
+import logging
 import math
 
 import numpy as np
@@ -7,6 +8,8 @@ from torch.nn.utils.parametrize import remove_parametrizations
 from TTS.utils.io import load_fsspec
 from TTS.vocoder.layers.parallel_wavegan import ResidualBlock
 from TTS.vocoder.layers.upsample import ConvUpsample
+
+logger = logging.getLogger(__name__)
 
 
 class ParallelWaveganGenerator(torch.nn.Module):
@@ -126,7 +129,7 @@ class ParallelWaveganGenerator(torch.nn.Module):
     def remove_weight_norm(self):
         def _remove_weight_norm(m):
             try:
-                # print(f"Weight norm is removed from {m}.")
+                logger.info("Weight norm is removed from %s", m)
                 remove_parametrizations(m, "weight")
             except ValueError:  # this module didn't have weight norm
                 return
@@ -137,7 +140,7 @@ class ParallelWaveganGenerator(torch.nn.Module):
         def _apply_weight_norm(m):
             if isinstance(m, (torch.nn.Conv1d, torch.nn.Conv2d)):
                 torch.nn.utils.parametrizations.weight_norm(m)
-                # print(f"Weight norm is applied to {m}.")
+                logger.info("Weight norm is applied to %s", m)
 
         self.apply(_apply_weight_norm)
 
