@@ -15,9 +15,7 @@ class WaveRNNDataset(Dataset):
     and converts them to acoustic features on the fly.
     """
 
-    def __init__(
-        self, ap, items, seq_len, hop_len, pad, mode, mulaw, is_training=True, verbose=False, return_segments=True
-    ):
+    def __init__(self, ap, items, seq_len, hop_len, pad, mode, mulaw, is_training=True, return_segments=True):
         super().__init__()
         self.ap = ap
         self.compute_feat = not isinstance(items[0], (tuple, list))
@@ -29,7 +27,6 @@ class WaveRNNDataset(Dataset):
         self.mode = mode
         self.mulaw = mulaw
         self.is_training = is_training
-        self.verbose = verbose
         self.return_segments = return_segments
 
         assert self.seq_len % self.hop_len == 0

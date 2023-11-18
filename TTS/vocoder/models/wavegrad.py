@@ -321,7 +321,6 @@ class Wavegrad(BaseVocoder):
             return_segments=True,
             use_noise_augment=False,
             use_cache=config.use_cache,
-            verbose=verbose,
         )
         sampler = DistributedSampler(dataset) if num_gpus > 1 else None
         loader = DataLoader(

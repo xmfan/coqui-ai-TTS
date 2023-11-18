@@ -135,10 +135,6 @@ class AudioProcessor(object):
 
         stats_path (str, optional):
             Path to the computed stats file. Defaults to None.
-
-        verbose (bool, optional):
-            enable/disable logging. Defaults to True.
-
     """
 
     def __init__(
@@ -175,7 +171,6 @@ class AudioProcessor(object):
         do_rms_norm=False,
         db_level=None,
         stats_path=None,
-        verbose=True,
         **_,
     ):
         # setup class attributed
@@ -231,10 +226,9 @@ class AudioProcessor(object):
             self.win_length <= self.fft_size
         ), f" [!] win_length cannot be larger than fft_size - {self.win_length} vs {self.fft_size}"
         members = vars(self)
-        if verbose:
-            logger.info("Setting up Audio Processor...")
-            for key, value in members.items():
-                logger.info(" | %s: %s", key, value)
+        logger.info("Setting up Audio Processor...")
+        for key, value in members.items():
+            logger.info(" | %s: %s", key, value)
         # create spectrogram utils
         self.mel_basis = build_mel_basis(
             sample_rate=self.sample_rate,
@@ -253,10 +247,10 @@ class AudioProcessor(object):
             self.symmetric_norm = None
 
     @staticmethod
-    def init_from_config(config: "Coqpit", verbose=True):
+    def init_from_config(config: "Coqpit"):
         if "audio" in config:
-            return AudioProcessor(verbose=verbose, **config.audio)
-        return AudioProcessor(verbose=verbose, **config)
+            return AudioProcessor(**config.audio)
+        return AudioProcessor(**config)
 
     ### normalization ###
     def normalize(self, S: np.ndarray) -> np.ndarray:

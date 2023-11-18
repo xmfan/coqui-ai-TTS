@@ -349,7 +349,6 @@ class GAN(BaseVocoder):
             return_segments=not is_eval,
             use_noise_augment=config.use_noise_augment,
             use_cache=config.use_cache,
-            verbose=verbose,
         )
         dataset.shuffle_mapping()
         sampler = DistributedSampler(dataset, shuffle=True) if num_gpus > 1 else None
@@ -369,6 +368,6 @@ class GAN(BaseVocoder):
         return [DiscriminatorLoss(self.config), GeneratorLoss(self.config)]
 
     @staticmethod
-    def init_from_config(config: Coqpit, verbose=True) -> "GAN":
-        ap = AudioProcessor.init_from_config(config, verbose=verbose)
+    def init_from_config(config: Coqpit) -> "GAN":
+        ap = AudioProcessor.init_from_config(config)
         return GAN(config, ap=ap)

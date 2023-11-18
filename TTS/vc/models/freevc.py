@@ -550,7 +550,7 @@ class FreeVC(BaseVC):
     def eval_step(): ...
 
     @staticmethod
-    def init_from_config(config: FreeVCConfig, samples: Union[List[List], List[Dict]] = None, verbose=True):
+    def init_from_config(config: FreeVCConfig, samples: Union[List[List], List[Dict]] = None):
         model = FreeVC(config)
         return model
 

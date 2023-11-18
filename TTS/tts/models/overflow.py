@@ -253,18 +253,17 @@ class Overflow(BaseTTS):
         return NLLLoss()
 
     @staticmethod
-    def init_from_config(config: "OverFlowConfig", samples: Union[List[List], List[Dict]] = None, verbose=True):
+    def init_from_config(config: "OverFlowConfig", samples: Union[List[List], List[Dict]] = None):
         """Initiate model from config
 
         Args:
             config (VitsConfig): Model config.
             samples (Union[List[List], List[Dict]]): Training samples to parse speaker ids for training.
                 Defaults to None.
-            verbose (bool): If True, print init messages. Defaults to True.
         """
         from TTS.utils.audio import AudioProcessor
 
-        ap = AudioProcessor.init_from_config(config, verbose)
+        ap = AudioProcessor.init_from_config(config)
         tokenizer, new_config = TTSTokenizer.init_from_config(config)
         speaker_manager = SpeakerManager.init_from_config(config, samples)
         return Overflow(new_config, ap, tokenizer, speaker_manager)

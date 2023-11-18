@@ -331,7 +331,6 @@ class ForwardTTSE2eF0Dataset(F0Dataset):
         self,
         ap,
         samples: Union[List[List], List[Dict]],
-        verbose=False,
         cache_path: str = None,
         precompute_num_workers=0,
         normalize_f0=True,
@@ -339,7 +338,6 @@ class ForwardTTSE2eF0Dataset(F0Dataset):
         super().__init__(
             samples=samples,
             ap=ap,
-            verbose=verbose,
             cache_path=cache_path,
             precompute_num_workers=precompute_num_workers,
             normalize_f0=normalize_f0,
@@ -1455,7 +1453,6 @@ class DelightfulTTS(BaseTTSE2E):
                 compute_f0=config.compute_f0,
                 f0_cache_path=config.f0_cache_path,
                 attn_prior_cache_path=config.attn_prior_cache_path if config.use_attn_priors else None,
-                verbose=verbose,
                 tokenizer=self.tokenizer,
                 start_by_longest=config.start_by_longest,
             )
@@ -1532,7 +1529,7 @@ class DelightfulTTS(BaseTTSE2E):
 
     @staticmethod
     def init_from_config(
-        config: "DelightfulTTSConfig", samples: Union[List[List], List[Dict]] = None, verbose=False
+        config: "DelightfulTTSConfig", samples: Union[List[List], List[Dict]] = None
     ):  # pylint: disable=unused-argument
         """Initiate model from config
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import logging
 import os
 import sys
 import time
@@ -31,7 +32,7 @@ print(" > Using CUDA: ", use_cuda)
 print(" > Number of GPUs: ", num_gpus)
 
 
-def setup_loader(ap: AudioProcessor, is_val: bool = False, verbose: bool = False):
+def setup_loader(ap: AudioProcessor, is_val: bool = False):
     num_utter_per_class = c.num_utter_per_class if not is_val else c.eval_num_utter_per_class
     num_classes_in_batch = c.num_classes_in_batch if not is_val else c.eval_num_classes_in_batch
 
@@ -42,7 +43,6 @@ def setup_loader(ap: AudioProcessor, is_val: bool = False, verbose: bool = False
         voice_len=c.voice_len,
         num_utter_per_class=num_utter_per_class,
         num_classes_in_batch=num_classes_in_batch,
-        verbose=verbose,
         augmentation_config=c.audio_augmentation if not is_val else None,
         use_torch_spec=c.model_params.get("use_torch_spec", False),
     )
@@ -278,9 +278,10 @@ def main(args):  # pylint: disable=redefined-outer-name
     # pylint: disable=redefined-outer-name
     meta_data_train, meta_data_eval = load_tts_samples(c.datasets, eval_split=True)
 
-    train_data_loader, train_classes, map_classid_to_classname = setup_loader(ap, is_val=False, verbose=True)
+    logging.getLogger("TTS.encoder.dataset").setLevel(logging.INFO)
+    train_data_loader, train_classes, map_classid_to_classname = setup_loader(ap, is_val=False)
     if c.run_eval:
-        eval_data_loader, _, _ = setup_loader(ap, is_val=True, verbose=True)
+        eval_data_loader, _, _ = setup_loader(ap, is_val=True)
     else:
         eval_data_loader = None
 

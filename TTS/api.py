@@ -62,7 +62,7 @@ class TTS(nn.Module):
             gpu (bool, optional): Enable/disable GPU. Some models might be too slow on CPU. Defaults to False.
         """
         super().__init__()
-        self.manager = ModelManager(models_file=self.get_models_file_path(), progress_bar=progress_bar, verbose=False)
+        self.manager = ModelManager(models_file=self.get_models_file_path(), progress_bar=progress_bar)
         self.config = load_config(config_path) if config_path else None
         self.synthesizer = None
         self.voice_converter = None
@@ -125,7 +125,7 @@ class TTS(nn.Module):
 
     @staticmethod
     def list_models():
-        return ModelManager(models_file=TTS.get_models_file_path(), progress_bar=False, verbose=False).list_models()
+        return ModelManager(models_file=TTS.get_models_file_path(), progress_bar=False).list_models()
 
     def download_model_by_name(self, model_name: str):
         model_path, config_path, model_item = self.manager.download_model(model_name)

@@ -21,7 +21,7 @@ from TTS.utils.audio.numpy_transforms import quantize
 use_cuda = torch.cuda.is_available()
 
 
-def setup_loader(ap, r, verbose=False):
+def setup_loader(ap, r):
     tokenizer, _ = TTSTokenizer.init_from_config(c)
     dataset = TTSDataset(
         outputs_per_step=r,
@@ -37,7 +37,6 @@ def setup_loader(ap, r, verbose=False):
         phoneme_cache_path=c.phoneme_cache_path,
         precompute_num_workers=0,
         use_noise_augment=False,
-        verbose=verbose,
         speaker_id_mapping=speaker_manager.name_to_id if c.use_speaker_embedding else None,
         d_vector_mapping=speaker_manager.embeddings if c.use_d_vector_file else None,
     )
@@ -257,7 +256,7 @@ def main(args):  # pylint: disable=redefined-outer-name
     print("\n > Model has {} parameters".format(num_params), flush=True)
     # set r
     r = 1 if c.model.lower() == "glow_tts" else model.decoder.r
-    own_loader = setup_loader(ap, r, verbose=True)
+    own_loader = setup_loader(ap, r)
 
     extract_spectrograms(
         own_loader,

@@ -20,6 +20,7 @@ from TTS.utils.manage import ModelManager
 from TTS.utils.synthesizer import Synthesizer
 
 logger = logging.getLogger(__name__)
+logging.getLogger("TTS").setLevel(logging.INFO)
 
 
 def create_argparser():

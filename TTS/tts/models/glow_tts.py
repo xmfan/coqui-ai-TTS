@@ -56,7 +56,7 @@ class GlowTTS(BaseTTS):
         >>> from TTS.tts.configs.glow_tts_config import GlowTTSConfig
         >>> from TTS.tts.models.glow_tts import GlowTTS
         >>> config = GlowTTSConfig()
-        >>> model = GlowTTS.init_from_config(config, verbose=False)
+        >>> model = GlowTTS.init_from_config(config)
     """
 
     def __init__(
@@ -543,18 +543,17 @@ class GlowTTS(BaseTTS):
         self.run_data_dep_init = trainer.total_steps_done < self.data_dep_init_steps
 
     @staticmethod
-    def init_from_config(config: "GlowTTSConfig", samples: Union[List[List], List[Dict]] = None, verbose=True):
+    def init_from_config(config: "GlowTTSConfig", samples: Union[List[List], List[Dict]] = None):
         """Initiate model from config
 
         Args:
             config (VitsConfig): Model config.
             samples (Union[List[List], List[Dict]]): Training samples to parse speaker ids for training.
                 Defaults to None.
-            verbose (bool): If True, print init messages. Defaults to True.
         """
         from TTS.utils.audio import AudioProcessor
 
-        ap = AudioProcessor.init_from_config(config, verbose)
+        ap = AudioProcessor.init_from_config(config)
         tokenizer, new_config = TTSTokenizer.init_from_config(config)
         speaker_manager = SpeakerManager.init_from_config(config, samples)
         return GlowTTS(new_config, ap, tokenizer, speaker_manager)

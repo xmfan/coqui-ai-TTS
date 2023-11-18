@@ -43,13 +43,11 @@ class ModelManager(object):
         models_file (str): path to .model.json file. Defaults to None.
         output_prefix (str): prefix to `tts` to download models. Defaults to None
         progress_bar (bool): print a progress bar when donwloading a file. Defaults to False.
-        verbose (bool): print info. Defaults to True.
     """
 
-    def __init__(self, models_file=None, output_prefix=None, progress_bar=False, verbose=True):
+    def __init__(self, models_file=None, output_prefix=None, progress_bar=False):
         super().__init__()
         self.progress_bar = progress_bar
-        self.verbose = verbose
         if output_prefix is None:
             self.output_prefix = get_user_data_dir("tts")
         else:
@@ -71,18 +69,16 @@ class ModelManager(object):
         self.models_dict = read_json_with_comments(file_path)
 
     def _list_models(self, model_type, model_count=0):
-        if self.verbose:
-            logger.info("")
-            logger.info("Name format: type/language/dataset/model")
+        logger.info("")
+        logger.info("Name format: type/language/dataset/model")
         model_list = []
         for lang in self.models_dict[model_type]:
             for dataset in self.models_dict[model_type][lang]:
                 for model in self.models_dict[model_type][lang][dataset]:
                     model_full_name = f"{model_type}--{lang}--{dataset}--{model}"
-                    if self.verbose:
-                        output_path = Path(self.output_prefix) / model_full_name
-                        downloaded = " [already downloaded]" if output_path.is_dir() else ""
-                        logger.info(" %2d: %s/%s/%s/%s%s", model_count, model_type, lang, dataset, model, downloaded)
+                    output_path = Path(self.output_prefix) / model_full_name
+                    downloaded = " [already downloaded]" if output_path.is_dir() else ""
+                    logger.info(" %2d: %s/%s/%s/%s%s", model_count, model_type, lang, dataset, model, downloaded)
                     model_list.append(f"{model_type}/{lang}/{dataset}/{model}")
                     model_count += 1
         return model_list

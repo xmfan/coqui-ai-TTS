@@ -82,7 +82,6 @@ class TTSDataset(Dataset):
         language_id_mapping: Dict = None,
         use_noise_augment: bool = False,
         start_by_longest: bool = False,
-        verbose: bool = False,
     ):
         """Generic 📂 data loader for `tts` models. It is configurable for different outputs and needs.
 
@@ -140,8 +139,6 @@ class TTSDataset(Dataset):
             use_noise_augment (bool): Enable adding random noise to wav for augmentation. Defaults to False.
 
             start_by_longest (bool): Start by longest sequence. It is especially useful to check OOM. Defaults to False.
-
-            verbose (bool): Print diagnostic information. Defaults to false.
         """
         super().__init__()
         self.batch_group_size = batch_group_size
@@ -165,7 +162,6 @@ class TTSDataset(Dataset):
         self.use_noise_augment = use_noise_augment
         self.start_by_longest = start_by_longest
 
-        self.verbose = verbose
         self.rescue_item_idx = 1
         self.pitch_computed = False
         self.tokenizer = tokenizer
@@ -183,8 +179,7 @@ class TTSDataset(Dataset):
             self.energy_dataset = EnergyDataset(
                 self.samples, self.ap, cache_path=energy_cache_path, precompute_num_workers=precompute_num_workers
             )
-        if self.verbose:
-            self.print_logs()
+        self.print_logs()
 
     @property
     def lengths(self):
@@ -700,14 +695,12 @@ class F0Dataset:
         samples: Union[List[List], List[Dict]],
         ap: "AudioProcessor",
         audio_config=None,  # pylint: disable=unused-argument
-        verbose=False,
         cache_path: str = None,
         precompute_num_workers=0,
         normalize_f0=True,
     ):
         self.samples = samples
         self.ap = ap
-        self.verbose = verbose
         self.cache_path = cache_path
         self.normalize_f0 = normalize_f0
         self.pad_id = 0.0
@@ -850,14 +843,12 @@ class EnergyDataset:
         self,
         samples: Union[List[List], List[Dict]],
         ap: "AudioProcessor",
-        verbose=False,
         cache_path: str = None,
         precompute_num_workers=0,
         normalize_energy=True,
     ):
         self.samples = samples
         self.ap = ap
-        self.verbose = verbose
         self.cache_path = cache_path
         self.normalize_energy = normalize_energy
         self.pad_id = 0.0

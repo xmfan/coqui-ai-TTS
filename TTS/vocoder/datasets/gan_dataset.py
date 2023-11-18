@@ -28,7 +28,6 @@ class GANDataset(Dataset):
         return_segments=True,
         use_noise_augment=False,
         use_cache=False,
-        verbose=False,
     ):
         super().__init__()
         self.ap = ap
@@ -43,7 +42,6 @@ class GANDataset(Dataset):
         self.return_segments = return_segments
         self.use_cache = use_cache
         self.use_noise_augment = use_noise_augment
-        self.verbose = verbose
 
         assert seq_len % hop_len == 0, " [!] seq_len has to be a multiple of hop_len."
         self.feat_frame_len = seq_len // hop_len + (2 * conv_pad)
