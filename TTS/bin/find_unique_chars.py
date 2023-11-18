@@ -4,7 +4,7 @@ import argparse
 from argparse import RawTextHelpFormatter
 
 from TTS.config import load_config
-from TTS.tts.datasets import load_tts_samples
+from TTS.tts.datasets import find_unique_chars, load_tts_samples
 
 
 def main():
@@ -29,17 +29,7 @@ def main():
     )
 
     items = train_items + eval_items
-
-    texts = "".join(item["text"] for item in items)
-    chars = set(texts)
-    lower_chars = filter(lambda c: c.islower(), chars)
-    chars_force_lower = [c.lower() for c in chars]
-    chars_force_lower = set(chars_force_lower)
-
-    print(f" > Number of unique characters: {len(chars)}")
-    print(f" > Unique characters: {''.join(sorted(chars))}")
-    print(f" > Unique lower characters: {''.join(sorted(lower_chars))}")
-    print(f" > Unique all forced to lower characters: {''.join(sorted(chars_force_lower))}")
+    find_unique_chars(items)
 
 
 if __name__ == "__main__":
