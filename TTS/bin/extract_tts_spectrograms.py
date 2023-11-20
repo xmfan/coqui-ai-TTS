@@ -2,6 +2,7 @@
 """Extract Mel spectrograms with teacher forcing."""
 
 import argparse
+import logging
 import os
 
 import numpy as np
@@ -17,6 +18,7 @@ from TTS.tts.utils.speakers import SpeakerManager
 from TTS.tts.utils.text.tokenizer import TTSTokenizer
 from TTS.utils.audio import AudioProcessor
 from TTS.utils.audio.numpy_transforms import quantize
+from TTS.utils.generic_utils import ConsoleFormatter, setup_logger
 
 use_cuda = torch.cuda.is_available()
 
@@ -271,6 +273,8 @@ def main(args):  # pylint: disable=redefined-outer-name
 
 
 if __name__ == "__main__":
+    setup_logger("TTS", level=logging.INFO, screen=True, formatter=ConsoleFormatter())
+
     parser = argparse.ArgumentParser()
     parser.add_argument("--config_path", type=str, help="Path to config file for training.", required=True)
     parser.add_argument("--checkpoint_path", type=str, help="Model file to be restored.", required=True)

@@ -1,5 +1,6 @@
 import argparse
 import glob
+import logging
 import multiprocessing
 import os
 import pathlib
@@ -7,6 +8,7 @@ import pathlib
 import torch
 from tqdm import tqdm
 
+from TTS.utils.generic_utils import ConsoleFormatter, setup_logger
 from TTS.utils.vad import get_vad_model_and_utils, remove_silence
 
 torch.set_num_threads(1)
@@ -75,6 +77,8 @@ def preprocess_audios():
 
 
 if __name__ == "__main__":
+    setup_logger("TTS", level=logging.INFO, screen=True, formatter=ConsoleFormatter())
+
     parser = argparse.ArgumentParser(
         description="python TTS/bin/remove_silence_using_vad.py -i=VCTK-Corpus/ -o=VCTK-Corpus-removed-silence/ -g=wav48_silence_trimmed/*/*_mic1.flac --trim_just_beginning_and_end True"
     )

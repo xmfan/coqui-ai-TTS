@@ -1,13 +1,17 @@
 """Find all the unique characters in a dataset"""
 
 import argparse
+import logging
 from argparse import RawTextHelpFormatter
 
 from TTS.config import load_config
 from TTS.tts.datasets import find_unique_chars, load_tts_samples
+from TTS.utils.generic_utils import ConsoleFormatter, setup_logger
 
 
 def main():
+    setup_logger("TTS", level=logging.INFO, screen=True, formatter=ConsoleFormatter())
+
     # pylint: disable=bad-option-value
     parser = argparse.ArgumentParser(
         description="""Find all the unique characters or phonemes in a dataset.\n\n"""

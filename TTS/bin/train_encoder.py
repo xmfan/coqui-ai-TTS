@@ -20,6 +20,7 @@ from TTS.encoder.utils.training import init_training
 from TTS.encoder.utils.visual import plot_embeddings
 from TTS.tts.datasets import load_tts_samples
 from TTS.utils.audio import AudioProcessor
+from TTS.utils.generic_utils import ConsoleFormatter, setup_logger
 from TTS.utils.samplers import PerfectBatchSampler
 from TTS.utils.training import check_update
 
@@ -278,7 +279,6 @@ def main(args):  # pylint: disable=redefined-outer-name
     # pylint: disable=redefined-outer-name
     meta_data_train, meta_data_eval = load_tts_samples(c.datasets, eval_split=True)
 
-    logging.getLogger("TTS.encoder.dataset").setLevel(logging.INFO)
     train_data_loader, train_classes, map_classid_to_classname = setup_loader(ap, is_val=False)
     if c.run_eval:
         eval_data_loader, _, _ = setup_loader(ap, is_val=True)
@@ -317,6 +317,8 @@ def main(args):  # pylint: disable=redefined-outer-name
 
 
 if __name__ == "__main__":
+    setup_logger("TTS", level=logging.INFO, screen=True, formatter=ConsoleFormatter())
+
     args, c, OUT_PATH, AUDIO_PATH, c_logger, dashboard_logger = init_training()
 
     try:

@@ -1,4 +1,5 @@
 import argparse
+import logging
 from argparse import RawTextHelpFormatter
 
 import torch
@@ -7,6 +8,7 @@ from tqdm import tqdm
 from TTS.config import load_config
 from TTS.tts.datasets import load_tts_samples
 from TTS.tts.utils.speakers import SpeakerManager
+from TTS.utils.generic_utils import ConsoleFormatter, setup_logger
 
 
 def compute_encoder_accuracy(dataset_items, encoder_manager):
@@ -51,6 +53,8 @@ def compute_encoder_accuracy(dataset_items, encoder_manager):
 
 
 if __name__ == "__main__":
+    setup_logger("TTS", level=logging.INFO, screen=True, formatter=ConsoleFormatter())
+
     parser = argparse.ArgumentParser(
         description="""Compute the accuracy of the encoder.\n\n"""
         """
