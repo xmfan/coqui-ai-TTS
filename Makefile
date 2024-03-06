@@ -48,7 +48,7 @@ style:	## update code style.
 	black ${target_dirs}
 
 lint:	## run linters.
-	ruff ${target_dirs}
+	ruff check ${target_dirs}
 	black ${target_dirs} --check
 
 system-deps:	## install linux system deps
