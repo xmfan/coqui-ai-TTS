@@ -82,7 +82,7 @@ The following steps are tested on an Ubuntu system.
     $ make test_all  # run all the tests, report all the errors
     ```
 
-9. Format your code. We use ```black``` for code and ```isort``` for ```import``` formatting.
+9. Format your code. We use ```black``` for code formatting.
 
     ```bash
     $ make style

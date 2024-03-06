@@ -46,12 +46,10 @@ test_failed:  ## only run tests failed the last time.
 
 style:	## update code style.
 	black ${target_dirs}
-	isort ${target_dirs}
 
 lint:	## run linters.
 	ruff ${target_dirs}
 	black ${target_dirs} --check
-	isort ${target_dirs} --check-only
 
 system-deps:	## install linux system deps
 	sudo apt-get install -y libsndfile1-dev
