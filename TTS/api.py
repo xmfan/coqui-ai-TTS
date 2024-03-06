@@ -1,9 +1,7 @@
 import tempfile
 import warnings
 from pathlib import Path
-from typing import Union
 
-import numpy as np
 from torch import nn
 
 from TTS.config import load_config

@@ -5,7 +5,7 @@ import tarfile
 import zipfile
 from pathlib import Path
 from shutil import copyfile, rmtree
-from typing import Dict, List, Tuple
+from typing import Dict, Tuple
 
 import fsspec
 import requests
