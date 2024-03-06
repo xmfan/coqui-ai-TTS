@@ -4,13 +4,11 @@
 
 import argparse
 import csv
-import os
 import re
 import string
 import sys
 
 # fmt: off
-
 # ================================================================================ #
 #                                    basic constant
 # ================================================================================ #
@@ -490,8 +488,6 @@ class NumberSystem(object):
     """
     中文数字系统
     """
-
-    pass
 
 
 class MathSymbol(object):

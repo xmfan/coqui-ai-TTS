@@ -5,7 +5,7 @@ import tarfile
 import zipfile
 from pathlib import Path
 from shutil import copyfile, rmtree
-from typing import Dict, List, Tuple
+from typing import Dict, Tuple
 
 import fsspec
 import requests
@@ -516,7 +516,7 @@ class ModelManager(object):
                     sub_conf[field_names[-1]] = new_path
             else:
                 # field name points to a top-level field
-                if not field_name in config:
+                if field_name not in config:
                     return
                 if isinstance(config[field_name], list):
                     config[field_name] = [new_path]

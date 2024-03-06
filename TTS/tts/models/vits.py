@@ -1880,7 +1880,7 @@ class Vits(BaseTTS):
         self.forward = _forward
         if training:
             self.train()
-        if not disc is None:
+        if disc is not None:
             self.disc = disc
 
     def load_onnx(self, model_path: str, cuda=False):
@@ -1914,9 +1914,9 @@ class Vits(BaseTTS):
             dtype=np.float32,
         )
         input_params = {"input": x, "input_lengths": x_lengths, "scales": scales}
-        if not speaker_id is None:
+        if speaker_id is not None:
             input_params["sid"] = torch.tensor([speaker_id]).cpu().numpy()
-        if not language_id is None:
+        if language_id is not None:
             input_params["langid"] = torch.tensor([language_id]).cpu().numpy()
 
         audio = self.onnx_sess.run(
@@ -1948,8 +1948,7 @@ class VitsCharacters(BaseCharacters):
     def _create_vocab(self):
         self._vocab = [self._pad] + list(self._punctuations) + list(self._characters) + [self._blank]
         self._char_to_id = {char: idx for idx, char in enumerate(self.vocab)}
-        # pylint: disable=unnecessary-comprehension
-        self._id_to_char = {idx: char for idx, char in enumerate(self.vocab)}
+        self._id_to_char = dict(enumerate(self.vocab))
 
     @staticmethod
     def init_from_config(config: Coqpit):
@@ -1996,4 +1995,4 @@ class FairseqVocab(BaseVocabulary):
         self.blank = self._vocab[0]
         self.pad = " "
         self._char_to_id = {s: i for i, s in enumerate(self._vocab)}  # pylint: disable=unnecessary-comprehension
-        self._id_to_char = {i: s for i, s in enumerate(self._vocab)}  # pylint: disable=unnecessary-comprehension
+        self._id_to_char = dict(enumerate(self._vocab))

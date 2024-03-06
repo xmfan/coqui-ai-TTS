@@ -224,7 +224,7 @@ def main():
         const=True,
         default=False,
     )
-    
+
     # args for multi-speaker synthesis
     parser.add_argument("--speakers_file_path", type=str, help="JSON file for multi-speaker model.", default=None)
     parser.add_argument("--language_ids_file_path", type=str, help="JSON file for multi-lingual model.", default=None)
@@ -379,10 +379,8 @@ def main():
             if model_item["model_type"] == "tts_models":
                 tts_path = model_path
                 tts_config_path = config_path
-                if "default_vocoder" in model_item:
-                    args.vocoder_name = (
-                        model_item["default_vocoder"] if args.vocoder_name is None else args.vocoder_name
-                    )
+                if args.vocoder_name is None and "default_vocoder" in model_item:
+                    args.vocoder_name = model_item["default_vocoder"]
 
             # voice conversion model
             if model_item["model_type"] == "voice_conversion_models":

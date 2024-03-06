@@ -82,13 +82,13 @@ The following steps are tested on an Ubuntu system.
     $ make test_all  # run all the tests, report all the errors
     ```
 
-9. Format your code. We use ```black``` for code and ```isort``` for ```import``` formatting.
+9. Format your code. We use ```black``` for code formatting.
 
     ```bash
     $ make style
     ```
 
-10. Run the linter and correct the issues raised. We use ```pylint``` for linting.  It helps to enforce a coding standard, offers simple refactoring suggestions.
+10. Run the linter and correct the issues raised. We use ```ruff``` for linting.  It helps to enforce a coding standard, offers simple refactoring suggestions.
 
     ```bash
     $ make lint
