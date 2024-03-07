@@ -1,4 +1,5 @@
 """Find all the unique characters in a dataset"""
+
 import argparse
 from argparse import RawTextHelpFormatter
 

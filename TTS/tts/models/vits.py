@@ -1887,9 +1887,11 @@ class Vits(BaseTTS):
         import onnxruntime as ort
 
         providers = [
-            "CPUExecutionProvider"
-            if cuda is False
-            else ("CUDAExecutionProvider", {"cudnn_conv_algo_search": "DEFAULT"})
+            (
+                "CPUExecutionProvider"
+                if cuda is False
+                else ("CUDAExecutionProvider", {"cudnn_conv_algo_search": "DEFAULT"})
+            )
         ]
         sess_options = ort.SessionOptions()
         self.onnx_sess = ort.InferenceSession(

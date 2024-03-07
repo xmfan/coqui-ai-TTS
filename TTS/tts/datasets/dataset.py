@@ -457,9 +457,11 @@ class TTSDataset(Dataset):
 
             # lengths adjusted by the reduction factor
             mel_lengths_adjusted = [
-                m.shape[1] + (self.outputs_per_step - (m.shape[1] % self.outputs_per_step))
-                if m.shape[1] % self.outputs_per_step
-                else m.shape[1]
+                (
+                    m.shape[1] + (self.outputs_per_step - (m.shape[1] % self.outputs_per_step))
+                    if m.shape[1] % self.outputs_per_step
+                    else m.shape[1]
+                )
                 for m in mel
             ]
 

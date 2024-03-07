@@ -1,4 +1,5 @@
 """Get detailed info about the working environment."""
+
 import json
 import os
 import platform
