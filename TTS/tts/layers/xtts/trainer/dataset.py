@@ -186,9 +186,9 @@ class XTTSDataset(torch.utils.data.Dataset):
             "wav_lengths": torch.tensor(wav.shape[-1], dtype=torch.long),
             "filenames": audiopath,
             "conditioning": cond.unsqueeze(1),
-            "cond_lens": torch.tensor(cond_len, dtype=torch.long)
-            if cond_len is not torch.nan
-            else torch.tensor([cond_len]),
+            "cond_lens": (
+                torch.tensor(cond_len, dtype=torch.long) if cond_len is not torch.nan else torch.tensor([cond_len])
+            ),
             "cond_idxs": torch.tensor(cond_idxs) if cond_idxs is not torch.nan else torch.tensor([cond_idxs]),
         }
         return res
