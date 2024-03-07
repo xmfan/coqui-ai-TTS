@@ -4,6 +4,7 @@ import os
 import random
 from typing import Dict, List, Union
 
+import mutagen
 import numpy as np
 import torch
 import tqdm
@@ -12,8 +13,6 @@ from torch.utils.data import Dataset
 from TTS.tts.utils.data import prepare_data, prepare_stop_target, prepare_tensor
 from TTS.utils.audio import AudioProcessor
 from TTS.utils.audio.numpy_transforms import compute_energy as calculate_energy
-
-import mutagen
 
 # to prevent too many open files error as suggested here
 # https://github.com/pytorch/pytorch/issues/11201#issuecomment-421146936
@@ -47,7 +46,9 @@ def string2filename(string):
 def get_audio_size(audiopath):
     extension = audiopath.rpartition(".")[-1].lower()
     if extension not in {"mp3", "wav", "flac"}:
-        raise RuntimeError(f"The audio format {extension} is not supported, please convert the audio files to mp3, flac, or wav format!")
+        raise RuntimeError(
+            f"The audio format {extension} is not supported, please convert the audio files to mp3, flac, or wav format!"
+        )
 
     audio_info = mutagen.File(audiopath).info
     return int(audio_info.length * audio_info.sample_rate)
