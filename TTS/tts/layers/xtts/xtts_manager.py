@@ -7,7 +7,7 @@ class SpeakerManager:
 
     @property
     def name_to_id(self):
-        return self.speakers.keys()
+        return self.speakers
 
     @property
     def num_speakers(self):
