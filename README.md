@@ -156,7 +156,7 @@ If you plan to code or train models, clone 🐸TTS and install it locally.
 
 ```bash
 git clone https://github.com/coqui-ai/TTS
-pip install -e .[all,dev,notebooks]  # Select the relevant extras
+pip install -e .[all,dev,notebooks,server]  # Select the relevant extras
 ```
 
 If you are on Ubuntu (Debian), you can also run following commands for installation.

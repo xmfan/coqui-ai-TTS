@@ -66,7 +66,8 @@ with open(os.path.join(cwd, "requirements.dev.txt"), "r") as f:
     requirements_dev = f.readlines()
 with open(os.path.join(cwd, "requirements.ja.txt"), "r") as f:
     requirements_ja = f.readlines()
-requirements_all = requirements_dev + requirements_notebooks + requirements_ja
+requirements_server = ["flask>=2.0.1"]
+requirements_all = requirements_dev + requirements_notebooks + requirements_ja + requirements_server
 
 with open("README.md", "r", encoding="utf-8") as readme_file:
     README = readme_file.read()
@@ -115,6 +116,7 @@ setup(
         "all": requirements_all,
         "dev": requirements_dev,
         "notebooks": requirements_notebooks,
+        "server": requirements_server,
         "ja": requirements_ja,
     },
     python_requires=">=3.9.0, <3.12",
