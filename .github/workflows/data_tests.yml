@@ -33,13 +33,13 @@ jobs:
           sudo apt-get install -y --no-install-recommends git make gcc
           make system-deps
       - name: Install/upgrade Python setup deps
-        run: python3 -m pip install --upgrade pip setuptools wheel
+        run: python3 -m pip install --upgrade pip setuptools wheel uv
       - name: Replace scarf urls
         run: |
           sed -i 's/https:\/\/coqui.gateway.scarf.sh\//https:\/\/github.com\/coqui-ai\/TTS\/releases\/download\//g' TTS/.models.json
       - name: Install TTS
         run: |
-          python3 -m pip install .[all]
+          python3 -m uv pip install --system "TTS[all] @ ."
           python3 setup.py egg_info
       - name: Unit tests
         run: make data_tests
