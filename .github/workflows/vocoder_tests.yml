@@ -33,10 +33,10 @@ jobs:
           sudo apt-get install -y git make gcc
           make system-deps
       - name: Install/upgrade Python setup deps
-        run: python3 -m pip install --upgrade pip setuptools wheel
+        run: python3 -m pip install --upgrade pip setuptools wheel uv
       - name: Install TTS
         run: |
-          python3 -m pip install .[all]
+          python3 -m uv pip install --system "TTS[all] @ ."
           python3 setup.py egg_info
       - name: Unit tests
         run: make test_vocoder
