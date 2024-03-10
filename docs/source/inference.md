@@ -84,8 +84,10 @@ tts --model_name "voice_conversion/<language>/<dataset>/<model_name>"
  <!-- <img src="https://raw.githubusercontent.com/coqui-ai/TTS/main/images/demo_server.gif" height="56"/> -->
 ![server.gif](https://github.com/coqui-ai/TTS/raw/main/images/demo_server.gif)
 
-You can boot up a demo 🐸TTS server to run an inference with your models. Note that the server is not optimized for performance
-but gives you an easy way to interact with the models.
+You can boot up a demo 🐸TTS server to run an inference with your models (make
+sure to install the additional dependencies with `pip install TTS[server]`).
+Note that the server is not optimized for performance but gives you an easy way
+to interact with the models.
 
 The demo server provides pretty much the same interface as the CLI command.
 

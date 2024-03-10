@@ -9,7 +9,10 @@ from threading import Lock
 from typing import Union
 from urllib.parse import parse_qs
 
-from flask import Flask, render_template, render_template_string, request, send_file
+try:
+    from flask import Flask, render_template, render_template_string, request, send_file
+except ImportError as e:
+    raise ImportError("Server requires requires flask, use `pip install TTS[server]`.") from e
 
 from TTS.config import load_config
 from TTS.utils.manage import ModelManager
