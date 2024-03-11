@@ -73,12 +73,6 @@ Please use our dedicated channels for questions and discussion. Help is much mor
 | 🚀 **Released Models**            | [TTS Releases](https://github.com/coqui-ai/TTS/releases) and [Experimental Models](https://github.com/coqui-ai/TTS/wiki/Experimental-Released-Models)|
 | 📰 **Papers**                    | [TTS Papers](https://github.com/erogol/TTS-papers)|
 
-
-## 🥇 TTS Performance
-<p align="center"><img src="https://raw.githubusercontent.com/coqui-ai/TTS/main/images/TTS-performance.png" width="800" /></p>
-
-Underlined "TTS*" and "Judy*" are **internal** 🐸TTS models that are not released open-source. They are here to show the potential. Models prefixed with a dot (.Jofish .Abe and .Janice) are real human voices.
-
 ## Features
 - High-performance Deep Learning models for Text2Speech tasks.
     - Text2Spec models (Tacotron, Tacotron2, Glow-TTS, SpeedySpeech).
