@@ -1,4 +1,4 @@
 black==24.2.0
-coverage
+coverage[toml]
 nose2
 ruff==0.3.0

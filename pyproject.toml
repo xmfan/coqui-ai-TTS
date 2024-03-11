@@ -64,3 +64,7 @@ max-returns = 7
 [tool.black]
 line-length = 120
 target-version = ['py39']
+
+[tool.coverage.run]
+parallel = true
+source = ["TTS"]

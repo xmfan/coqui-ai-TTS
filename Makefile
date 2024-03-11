@@ -11,38 +11,43 @@ test_all:	## run tests and don't stop on an error.
 	./run_bash_tests.sh
 
 test:	## run tests.
-	nose2 -F -v -B --with-coverage --coverage TTS tests
+	coverage run -m nose2 -F -v -B tests
 
 test_vocoder:	## run vocoder tests.
-	nose2 -F -v -B --with-coverage --coverage TTS tests.vocoder_tests
+	coverage run -m nose2 -F -v -B tests.vocoder_tests
 
 test_tts:	## run tts tests.
-	nose2 -F -v -B --with-coverage --coverage TTS tests.tts_tests
+	coverage run -m nose2 -F -v -B tests.tts_tests
 
 test_tts2:	## run tts tests.
-	nose2 -F -v -B --with-coverage --coverage TTS tests.tts_tests2
+	coverage run -m nose2 -F -v -B tests.tts_tests2
 
 test_xtts:
-	nose2 -F -v -B --with-coverage --coverage TTS tests.xtts_tests
+	coverage run -m nose2 -F -v -B tests.xtts_tests
 
 test_aux:	## run aux tests.
-	nose2 -F -v -B --with-coverage --coverage TTS tests.aux_tests
+	coverage run -m nose2 -F -v -B tests.aux_tests
 	./run_bash_tests.sh
 
-test_zoo:	## run zoo tests.
-	nose2 -F -v -B --with-coverage --coverage TTS tests.zoo_tests
+test_zoo0:	## run zoo tests.
+	coverage run -m nose2 -F -v -B tests.zoo_tests.test_models.test_models_offset_0_step_3 \
+	tests.zoo_tests.test_models.test_voice_conversion
+test_zoo1:	## run zoo tests.
+	coverage run -m nose2 -F -v -B tests.zoo_tests.test_models.test_models_offset_1_step_3
+test_zoo2:	## run zoo tests.
+	coverage run -m nose2 -F -v -B tests.zoo_tests.test_models.test_models_offset_2_step_3
 
 inference_tests: ## run inference tests.
-	nose2 -F -v -B --with-coverage --coverage TTS tests.inference_tests
+	coverage run -m nose2 -F -v -B tests.inference_tests
 
 data_tests: ## run data tests.
-	nose2 -F -v -B --with-coverage --coverage TTS tests.data_tests
+	coverage run -m nose2 -F -v -B tests.data_tests
 
 test_text: ## run text tests.
-	nose2 -F -v -B --with-coverage --coverage TTS tests.text_tests
+	coverage run -m nose2 -F -v -B tests.text_tests
 
 test_failed:  ## only run tests failed the last time.
-	nose2 -F -v -B --with-coverage --coverage TTS tests
+	coverage run -m nose2 -F -v -B tests
 
 style:	## update code style.
 	black ${target_dirs}
