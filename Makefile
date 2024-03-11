@@ -29,8 +29,13 @@ test_aux:	## run aux tests.
 	coverage run -m nose2 -F -v -B tests.aux_tests
 	./run_bash_tests.sh
 
-test_zoo:	## run zoo tests.
-	coverage run -m nose2 -F -v -B tests.zoo_tests
+test_zoo0:	## run zoo tests.
+	coverage run -m nose2 -F -v -B tests.zoo_tests.test_models.test_models_offset_0_step_3 \
+	tests.zoo_tests.test_models.test_voice_conversion
+test_zoo1:	## run zoo tests.
+	coverage run -m nose2 -F -v -B tests.zoo_tests.test_models.test_models_offset_1_step_3
+test_zoo2:	## run zoo tests.
+	coverage run -m nose2 -F -v -B tests.zoo_tests.test_models.test_models_offset_2_step_3
 
 inference_tests: ## run inference tests.
 	coverage run -m nose2 -F -v -B tests.inference_tests
