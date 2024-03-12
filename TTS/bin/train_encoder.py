@@ -8,6 +8,7 @@ import traceback
 
 import torch
 from torch.utils.data import DataLoader
+from trainer.generic_utils import count_parameters, remove_experiment_folder
 from trainer.io import copy_model_files, save_best_model, save_checkpoint
 from trainer.torch import NoamLR
 from trainer.trainer_utils import get_optimizer
@@ -18,7 +19,6 @@ from TTS.encoder.utils.training import init_training
 from TTS.encoder.utils.visual import plot_embeddings
 from TTS.tts.datasets import load_tts_samples
 from TTS.utils.audio import AudioProcessor
-from TTS.utils.generic_utils import count_parameters, remove_experiment_folder
 from TTS.utils.samplers import PerfectBatchSampler
 from TTS.utils.training import check_update
 
