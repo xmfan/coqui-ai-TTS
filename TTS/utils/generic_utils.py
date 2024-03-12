@@ -9,26 +9,8 @@ import sys
 from pathlib import Path
 from typing import Dict
 
-import fsspec
-import torch
 
-
-def to_cuda(x: torch.Tensor) -> torch.Tensor:
-    if x is None:
-        return None
-    if torch.is_tensor(x):
-        x = x.contiguous()
-        if torch.cuda.is_available():
-            x = x.cuda(non_blocking=True)
-    return x
-
-
-def get_cuda():
-    use_cuda = torch.cuda.is_available()
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    return use_cuda, device
-
-
+# TODO: This method is duplicated in Trainer but out of date there
 def get_git_branch():
     try:
         out = subprocess.check_output(["git", "branch"]).decode("utf8")
@@ -39,47 +21,6 @@ def get_git_branch():
     except (FileNotFoundError, StopIteration) as e:
         current = "unknown"
     return current
-
-
-def get_commit_hash():
-    """https://stackoverflow.com/questions/14989858/get-the-current-git-hash-in-a-python-script"""
-    # try:
-    #     subprocess.check_output(['git', 'diff-index', '--quiet',
-    #                              'HEAD'])  # Verify client is clean
-    # except:
-    #     raise RuntimeError(
-    #         " !! Commit before training to get the commit hash.")
-    try:
-        commit = subprocess.check_output(["git", "rev-parse", "--short", "HEAD"]).decode().strip()
-    # Not copying .git folder into docker container
-    except (subprocess.CalledProcessError, FileNotFoundError):
-        commit = "0000000"
-    return commit
-
-
-def get_experiment_folder_path(root_path, model_name):
-    """Get an experiment folder path with the current date and time"""
-    date_str = datetime.datetime.now().strftime("%B-%d-%Y_%I+%M%p")
-    commit_hash = get_commit_hash()
-    output_folder = os.path.join(root_path, model_name + "-" + date_str + "-" + commit_hash)
-    return output_folder
-
-
-def remove_experiment_folder(experiment_path):
-    """Check folder if there is a checkpoint, otherwise remove the folder"""
-    fs = fsspec.get_mapper(experiment_path).fs
-    checkpoint_files = fs.glob(experiment_path + "/*.pth")
-    if not checkpoint_files:
-        if fs.exists(experiment_path):
-            fs.rm(experiment_path, recursive=True)
-            print(" ! Run is removed from {}".format(experiment_path))
-    else:
-        print(" ! Run is kept in {}".format(experiment_path))
-
-
-def count_parameters(model):
-    r"""Count number of trainable parameters in a network"""
-    return sum(p.numel() for p in model.parameters() if p.requires_grad)
 
 
 def to_camel(text):
@@ -180,44 +121,6 @@ def format_aux_input(def_args: Dict, kwargs: Dict) -> Dict:
         if name not in kwargs or kwargs[name] is None:
             kwargs[name] = def_args[name]
     return kwargs
-
-
-class KeepAverage:
-    def __init__(self):
-        self.avg_values = {}
-        self.iters = {}
-
-    def __getitem__(self, key):
-        return self.avg_values[key]
-
-    def items(self):
-        return self.avg_values.items()
-
-    def add_value(self, name, init_val=0, init_iter=0):
-        self.avg_values[name] = init_val
-        self.iters[name] = init_iter
-
-    def update_value(self, name, value, weighted_avg=False):
-        if name not in self.avg_values:
-            # add value if not exist before
-            self.add_value(name, init_val=value)
-        else:
-            # else update existing value
-            if weighted_avg:
-                self.avg_values[name] = 0.99 * self.avg_values[name] + 0.01 * value
-                self.iters[name] += 1
-            else:
-                self.avg_values[name] = self.avg_values[name] * self.iters[name] + value
-                self.iters[name] += 1
-                self.avg_values[name] /= self.iters[name]
-
-    def add_values(self, name_dict):
-        for key, value in name_dict.items():
-            self.add_value(key, init_val=value)
-
-    def update_values(self, value_dict):
-        for key, value in value_dict.items():
-            self.update_value(key, value)
 
 
 def get_timestamp():

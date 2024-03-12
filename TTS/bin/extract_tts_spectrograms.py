@@ -8,6 +8,7 @@ import numpy as np
 import torch
 from torch.utils.data import DataLoader
 from tqdm import tqdm
+from trainer.generic_utils import count_parameters
 
 from TTS.config import load_config
 from TTS.tts.datasets import TTSDataset, load_tts_samples
@@ -16,7 +17,6 @@ from TTS.tts.utils.speakers import SpeakerManager
 from TTS.tts.utils.text.tokenizer import TTSTokenizer
 from TTS.utils.audio import AudioProcessor
 from TTS.utils.audio.numpy_transforms import quantize
-from TTS.utils.generic_utils import count_parameters
 
 use_cuda = torch.cuda.is_available()
 

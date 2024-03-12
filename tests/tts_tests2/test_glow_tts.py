@@ -4,6 +4,7 @@ import unittest
 
 import torch
 from torch import optim
+from trainer.generic_utils import count_parameters
 from trainer.logging.tensorboard_logger import TensorboardLogger
 
 from tests import get_tests_data_path, get_tests_input_path, get_tests_output_path
@@ -24,11 +25,6 @@ c = GlowTTSConfig()
 ap = AudioProcessor(**c.audio)
 WAV_FILE = os.path.join(get_tests_input_path(), "example_1.wav")
 BATCH_SIZE = 3
-
-
-def count_parameters(model):
-    r"""Count number of trainable parameters in a network"""
-    return sum(p.numel() for p in model.parameters() if p.requires_grad)
 
 
 class TestGlowTTS(unittest.TestCase):
