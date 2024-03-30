@@ -167,7 +167,7 @@ def _get_formatter_by_name(name):
 
 
 def find_unique_chars(data_samples, verbose=True):
-    texts = "".join(item[0] for item in data_samples)
+    texts = "".join(item["text"] for item in data_samples)
     chars = set(texts)
     lower_chars = filter(lambda c: c.islower(), chars)
     chars_force_lower = [c.lower() for c in chars]

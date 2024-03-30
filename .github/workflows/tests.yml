@@ -30,6 +30,7 @@ jobs:
       - name: Install Espeak
         if: contains(fromJSON('["inference_tests", "test_text", "test_tts", "test_tts2", "test_xtts", "test_zoo0", "test_zoo1", "test_zoo2"]'), matrix.subset)
         run: |
+          sudo apt-get update
           sudo apt-get install espeak espeak-ng
       - name: Install dependencies
         run: |
