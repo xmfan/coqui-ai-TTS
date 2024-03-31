@@ -97,21 +97,36 @@ class ModelManager(object):
             models_name_list.extend(model_list)
         return models_name_list
 
+    def log_model_details(self, model_type, lang, dataset, model):
+        logger.info("Model type: %s", model_type)
+        logger.info("Language supported: %s", lang)
+        logger.info("Dataset used: %s", dataset)
+        logger.info("Model name: %s", model)
+        if "description" in self.models_dict[model_type][lang][dataset][model]:
+            logger.info("Description: %s", self.models_dict[model_type][lang][dataset][model]["description"])
+        else:
+            logger.info("Description: coming soon")
+        if "default_vocoder" in self.models_dict[model_type][lang][dataset][model]:
+            logger.info(
+                "Default vocoder: %s",
+                self.models_dict[model_type][lang][dataset][model]["default_vocoder"],
+            )
+
     def model_info_by_idx(self, model_query):
-        """Print the description of the model from .models.json file using model_idx
+        """Print the description of the model from .models.json file using model_query_idx
 
         Args:
-            model_query (str): <model_tye>/<model_idx>
+            model_query (str): <model_tye>/<model_query_idx>
         """
         model_name_list = []
         model_type, model_query_idx = model_query.split("/")
         try:
             model_query_idx = int(model_query_idx)
             if model_query_idx <= 0:
-                print("> model_query_idx should be a positive integer!")
+                logger.error("model_query_idx [%d] should be a positive integer!", model_query_idx)
                 return
-        except:
-            print("> model_query_idx should be an integer!")
+        except (TypeError, ValueError):
+            logger.error("model_query_idx [%s] should be an integer!", model_query_idx)
             return
         model_count = 0
         if model_type in self.models_dict:
@@ -121,22 +136,13 @@ class ModelManager(object):
                         model_name_list.append(f"{model_type}/{lang}/{dataset}/{model}")
                         model_count += 1
         else:
-            print(f"> model_type {model_type} does not exist in the list.")
+            logger.error("Model type %s does not exist in the list.", model_type)
             return
         if model_query_idx > model_count:
-            print(f"model query idx exceeds the number of available models [{model_count}] ")
+            logger.error("model_query_idx exceeds the number of available models [%d]", model_count)
         else:
             model_type, lang, dataset, model = model_name_list[model_query_idx - 1].split("/")
-            print(f"> model type : {model_type}")
-            print(f"> language supported : {lang}")
-            print(f"> dataset used : {dataset}")
-            print(f"> model name : {model}")
-            if "description" in self.models_dict[model_type][lang][dataset][model]:
-                print(f"> description : {self.models_dict[model_type][lang][dataset][model]['description']}")
-            else:
-                print("> description : coming soon")
-            if "default_vocoder" in self.models_dict[model_type][lang][dataset][model]:
-                print(f"> default_vocoder : {self.models_dict[model_type][lang][dataset][model]['default_vocoder']}")
+            self.log_model_details(model_type, lang, dataset, model)
 
     def model_info_by_full_name(self, model_query_name):
         """Print the description of the model from .models.json file using model_full_name
@@ -145,32 +151,19 @@ class ModelManager(object):
             model_query_name (str): Format is <model_type>/<language>/<dataset>/<model_name>
         """
         model_type, lang, dataset, model = model_query_name.split("/")
-        if model_type in self.models_dict:
-            if lang in self.models_dict[model_type]:
-                if dataset in self.models_dict[model_type][lang]:
-                    if model in self.models_dict[model_type][lang][dataset]:
-                        print(f"> model type : {model_type}")
-                        print(f"> language supported : {lang}")
-                        print(f"> dataset used : {dataset}")
-                        print(f"> model name : {model}")
-                        if "description" in self.models_dict[model_type][lang][dataset][model]:
-                            print(
-                                f"> description : {self.models_dict[model_type][lang][dataset][model]['description']}"
-                            )
-                        else:
-                            print("> description : coming soon")
-                        if "default_vocoder" in self.models_dict[model_type][lang][dataset][model]:
-                            print(
-                                f"> default_vocoder : {self.models_dict[model_type][lang][dataset][model]['default_vocoder']}"
-                            )
-                    else:
-                        print(f"> model {model} does not exist for {model_type}/{lang}/{dataset}.")
-                else:
-                    print(f"> dataset {dataset} does not exist for {model_type}/{lang}.")
-            else:
-                print(f"> lang {lang} does not exist for {model_type}.")
-        else:
-            print(f"> model_type {model_type} does not exist in the list.")
+        if model_type not in self.models_dict:
+            logger.error("Model type %s does not exist in the list.", model_type)
+            return
+        if lang not in self.models_dict[model_type]:
+            logger.error("Language %s does not exist for %s.", lang, model_type)
+            return
+        if dataset not in self.models_dict[model_type][lang]:
+            logger.error("Dataset %s does not exist for %s/%s.", dataset, model_type, lang)
+            return
+        if model not in self.models_dict[model_type][lang][dataset]:
+            logger.error("Model %s does not exist for %s/%s/%s.", model, model_type, lang, dataset)
+            return
+        self.log_model_details(model_type, lang, dataset, model)
 
     def list_tts_models(self):
         """Print all `TTS` models and return a list of model names
