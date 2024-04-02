@@ -129,6 +129,20 @@ def get_timestamp() -> str:
     return datetime.now().strftime("%y%m%d-%H%M%S")
 
 
+class ConsoleFormatter(logging.Formatter):
+    """Custom formatter that prints logging.INFO messages without the level name.
+
+    Source: https://stackoverflow.com/a/62488520
+    """
+
+    def format(self, record):
+        if record.levelno == logging.INFO:
+            self._style._fmt = "%(message)s"
+        else:
+            self._style._fmt = "%(levelname)s: %(message)s"
+        return super().format(record)
+
+
 def setup_logger(
     logger_name: str,
     level: int = logging.INFO,
