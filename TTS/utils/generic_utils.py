@@ -7,7 +7,7 @@ import re
 import subprocess
 import sys
 from pathlib import Path
-from typing import Dict
+from typing import Dict, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -125,16 +125,29 @@ def format_aux_input(def_args: Dict, kwargs: Dict) -> Dict:
     return kwargs
 
 
-def get_timestamp():
+def get_timestamp() -> str:
     return datetime.now().strftime("%y%m%d-%H%M%S")
 
 
-def setup_logger(logger_name, root, phase, level=logging.INFO, screen=False, tofile=False):
+def setup_logger(
+    logger_name: str,
+    level: int = logging.INFO,
+    *,
+    formatter: Optional[logging.Formatter] = None,
+    screen: bool = False,
+    tofile: bool = False,
+    log_dir: str = "logs",
+    log_name: str = "log",
+) -> None:
     lg = logging.getLogger(logger_name)
-    formatter = logging.Formatter("%(asctime)s.%(msecs)03d - %(levelname)s: %(message)s", datefmt="%y-%m-%d %H:%M:%S")
+    if formatter is None:
+        formatter = logging.Formatter(
+            "%(asctime)s.%(msecs)03d - %(levelname)-8s - %(name)s: %(message)s", datefmt="%y-%m-%d %H:%M:%S"
+        )
     lg.setLevel(level)
     if tofile:
-        log_file = os.path.join(root, phase + "_{}.log".format(get_timestamp()))
+        Path(log_dir).mkdir(exist_ok=True, parents=True)
+        log_file = Path(log_dir) / f"{log_name}_{get_timestamp()}.log"
         fh = logging.FileHandler(log_file, mode="w")
         fh.setFormatter(formatter)
         lg.addHandler(fh)
