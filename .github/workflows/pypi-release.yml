@@ -10,7 +10,7 @@ jobs:
   build-sdist:
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Verify tag matches version
         run: |
           set -ex
@@ -19,7 +19,7 @@ jobs:
           if [[ "v$version" != "$tag" ]]; then
             exit 1
           fi
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v5
         with:
           python-version: 3.9
       - run: |
@@ -28,7 +28,7 @@ jobs:
           python -m build
       - run: |
           pip install dist/*.tar.gz
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
           name: sdist
           path: dist/*.tar.gz
@@ -38,8 +38,8 @@ jobs:
       matrix:
         python-version: ["3.9", "3.10", "3.11"]
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install pip requirements
@@ -50,45 +50,38 @@ jobs:
         run: |
           python setup.py bdist_wheel --plat-name=manylinux1_x86_64
           python -m pip install dist/*-manylinux*.whl
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
           name: wheel-${{ matrix.python-version }}
           path: dist/*-manylinux*.whl
   publish-artifacts:
     runs-on: ubuntu-20.04
     needs: [build-sdist, build-wheels]
+    environment:
+      name: release
+      url: https://pypi.org/p/coqui-tts
+    permissions:
+      id-token: write
     steps:
       - run: |
           mkdir dist
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v4
         with:
           name: "sdist"
           path: "dist/"
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v4
         with:
           name: "wheel-3.9"
           path: "dist/"
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v4
         with:
           name: "wheel-3.10"
           path: "dist/"
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v4
         with:
           name: "wheel-3.11"
           path: "dist/"
       - run: |
           ls -lh dist/
-      - name: Setup PyPI config
-        run: |
-          cat << EOF > ~/.pypirc
-          [pypi]
-          username=__token__
-          password=${{ secrets.PYPI_TOKEN }}
-          EOF
-      - uses: actions/setup-python@v2
-        with:
-          python-version: 3.9
-      - run: |
-          python -m pip install twine
-      - run: |
-          twine upload --repository pypi dist/*
+      - name: Publish package distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
