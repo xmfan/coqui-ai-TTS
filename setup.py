@@ -79,12 +79,14 @@ exts = [
     )
 ]
 setup(
-    name="TTS",
+    name="coqui-tts",
     version=version,
-    url="https://github.com/coqui-ai/TTS",
+    url="https://github.com/eginhard/coqui-tts",
     author="Eren Gölge",
     author_email="egolge@coqui.ai",
-    description="Deep learning for Text to Speech by Coqui.",
+    maintainer="Enno Hermann",
+    maintainer_email="enno.hermann@gmail.com",
+    description="Deep learning for Text to Speech.",
     long_description=README,
     long_description_content_type="text/markdown",
     license="MPL-2.0",
@@ -101,10 +103,10 @@ setup(
         ]
     },
     project_urls={
-        "Documentation": "https://github.com/coqui-ai/TTS/wiki",
-        "Tracker": "https://github.com/coqui-ai/TTS/issues",
-        "Repository": "https://github.com/coqui-ai/TTS",
-        "Discussions": "https://github.com/coqui-ai/TTS/discussions",
+        "Documentation": "https://coqui-tts.readthedocs.io",
+        "Tracker": "https://github.com/eginhard/coqui-tts/issues",
+        "Repository": "https://github.com/eginhard/coqui-tts",
+        "Discussions": "https://github.com/eginhard/coqui-tts/discussions",
     },
     cmdclass={
         "build_py": build_py,
