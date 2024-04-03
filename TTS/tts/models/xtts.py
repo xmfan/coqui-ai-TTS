@@ -695,12 +695,12 @@ class Xtts(BaseTTS):
 
     def forward(self):
         raise NotImplementedError(
-            "XTTS has a dedicated trainer, please check the XTTS docs: https://tts.readthedocs.io/en/dev/models/xtts.html#training"
+            "XTTS has a dedicated trainer, please check the XTTS docs: https://coqui-tts.readthedocs.io/en/dev/models/xtts.html#training"
         )
 
     def eval_step(self):
         raise NotImplementedError(
-            "XTTS has a dedicated trainer, please check the XTTS docs: https://tts.readthedocs.io/en/dev/models/xtts.html#training"
+            "XTTS has a dedicated trainer, please check the XTTS docs: https://coqui-tts.readthedocs.io/en/dev/models/xtts.html#training"
         )
 
     @staticmethod
@@ -789,5 +789,5 @@ class Xtts(BaseTTS):
 
     def train_step(self):
         raise NotImplementedError(
-            "XTTS has a dedicated trainer, please check the XTTS docs: https://tts.readthedocs.io/en/dev/models/xtts.html#training"
+            "XTTS has a dedicated trainer, please check the XTTS docs: https://coqui-tts.readthedocs.io/en/dev/models/xtts.html#training"
         )

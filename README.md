@@ -26,7 +26,7 @@ ______________________________________________________________________
 [![Discord](https://img.shields.io/discord/1037326658807533628?color=%239B59B6&label=chat%20on%20discord)](https://discord.gg/5eXr5seRrv)
 [![License](<https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg>)](https://opensource.org/licenses/MPL-2.0)
 [![PyPI version](https://badge.fury.io/py/TTS.svg)](https://badge.fury.io/py/TTS)
-[![Covenant](https://camo.githubusercontent.com/7d620efaa3eac1c5b060ece5d6aacfcc8b81a74a04d05cd0398689c01c4463bb/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f436f6e7472696275746f72253230436f76656e616e742d76322e3025323061646f707465642d6666363962342e737667)](https://github.com/eginhard/coqui-tts/blob/master/CODE_OF_CONDUCT.md)
+[![Covenant](https://camo.githubusercontent.com/7d620efaa3eac1c5b060ece5d6aacfcc8b81a74a04d05cd0398689c01c4463bb/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f436f6e7472696275746f72253230436f76656e616e742d76322e3025323061646f707465642d6666363962342e737667)](https://github.com/eginhard/coqui-tts/blob/main/CODE_OF_CONDUCT.md)
 [![Downloads](https://pepy.tech/badge/tts)](https://pepy.tech/project/tts)
 [![DOI](https://zenodo.org/badge/265612440.svg)](https://zenodo.org/badge/latestdoi/265612440)
 
@@ -62,7 +62,7 @@ Please use our dedicated channels for questions and discussion. Help is much mor
 | 💾 **Installation**               | [TTS/README.md](https://github.com/eginhard/coqui-tts/tree/dev#installation)|
 | 👩‍💻 **Contributing**               | [CONTRIBUTING.md](https://github.com/eginhard/coqui-tts/blob/main/CONTRIBUTING.md)|
 | 📌 **Road Map**                   | [Main Development Plans](https://github.com/coqui-ai/TTS/issues/378)
-| 🚀 **Released Models**            | [TTS Releases](https://github.com/coqui-ai/TTS/releases) and [Experimental Models](https://github.com/coqui-ai/TTS/wiki/Experimental-Released-Models)|
+| 🚀 **Released Models**            | [Standard models](https://github.com/eginhard/coqui-tts/blob/dev/TTS/.models.json) and [Fairseq models in ~1100 languages](https://github.com/eginhard/coqui-tts#example-text-to-speech-using-fairseq-models-in-1100-languages-)|
 | 📰 **Papers**                    | [TTS Papers](https://github.com/erogol/TTS-papers)|
 
 ## Features
@@ -135,7 +135,7 @@ You can also help us implement more models.
 If you are only interested in [synthesizing speech](https://coqui-tts.readthedocs.io/en/latest/inference.html) with the released 🐸TTS models, installing from PyPI is the easiest option.
 
 ```bash
-pip install TTS
+pip install coqui-tts
 ```
 
 If you plan to code or train models, clone 🐸TTS and install it locally.
@@ -152,7 +152,9 @@ $ make system-deps  # intended to be used on Ubuntu (Debian). Let us know if you
 $ make install
 ```
 
-If you are on Windows, 👑@GuyPaddock wrote installation instructions [here](https://stackoverflow.com/questions/66726331/how-can-i-run-mozilla-tts-coqui-tts-training-with-cuda-on-a-windows-system).
+If you are on Windows, 👑@GuyPaddock wrote installation instructions
+[here](https://stackoverflow.com/questions/66726331/how-can-i-run-mozilla-tts-coqui-tts-training-with-cuda-on-a-windows-system)
+(note that these are out of date, e.g. you need to have at least Python 3.9).
 
 
 ## Docker Image

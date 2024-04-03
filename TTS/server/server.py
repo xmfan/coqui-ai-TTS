@@ -12,7 +12,7 @@ from urllib.parse import parse_qs
 try:
     from flask import Flask, render_template, render_template_string, request, send_file
 except ImportError as e:
-    raise ImportError("Server requires requires flask, use `pip install TTS[server]`.") from e
+    raise ImportError("Server requires requires flask, use `pip install coqui-tts[server]`.") from e
 
 from TTS.config import load_config
 from TTS.utils.manage import ModelManager

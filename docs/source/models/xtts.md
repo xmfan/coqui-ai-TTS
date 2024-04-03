@@ -3,9 +3,6 @@
 ⓍTTS has important model changes that make cross-language voice cloning and multi-lingual speech generation super easy.
 There is no need for an excessive amount of training data that spans countless hours.
 
-This is the same model that powers [Coqui Studio](https://coqui.ai/), and [Coqui API](https://docs.coqui.ai/docs), however we apply
-a few tricks to make it faster and support streaming inference.
-
 ### Features
 - Voice cloning.
 - Cross-language voice cloning.
@@ -32,21 +29,20 @@ Stay tuned as we continue to add support for more languages. If you have any lan
 This model is licensed under [Coqui Public Model License](https://coqui.ai/cpml).
 
 ### Contact
-Come and join in our 🐸Community. We're active on [Discord](https://discord.gg/fBC58unbKE) and [Twitter](https://twitter.com/coqui_ai).
-You can also mail us at info@coqui.ai.
+Come and join in our 🐸Community. We're active on [Discord](https://discord.gg/fBC58unbKE) and [Github](https://github.com/eginhard/coqui-tts/discussions).
 
 ### Inference
 
 #### 🐸TTS Command line
 
-You can check all supported languages with the following command: 
+You can check all supported languages with the following command:
 
 ```console
  tts --model_name tts_models/multilingual/multi-dataset/xtts_v2 \
     --list_language_idx
 ```
 
-You can check all Coqui available speakers with the following command: 
+You can check all Coqui available speakers with the following command:
 
 ```console
  tts --model_name tts_models/multilingual/multi-dataset/xtts_v2 \
@@ -280,7 +276,7 @@ To make the `XTTS_v2` fine-tuning more accessible for users that do not have goo
 
 The Colab Notebook is available [here](https://colab.research.google.com/drive/1GiI4_X724M8q2W-zZ-jXo7cWTV7RfaH-?usp=sharing).
 
-To learn how to use this Colab Notebook please check the [XTTS fine-tuning video]().
+To learn how to use this Colab Notebook please check the [XTTS fine-tuning video](https://www.youtube.com/watch?v=8tpDiiouGxc).
 
 If you are not able to acess the video you need to follow the steps:
 
@@ -294,7 +290,7 @@ If you are not able to acess the video you need to follow the steps:
 ##### Run demo locally
 
 To run the demo locally you need to do the following steps:
-1. Install   🐸 TTS following the instructions available [here](https://tts.readthedocs.io/en/dev/installation.html#installation).
+1. Install   🐸 TTS following the instructions available [here](https://coqui-tts.readthedocs.io/en/latest/installation.html).
 2. Install the Gradio demo requirements with the command `python3 -m pip install -r TTS/demos/xtts_ft_demo/requirements.txt`
 3. Run the Gradio demo using the command `python3 TTS/demos/xtts_ft_demo/xtts_demo.py`
 4. Follow the steps presented in the [tutorial video](https://www.youtube.com/watch?v=8tpDiiouGxc&feature=youtu.be) to be able to fine-tune and test the fine-tuned model.
