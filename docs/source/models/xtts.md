@@ -29,7 +29,7 @@ Stay tuned as we continue to add support for more languages. If you have any lan
 This model is licensed under [Coqui Public Model License](https://coqui.ai/cpml).
 
 ### Contact
-Come and join in our 🐸Community. We're active on [Discord](https://discord.gg/fBC58unbKE) and [Github](https://github.com/eginhard/coqui-tts/discussions).
+Come and join in our 🐸Community. We're active on [Discord](https://discord.gg/fBC58unbKE) and [Github](https://github.com/idiap/coqui-ai-TTS/discussions).
 
 ### Inference
 
