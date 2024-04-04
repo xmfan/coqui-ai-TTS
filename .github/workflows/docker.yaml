@@ -29,11 +29,11 @@ jobs:
         id: compute-tag
         run: |
           set -ex
-          base="ghcr.io/coqui-ai/tts"
+          base="ghcr.io/idiap/coqui-tts"
           tags="" # PR build
 
           if [[ ${{ matrix.base }} = "python:3.10.8-slim" ]]; then
-            base="ghcr.io/coqui-ai/tts-cpu"
+            base="ghcr.io/idiap/coqui-tts-cpu"
           fi
 
           if [[ "${{ startsWith(github.ref, 'refs/heads/') }}" = "true" ]]; then
