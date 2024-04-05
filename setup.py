@@ -81,7 +81,7 @@ exts = [
 setup(
     name="coqui-tts",
     version=version,
-    url="https://github.com/eginhard/coqui-tts",
+    url="https://github.com/idiap/coqui-ai-TTS",
     author="Eren Gölge",
     author_email="egolge@coqui.ai",
     maintainer="Enno Hermann",
@@ -104,9 +104,9 @@ setup(
     },
     project_urls={
         "Documentation": "https://coqui-tts.readthedocs.io",
-        "Tracker": "https://github.com/eginhard/coqui-tts/issues",
-        "Repository": "https://github.com/eginhard/coqui-tts",
-        "Discussions": "https://github.com/eginhard/coqui-tts/discussions",
+        "Tracker": "https://github.com/idiap/coqui-ai-TTS/issues",
+        "Repository": "https://github.com/idiap/coqui-ai-TTS",
+        "Discussions": "https://github.com/idiap/coqui-ai-TTS/discussions",
     },
     cmdclass={
         "build_py": build_py,

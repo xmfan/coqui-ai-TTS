@@ -1,6 +1,6 @@
 # :frog: TTS demo server
 Before you use the server, make sure you
-[install](https://github.com/eginhard/coqui-tts/tree/dev#install-tts)) :frog: TTS
+[install](https://github.com/idiap/coqui-ai-TTS/tree/dev#install-tts)) :frog: TTS
 properly and install the additional dependencies with `pip install
 coqui-tts[server]`. Then, you can follow the steps below.
 

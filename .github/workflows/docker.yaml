@@ -10,7 +10,7 @@ on:
 jobs:
   docker-build:
     name: "Build and push Docker image"
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         arch: ["amd64"]
@@ -18,7 +18,7 @@ jobs:
         - "nvidia/cuda:11.8.0-base-ubuntu22.04" # GPU enabled
         - "python:3.10.8-slim" # CPU only
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Log in to the Container registry
         uses: docker/login-action@v1
         with:
@@ -29,11 +29,11 @@ jobs:
         id: compute-tag
         run: |
           set -ex
-          base="ghcr.io/coqui-ai/tts"
+          base="ghcr.io/idiap/coqui-tts"
           tags="" # PR build
 
           if [[ ${{ matrix.base }} = "python:3.10.8-slim" ]]; then
-            base="ghcr.io/coqui-ai/tts-cpu"
+            base="ghcr.io/idiap/coqui-tts-cpu"
           fi
 
           if [[ "${{ startsWith(github.ref, 'refs/heads/') }}" = "true" ]]; then

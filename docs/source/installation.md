@@ -15,7 +15,7 @@ pip install coqui-tts  # from PyPI
 Or install from Github:
 
 ```bash
-pip install git+https://github.com/eginhard/coqui-tts  # from Github
+pip install git+https://github.com/idiap/coqui-ai-TTS  # from Github
 ```
 
 ## Installing From Source
@@ -23,8 +23,8 @@ pip install git+https://github.com/eginhard/coqui-tts  # from Github
 This is recommended for development and more control over 🐸TTS.
 
 ```bash
-git clone https://github.com/eginhard/coqui-tts
-cd coqui-tts
+git clone https://github.com/idiap/coqui-ai-TTS
+cd coqui-ai-TTS
 make system-deps  # only on Linux systems.
 make install
 ```

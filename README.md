@@ -1,7 +1,8 @@
 
-## 🐸Coqui.ai News
+## 🐸Coqui TTS News
+- 📣 Fork of the [original, unmaintained repository](https://github.com/coqui-ai/TTS). New PyPI package: [coqui-tts](https://pypi.org/project/coqui-tts)
 - 📣 ⓍTTSv2 is here with 16 languages and better performance across the board.
-- 📣 ⓍTTS fine-tuning code is out. Check the [example recipes](https://github.com/eginhard/coqui-tts/tree/dev/recipes/ljspeech).
+- 📣 ⓍTTS fine-tuning code is out. Check the [example recipes](https://github.com/idiap/coqui-ai-TTS/tree/dev/recipes/ljspeech).
 - 📣 ⓍTTS can now stream with <200ms latency.
 - 📣 ⓍTTS, our production TTS model that can speak 13 languages, is released [Blog Post](https://coqui.ai/blog/tts/open_xtts), [Demo](https://huggingface.co/spaces/coqui/xtts), [Docs](https://coqui-tts.readthedocs.io/en/dev/models/xtts.html)
 - 📣 [🐶Bark](https://github.com/suno-ai/bark) is now available for inference with unconstrained voice cloning. [Docs](https://coqui-tts.readthedocs.io/en/dev/models/bark.html)
@@ -11,7 +12,7 @@
 <div align="center">
 <img src="https://static.scarf.sh/a.png?x-pxid=cf317fe7-2188-4721-bc01-124bb5d5dbb2" />
 
-## <img src="https://raw.githubusercontent.com/eginhard/coqui-tts/main/images/coqui-log-green-TTS.png" height="56"/>
+## <img src="https://raw.githubusercontent.com/idiap/coqui-ai-TTS/main/images/coqui-log-green-TTS.png" height="56"/>
 
 
 **🐸TTS is a library for advanced Text-to-Speech generation.**
@@ -26,13 +27,13 @@ ______________________________________________________________________
 [![Discord](https://img.shields.io/discord/1037326658807533628?color=%239B59B6&label=chat%20on%20discord)](https://discord.gg/5eXr5seRrv)
 [![License](<https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg>)](https://opensource.org/licenses/MPL-2.0)
 [![PyPI version](https://badge.fury.io/py/TTS.svg)](https://badge.fury.io/py/TTS)
-[![Covenant](https://camo.githubusercontent.com/7d620efaa3eac1c5b060ece5d6aacfcc8b81a74a04d05cd0398689c01c4463bb/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f436f6e7472696275746f72253230436f76656e616e742d76322e3025323061646f707465642d6666363962342e737667)](https://github.com/eginhard/coqui-tts/blob/main/CODE_OF_CONDUCT.md)
+[![Covenant](https://camo.githubusercontent.com/7d620efaa3eac1c5b060ece5d6aacfcc8b81a74a04d05cd0398689c01c4463bb/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f436f6e7472696275746f72253230436f76656e616e742d76322e3025323061646f707465642d6666363962342e737667)](https://github.com/idiap/coqui-ai-TTS/blob/main/CODE_OF_CONDUCT.md)
 [![Downloads](https://pepy.tech/badge/tts)](https://pepy.tech/project/tts)
 [![DOI](https://zenodo.org/badge/265612440.svg)](https://zenodo.org/badge/latestdoi/265612440)
 
-![GithubActions](https://github.com/eginhard/coqui-tts/actions/workflows/tests.yml/badge.svg)
-![GithubActions](https://github.com/eginhard/coqui-tts/actions/workflows/docker.yaml/badge.svg)
-![GithubActions](https://github.com/eginhard/coqui-tts/actions/workflows/style_check.yml/badge.svg)
+![GithubActions](https://github.com/idiap/coqui-ai-TTS/actions/workflows/tests.yml/badge.svg)
+![GithubActions](https://github.com/idiap/coqui-ai-TTS/actions/workflows/docker.yaml/badge.svg)
+![GithubActions](https://github.com/idiap/coqui-ai-TTS/actions/workflows/style_check.yml/badge.svg)
 [![Docs](<https://readthedocs.org/projects/coqui-tts/badge/?version=latest&style=plastic>)](https://coqui-tts.readthedocs.io/en/latest/)
 
 </div>
@@ -49,8 +50,8 @@ Please use our dedicated channels for questions and discussion. Help is much mor
 | 👩‍💻 **Usage Questions**          | [GitHub Discussions]                    |
 | 🗯 **General Discussion**       | [GitHub Discussions] or [Discord]   |
 
-[github issue tracker]: https://github.com/eginhard/coqui-tts/issues
-[github discussions]: https://github.com/eginhard/coqui-tts/discussions
+[github issue tracker]: https://github.com/idiap/coqui-ai-TTS/issues
+[github discussions]: https://github.com/idiap/coqui-ai-TTS/discussions
 [discord]: https://discord.gg/5eXr5seRrv
 [Tutorials and Examples]: https://github.com/coqui-ai/TTS/wiki/TTS-Notebooks-and-Tutorials
 
@@ -59,10 +60,10 @@ Please use our dedicated channels for questions and discussion. Help is much mor
 | Type                            | Links                               |
 | ------------------------------- | --------------------------------------- |
 | 💼 **Documentation**              | [ReadTheDocs](https://coqui-tts.readthedocs.io/en/latest/)
-| 💾 **Installation**               | [TTS/README.md](https://github.com/eginhard/coqui-tts/tree/dev#installation)|
-| 👩‍💻 **Contributing**               | [CONTRIBUTING.md](https://github.com/eginhard/coqui-tts/blob/main/CONTRIBUTING.md)|
+| 💾 **Installation**               | [TTS/README.md](https://github.com/idiap/coqui-ai-TTS/tree/dev#installation)|
+| 👩‍💻 **Contributing**               | [CONTRIBUTING.md](https://github.com/idiap/coqui-ai-TTS/blob/main/CONTRIBUTING.md)|
 | 📌 **Road Map**                   | [Main Development Plans](https://github.com/coqui-ai/TTS/issues/378)
-| 🚀 **Released Models**            | [Standard models](https://github.com/eginhard/coqui-tts/blob/dev/TTS/.models.json) and [Fairseq models in ~1100 languages](https://github.com/eginhard/coqui-tts#example-text-to-speech-using-fairseq-models-in-1100-languages-)|
+| 🚀 **Released Models**            | [Standard models](https://github.com/idiap/coqui-ai-TTS/blob/dev/TTS/.models.json) and [Fairseq models in ~1100 languages](https://github.com/idiap/coqui-ai-TTS#example-text-to-speech-using-fairseq-models-in-1100-languages-)|
 | 📰 **Papers**                    | [TTS Papers](https://github.com/erogol/TTS-papers)|
 
 ## Features
@@ -130,7 +131,7 @@ Please use our dedicated channels for questions and discussion. Help is much mor
 You can also help us implement more models.
 
 ## Installation
-🐸TTS is tested on Ubuntu 18.04 with **python >= 3.9, < 3.12.**.
+🐸TTS is tested on Ubuntu 22.04 with **python >= 3.9, < 3.12.**.
 
 If you are only interested in [synthesizing speech](https://coqui-tts.readthedocs.io/en/latest/inference.html) with the released 🐸TTS models, installing from PyPI is the easiest option.
 
@@ -141,7 +142,7 @@ pip install coqui-tts
 If you plan to code or train models, clone 🐸TTS and install it locally.
 
 ```bash
-git clone https://github.com/eginhard/coqui-tts
+git clone https://github.com/idiap/coqui-ai-TTS
 pip install -e .[all,dev,notebooks,server]  # Select the relevant extras
 ```
 
