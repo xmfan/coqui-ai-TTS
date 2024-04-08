@@ -14,16 +14,31 @@ There is no need for an excessive amount of training data that spans countless h
 ### Updates with v2
 - Improved voice cloning.
 - Voices can be cloned with a single audio file or multiple audio files, without any effect on the runtime.
-- 2 new languages: Hungarian and Korean.
 - Across the board quality improvements.
 
 ### Code
 Current implementation only supports inference and GPT encoder training.
 
 ### Languages
-As of now, XTTS-v2 supports 16 languages: English (en), Spanish (es), French (fr), German (de), Italian (it), Portuguese (pt), Polish (pl), Turkish (tr), Russian (ru), Dutch (nl), Czech (cs), Arabic (ar), Chinese (zh-cn), Japanese (ja), Hungarian (hu) and Korean (ko).
+XTTS-v2 supports 17 languages:
 
-Stay tuned as we continue to add support for more languages. If you have any language requests, please feel free to reach out.
+- Arabic (ar)
+- Chinese (zh-cn)
+- Czech (cs)
+- Dutch (nl)
+- English (en)
+- French (fr)
+- German (de)
+- Hindi (hi)
+- Hungarian (hu)
+- Italian (it)
+- Japanese (ja)
+- Korean (ko)
+- Polish (pl)
+- Portuguese (pt)
+- Russian (ru)
+- Spanish (es)
+- Turkish (tr)
 
 ### License
 This model is licensed under [Coqui Public Model License](https://coqui.ai/cpml).

@@ -11,6 +11,7 @@ from num2words import num2words
 from spacy.lang.ar import Arabic
 from spacy.lang.en import English
 from spacy.lang.es import Spanish
+from spacy.lang.hi import Hindi
 from spacy.lang.ja import Japanese
 from spacy.lang.zh import Chinese
 from tokenizers import Tokenizer
@@ -19,6 +20,7 @@ from TTS.tts.layers.xtts.zh_num2words import TextNorm as zh_num2words
 
 
 def get_spacy_lang(lang):
+    """Return Spacy language used for sentence splitting."""
     if lang == "zh":
         return Chinese()
     elif lang == "ja":
@@ -27,8 +29,10 @@ def get_spacy_lang(lang):
         return Arabic()
     elif lang == "es":
         return Spanish()
+    elif lang == "hi":
+        return Hindi()
     else:
-        # For most languages, Enlish does the job
+        # For most languages, English does the job
         return English()
 
 
@@ -611,6 +615,7 @@ class VoiceBpeTokenizer:
             "ja": 71,
             "hu": 224,
             "ko": 95,
+            "hi": 150,
         }
 
     @cached_property
