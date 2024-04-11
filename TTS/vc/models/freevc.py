@@ -1,3 +1,4 @@
+import logging
 from typing import Dict, List, Optional, Tuple, Union
 
 import librosa
@@ -21,6 +22,8 @@ from TTS.vc.modules.freevc.commons import get_padding, init_weights
 from TTS.vc.modules.freevc.mel_processing import mel_spectrogram_torch
 from TTS.vc.modules.freevc.speaker_encoder.speaker_encoder import SpeakerEncoder as SpeakerEncoderEx
 from TTS.vc.modules.freevc.wavlm import get_wavlm
+
+logger = logging.getLogger(__name__)
 
 
 class ResidualCouplingBlock(nn.Module):
@@ -152,7 +155,7 @@ class Generator(torch.nn.Module):
         return x
 
     def remove_weight_norm(self):
-        print("Removing weight norm...")
+        logger.info("Removing weight norm...")
         for l in self.ups:
             remove_parametrizations(l, "weight")
         for l in self.resblocks:
@@ -377,7 +380,7 @@ class FreeVC(BaseVC):
 
     def load_pretrained_speaker_encoder(self):
         """Load pretrained speaker encoder model as mentioned in the paper."""
-        print(" > Loading pretrained speaker encoder model ...")
+        logger.info("Loading pretrained speaker encoder model ...")
         self.enc_spk_ex = SpeakerEncoderEx(
             "https://github.com/coqui-ai/TTS/releases/download/v0.13.0_models/speaker_encoder.pt"
         )
@@ -547,7 +550,7 @@ class FreeVC(BaseVC):
     def eval_step(): ...
 
     @staticmethod
-    def init_from_config(config: FreeVCConfig, samples: Union[List[List], List[Dict]] = None, verbose=True):
+    def init_from_config(config: FreeVCConfig, samples: Union[List[List], List[Dict]] = None):
         model = FreeVC(config)
         return model
 

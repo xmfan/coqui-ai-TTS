@@ -1,4 +1,5 @@
 import copy
+import logging
 from abc import abstractmethod
 from typing import Dict, Tuple
 
@@ -16,6 +17,8 @@ from TTS.tts.utils.visual import plot_alignment, plot_spectrogram
 from TTS.utils.generic_utils import format_aux_input
 from TTS.utils.io import load_fsspec
 from TTS.utils.training import gradual_training_scheduler
+
+logger = logging.getLogger(__name__)
 
 
 class BaseTacotron(BaseTTS):
@@ -116,7 +119,7 @@ class BaseTacotron(BaseTTS):
             self.decoder.set_r(config.r)
         if eval:
             self.eval()
-            print(f" > Model's reduction rate `r` is set to: {self.decoder.r}")
+            logger.info("Model's reduction rate `r` is set to: %d", self.decoder.r)
             assert not self.training
 
     def get_criterion(self) -> nn.Module:
@@ -148,7 +151,7 @@ class BaseTacotron(BaseTTS):
         Returns:
             Tuple[Dict, Dict]: Test figures and audios to be projected to Tensorboard.
         """
-        print(" | > Synthesizing test sentences.")
+        logger.info("Synthesizing test sentences.")
         test_audios = {}
         test_figures = {}
         test_sentences = self.config.test_sentences
@@ -302,4 +305,4 @@ class BaseTacotron(BaseTTS):
             self.decoder.set_r(r)
             if trainer.config.bidirectional_decoder:
                 trainer.model.decoder_backward.set_r(r)
-            print(f"\n > Number of output frames: {self.decoder.r}")
+            logger.info("Number of output frames: %d", self.decoder.r)

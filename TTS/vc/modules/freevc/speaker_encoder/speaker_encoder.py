@@ -1,3 +1,4 @@
+import logging
 from time import perf_counter as timer
 from typing import List, Union
 
@@ -17,9 +18,11 @@ from TTS.vc.modules.freevc.speaker_encoder.hparams import (
     sampling_rate,
 )
 
+logger = logging.getLogger(__name__)
+
 
 class SpeakerEncoder(nn.Module):
-    def __init__(self, weights_fpath, device: Union[str, torch.device] = None, verbose=True):
+    def __init__(self, weights_fpath, device: Union[str, torch.device] = None):
         """
         :param device: either a torch device or the name of a torch device (e.g. "cpu", "cuda").
         If None, defaults to cuda if it is available on your machine, otherwise the model will
@@ -50,9 +53,7 @@ class SpeakerEncoder(nn.Module):
 
         self.load_state_dict(checkpoint["model_state"], strict=False)
         self.to(device)
-
-        if verbose:
-            print("Loaded the voice encoder model on %s in %.2f seconds." % (device.type, timer() - start))
+        logger.info("Loaded the voice encoder model on %s in %.2f seconds.", device.type, timer() - start)
 
     def forward(self, mels: torch.FloatTensor):
         """

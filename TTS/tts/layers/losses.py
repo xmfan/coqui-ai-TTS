@@ -1,3 +1,4 @@
+import logging
 import math
 
 import numpy as np
@@ -9,6 +10,8 @@ from torch.nn import functional
 from TTS.tts.utils.helpers import sequence_mask
 from TTS.tts.utils.ssim import SSIMLoss as _SSIMLoss
 from TTS.utils.audio.torch_transforms import TorchSTFT
+
+logger = logging.getLogger(__name__)
 
 
 # pylint: disable=abstract-method
@@ -132,11 +135,11 @@ class SSIMLoss(torch.nn.Module):
         ssim_loss = self.loss_func((y_norm * mask).unsqueeze(1), (y_hat_norm * mask).unsqueeze(1))
 
         if ssim_loss.item() > 1.0:
-            print(f" > SSIM loss is out-of-range {ssim_loss.item()}, setting it 1.0")
+            logger.info("SSIM loss is out-of-range (%.2f), setting it to 1.0", ssim_loss.item())
             ssim_loss = torch.tensor(1.0, device=ssim_loss.device)
 
         if ssim_loss.item() < 0.0:
-            print(f" > SSIM loss is out-of-range {ssim_loss.item()}, setting it 0.0")
+            logger.info("SSIM loss is out-of-range (%.2f), setting it to 0.0", ssim_loss.item())
             ssim_loss = torch.tensor(0.0, device=ssim_loss.device)
 
         return ssim_loss

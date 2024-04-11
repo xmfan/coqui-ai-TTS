@@ -3,11 +3,16 @@
 
 import argparse
 import contextlib
+import logging
 import sys
 from argparse import RawTextHelpFormatter
 
 # pylint: disable=redefined-outer-name, unused-argument
 from pathlib import Path
+
+from TTS.utils.generic_utils import ConsoleFormatter, setup_logger
+
+logger = logging.getLogger(__name__)
 
 description = """
 Synthesize speech on command line.
@@ -142,6 +147,8 @@ def str2bool(v):
 
 
 def main():
+    setup_logger("TTS", level=logging.INFO, screen=True, formatter=ConsoleFormatter())
+
     parser = argparse.ArgumentParser(
         description=description.replace("    ```\n", ""),
         formatter_class=RawTextHelpFormatter,
@@ -435,31 +442,37 @@ def main():
 
         # query speaker ids of a multi-speaker model.
         if args.list_speaker_idxs:
-            print(
-                " > Available speaker ids: (Set --speaker_idx flag to one of these values to use the multi-speaker model."
+            if synthesizer.tts_model.speaker_manager is None:
+                logger.info("Model only has a single speaker.")
+                return
+            logger.info(
+                "Available speaker ids: (Set --speaker_idx flag to one of these values to use the multi-speaker model."
             )
-            print(synthesizer.tts_model.speaker_manager.name_to_id)
+            logger.info(synthesizer.tts_model.speaker_manager.name_to_id)
             return
 
         # query langauge ids of a multi-lingual model.
         if args.list_language_idxs:
-            print(
-                " > Available language ids: (Set --language_idx flag to one of these values to use the multi-lingual model."
+            if synthesizer.tts_model.language_manager is None:
+                logger.info("Monolingual model.")
+                return
+            logger.info(
+                "Available language ids: (Set --language_idx flag to one of these values to use the multi-lingual model."
             )
-            print(synthesizer.tts_model.language_manager.name_to_id)
+            logger.info(synthesizer.tts_model.language_manager.name_to_id)
             return
 
         # check the arguments against a multi-speaker model.
         if synthesizer.tts_speakers_file and (not args.speaker_idx and not args.speaker_wav):
-            print(
-                " [!] Looks like you use a multi-speaker model. Define `--speaker_idx` to "
+            logger.error(
+                "Looks like you use a multi-speaker model. Define `--speaker_idx` to "
                 "select the target speaker. You can list the available speakers for this model by `--list_speaker_idxs`."
             )
             return
 
         # RUN THE SYNTHESIS
         if args.text:
-            print(" > Text: {}".format(args.text))
+            logger.info("Text: %s", args.text)
 
         # kick it
         if tts_path is not None:
@@ -484,8 +497,8 @@ def main():
             )
 
         # save the results
-        print(" > Saving output to {}".format(args.out_path))
         synthesizer.save_wav(wav, args.out_path, pipe_out=pipe_out)
+        logger.info("Saved output to %s", args.out_path)
 
 
 if __name__ == "__main__":

@@ -1,3 +1,4 @@
+import logging
 import math
 import os
 from dataclasses import dataclass, field, replace
@@ -37,6 +38,8 @@ from TTS.utils.io import load_fsspec
 from TTS.utils.samplers import BucketBatchSampler
 from TTS.vocoder.models.hifigan_generator import HifiganGenerator
 from TTS.vocoder.utils.generic_utils import plot_results
+
+logger = logging.getLogger(__name__)
 
 ##############################
 # IO / Feature extraction
@@ -104,9 +107,9 @@ def wav_to_spec(y, n_fft, hop_length, win_length, center=False):
     y = y.squeeze(1)
 
     if torch.min(y) < -1.0:
-        print("min value is ", torch.min(y))
+        logger.info("min value is %.3f", torch.min(y))
     if torch.max(y) > 1.0:
-        print("max value is ", torch.max(y))
+        logger.info("max value is %.3f", torch.max(y))
 
     global hann_window
     dtype_device = str(y.dtype) + "_" + str(y.device)
@@ -170,9 +173,9 @@ def wav_to_mel(y, n_fft, num_mels, sample_rate, hop_length, win_length, fmin, fm
     y = y.squeeze(1)
 
     if torch.min(y) < -1.0:
-        print("min value is ", torch.min(y))
+        logger.info("min value is %.3f", torch.min(y))
     if torch.max(y) > 1.0:
-        print("max value is ", torch.max(y))
+        logger.info("max value is %.3f", torch.max(y))
 
     global mel_basis, hann_window
     dtype_device = str(y.dtype) + "_" + str(y.device)
@@ -764,7 +767,7 @@ class Vits(BaseTTS):
                 )
 
             self.speaker_manager.encoder.eval()
-            print(" > External Speaker Encoder Loaded !!")
+            logger.info("External Speaker Encoder Loaded !!")
 
             if (
                 hasattr(self.speaker_manager.encoder, "audio_config")
@@ -778,7 +781,7 @@ class Vits(BaseTTS):
     def _init_speaker_embedding(self):
         # pylint: disable=attribute-defined-outside-init
         if self.num_speakers > 0:
-            print(" > initialization of speaker-embedding layers.")
+            logger.info("Initialization of speaker-embedding layers.")
             self.embedded_speaker_dim = self.args.speaker_embedding_channels
             self.emb_g = nn.Embedding(self.num_speakers, self.embedded_speaker_dim)
 
@@ -798,7 +801,7 @@ class Vits(BaseTTS):
             self.language_manager = LanguageManager(language_ids_file_path=config.language_ids_file)
 
         if self.args.use_language_embedding and self.language_manager:
-            print(" > initialization of language-embedding layers.")
+            logger.info("Initialization of language-embedding layers.")
             self.num_languages = self.language_manager.num_languages
             self.embedded_language_dim = self.args.embedded_language_dim
             self.emb_l = nn.Embedding(self.num_languages, self.embedded_language_dim)
@@ -833,7 +836,7 @@ class Vits(BaseTTS):
             for key, value in after_dict.items():
                 if value == before_dict[key]:
                     raise RuntimeError(" [!] The weights of Duration Predictor was not reinit check it !")
-            print(" > Duration Predictor was reinit.")
+            logger.info("Duration Predictor was reinit.")
 
         if self.args.reinit_text_encoder:
             before_dict = get_module_weights_sum(self.text_encoder)
@@ -843,7 +846,7 @@ class Vits(BaseTTS):
             for key, value in after_dict.items():
                 if value == before_dict[key]:
                     raise RuntimeError(" [!] The weights of Text Encoder was not reinit check it !")
-            print(" > Text Encoder was reinit.")
+            logger.info("Text Encoder was reinit.")
 
     def get_aux_input(self, aux_input: Dict):
         sid, g, lid, _ = self._set_cond_input(aux_input)
@@ -1437,7 +1440,7 @@ class Vits(BaseTTS):
         Returns:
             Tuple[Dict, Dict]: Test figures and audios to be projected to Tensorboard.
         """
-        print(" | > Synthesizing test sentences.")
+        logger.info("Synthesizing test sentences.")
         test_audios = {}
         test_figures = {}
         test_sentences = self.config.test_sentences
@@ -1554,14 +1557,14 @@ class Vits(BaseTTS):
         data_items = dataset.samples
         if getattr(config, "use_weighted_sampler", False):
             for attr_name, alpha in config.weighted_sampler_attrs.items():
-                print(f" > Using weighted sampler for attribute '{attr_name}' with alpha '{alpha}'")
+                logger.info("Using weighted sampler for attribute '%s' with alpha %.3f", attr_name, alpha)
                 multi_dict = config.weighted_sampler_multipliers.get(attr_name, None)
-                print(multi_dict)
+                logger.info(multi_dict)
                 weights, attr_names, attr_weights = get_attribute_balancer_weights(
                     attr_name=attr_name, items=data_items, multi_dict=multi_dict
                 )
                 weights = weights * alpha
-                print(f" > Attribute weights for '{attr_names}' \n | > {attr_weights}")
+                logger.info("Attribute weights for '%s' \n | > %s", attr_names, attr_weights)
 
         # input_audio_lenghts = [os.path.getsize(x["audio_file"]) for x in data_items]
 
@@ -1609,7 +1612,6 @@ class Vits(BaseTTS):
                 max_audio_len=config.max_audio_len,
                 phoneme_cache_path=config.phoneme_cache_path,
                 precompute_num_workers=config.precompute_num_workers,
-                verbose=verbose,
                 tokenizer=self.tokenizer,
                 start_by_longest=config.start_by_longest,
             )
@@ -1719,7 +1721,7 @@ class Vits(BaseTTS):
         # handle fine-tuning from a checkpoint with additional speakers
         if hasattr(self, "emb_g") and state["model"]["emb_g.weight"].shape != self.emb_g.weight.shape:
             num_new_speakers = self.emb_g.weight.shape[0] - state["model"]["emb_g.weight"].shape[0]
-            print(f" > Loading checkpoint with {num_new_speakers} additional speakers.")
+            logger.info("Loading checkpoint with %d additional speakers.", num_new_speakers)
             emb_g = state["model"]["emb_g.weight"]
             new_row = torch.randn(num_new_speakers, emb_g.shape[1])
             emb_g = torch.cat([emb_g, new_row], axis=0)
@@ -1776,7 +1778,7 @@ class Vits(BaseTTS):
             assert not self.training
 
     @staticmethod
-    def init_from_config(config: "VitsConfig", samples: Union[List[List], List[Dict]] = None, verbose=True):
+    def init_from_config(config: "VitsConfig", samples: Union[List[List], List[Dict]] = None):
         """Initiate model from config
 
         Args:
@@ -1799,7 +1801,7 @@ class Vits(BaseTTS):
                 upsample_rate == effective_hop_length
             ), f" [!] Product of upsample rates must be equal to the hop length - {upsample_rate} vs {effective_hop_length}"
 
-        ap = AudioProcessor.init_from_config(config, verbose=verbose)
+        ap = AudioProcessor.init_from_config(config)
         tokenizer, new_config = TTSTokenizer.init_from_config(config)
         speaker_manager = SpeakerManager.init_from_config(config, samples)
         language_manager = LanguageManager.init_from_config(config)

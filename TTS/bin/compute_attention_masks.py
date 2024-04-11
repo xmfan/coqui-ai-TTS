@@ -1,5 +1,6 @@
 import argparse
 import importlib
+import logging
 import os
 from argparse import RawTextHelpFormatter
 
@@ -13,9 +14,12 @@ from TTS.tts.datasets.TTSDataset import TTSDataset
 from TTS.tts.models import setup_model
 from TTS.tts.utils.text.characters import make_symbols, phonemes, symbols
 from TTS.utils.audio import AudioProcessor
+from TTS.utils.generic_utils import ConsoleFormatter, setup_logger
 from TTS.utils.io import load_checkpoint
 
 if __name__ == "__main__":
+    setup_logger("TTS", level=logging.INFO, screen=True, formatter=ConsoleFormatter())
+
     # pylint: disable=bad-option-value
     parser = argparse.ArgumentParser(
         description="""Extract attention masks from trained Tacotron/Tacotron2 models.

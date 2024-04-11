@@ -1,3 +1,4 @@
+import logging
 import os
 import random
 from typing import Dict, List, Tuple, Union
@@ -19,6 +20,8 @@ from TTS.tts.utils.synthesis import synthesis
 from TTS.tts.utils.visual import plot_alignment, plot_spectrogram
 
 # pylint: skip-file
+
+logger = logging.getLogger(__name__)
 
 
 class BaseVC(BaseTrainerModel):
@@ -93,7 +96,7 @@ class BaseVC(BaseTrainerModel):
             )
         # init speaker embedding layer
         if config.use_speaker_embedding and not config.use_d_vector_file:
-            print(" > Init speaker_embedding layer.")
+            logger.info("Init speaker_embedding layer.")
             self.speaker_embedding = nn.Embedding(self.num_speakers, self.embedded_speaker_dim)
             self.speaker_embedding.weight.data.normal_(0, 0.3)
 
@@ -233,12 +236,12 @@ class BaseVC(BaseTrainerModel):
 
         if getattr(config, "use_language_weighted_sampler", False):
             alpha = getattr(config, "language_weighted_sampler_alpha", 1.0)
-            print(" > Using Language weighted sampler with alpha:", alpha)
+            logger.info("Using Language weighted sampler with alpha: %.2f", alpha)
             weights = get_language_balancer_weights(data_items) * alpha
 
         if getattr(config, "use_speaker_weighted_sampler", False):
             alpha = getattr(config, "speaker_weighted_sampler_alpha", 1.0)
-            print(" > Using Speaker weighted sampler with alpha:", alpha)
+            logger.info("Using Speaker weighted sampler with alpha: %.2f", alpha)
             if weights is not None:
                 weights += get_speaker_balancer_weights(data_items) * alpha
             else:
@@ -246,7 +249,7 @@ class BaseVC(BaseTrainerModel):
 
         if getattr(config, "use_length_weighted_sampler", False):
             alpha = getattr(config, "length_weighted_sampler_alpha", 1.0)
-            print(" > Using Length weighted sampler with alpha:", alpha)
+            logger.info("Using Length weighted sampler with alpha: %.2f", alpha)
             if weights is not None:
                 weights += get_length_balancer_weights(data_items) * alpha
             else:
@@ -318,7 +321,6 @@ class BaseVC(BaseTrainerModel):
                 phoneme_cache_path=config.phoneme_cache_path,
                 precompute_num_workers=config.precompute_num_workers,
                 use_noise_augment=False if is_eval else config.use_noise_augment,
-                verbose=verbose,
                 speaker_id_mapping=speaker_id_mapping,
                 d_vector_mapping=d_vector_mapping if config.use_d_vector_file else None,
                 tokenizer=None,
@@ -378,7 +380,7 @@ class BaseVC(BaseTrainerModel):
         Returns:
             Tuple[Dict, Dict]: Test figures and audios to be projected to Tensorboard.
         """
-        print(" | > Synthesizing test sentences.")
+        logger.info("Synthesizing test sentences.")
         test_audios = {}
         test_figures = {}
         test_sentences = self.config.test_sentences
@@ -417,8 +419,8 @@ class BaseVC(BaseTrainerModel):
             if hasattr(trainer.config, "model_args"):
                 trainer.config.model_args.speakers_file = output_path
             trainer.config.save_json(os.path.join(trainer.output_path, "config.json"))
-            print(f" > `speakers.pth` is saved to {output_path}.")
-            print(" > `speakers_file` is updated in the config.json.")
+            logger.info("`speakers.pth` is saved to %s", output_path)
+            logger.info("`speakers_file` is updated in the config.json.")
 
         if self.language_manager is not None:
             output_path = os.path.join(trainer.output_path, "language_ids.json")
@@ -427,5 +429,5 @@ class BaseVC(BaseTrainerModel):
             if hasattr(trainer.config, "model_args"):
                 trainer.config.model_args.language_ids_file = output_path
             trainer.config.save_json(os.path.join(trainer.output_path, "config.json"))
-            print(f" > `language_ids.json` is saved to {output_path}.")
-            print(" > `language_ids_file` is updated in the config.json.")
+            logger.info("`language_ids.json` is saved to %s", output_path)
+            logger.info("`language_ids_file` is updated in the config.json.")

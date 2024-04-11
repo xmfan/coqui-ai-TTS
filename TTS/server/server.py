@@ -2,6 +2,7 @@
 import argparse
 import io
 import json
+import logging
 import os
 import sys
 from pathlib import Path
@@ -17,6 +18,9 @@ except ImportError as e:
 from TTS.config import load_config
 from TTS.utils.manage import ModelManager
 from TTS.utils.synthesizer import Synthesizer
+
+logger = logging.getLogger(__name__)
+logging.getLogger("TTS").setLevel(logging.INFO)
 
 
 def create_argparser():
@@ -200,9 +204,9 @@ def tts():
         style_wav = request.headers.get("style-wav") or request.values.get("style_wav", "")
         style_wav = style_wav_uri_to_dict(style_wav)
 
-        print(f" > Model input: {text}")
-        print(f" > Speaker Idx: {speaker_idx}")
-        print(f" > Language Idx: {language_idx}")
+        logger.info("Model input: %s", text)
+        logger.info("Speaker idx: %s", speaker_idx)
+        logger.info("Language idx: %s", language_idx)
         wavs = synthesizer.tts(text, speaker_name=speaker_idx, language_name=language_idx, style_wav=style_wav)
         out = io.BytesIO()
         synthesizer.save_wav(wavs, out)
@@ -246,7 +250,7 @@ def mary_tts_api_process():
             text = data.get("INPUT_TEXT", [""])[0]
         else:
             text = request.args.get("INPUT_TEXT", "")
-        print(f" > Model input: {text}")
+        logger.info("Model input: %s", text)
         wavs = synthesizer.tts(text)
         out = io.BytesIO()
         synthesizer.save_wav(wavs, out)

@@ -623,7 +623,6 @@ class Wavernn(BaseVocoder):
             mode=config.model_args.mode,
             mulaw=config.model_args.mulaw,
             is_training=not is_eval,
-            verbose=verbose,
         )
         sampler = DistributedSampler(dataset, shuffle=True) if num_gpus > 1 else None
         loader = DataLoader(
