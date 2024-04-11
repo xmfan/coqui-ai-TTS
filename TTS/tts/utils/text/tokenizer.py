@@ -107,10 +107,13 @@ class TTSTokenizer:
         5. Text to token IDs
         """
         # TODO: text cleaner should pick the right routine based on the language
+        logger.debug("Tokenizer input text: %s", text)
         if self.text_cleaner is not None:
             text = self.text_cleaner(text)
+            logger.debug("Cleaned text: %s", text)
         if self.use_phonemes:
             text = self.phonemizer.phonemize(text, separator="", language=language)
+            logger.debug("Phonemes: %s", text)
         text = self.encode(text)
         if self.add_blank:
             text = self.intersperse_blank_char(text, True)
