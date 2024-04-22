@@ -131,7 +131,7 @@ Please use our dedicated channels for questions and discussion. Help is much mor
 You can also help us implement more models.
 
 ## Installation
-🐸TTS is tested on Ubuntu 22.04 with **python >= 3.9, < 3.12.**.
+🐸TTS is tested on Ubuntu 22.04 with **python >= 3.9, < 3.13.**.
 
 If you are only interested in [synthesizing speech](https://coqui-tts.readthedocs.io/en/latest/inference.html) with the released 🐸TTS models, installing from PyPI is the easiest option.
 
