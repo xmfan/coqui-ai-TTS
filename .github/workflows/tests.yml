@@ -38,14 +38,14 @@ jobs:
           sudo apt-get install -y --no-install-recommends git make gcc
           make system-deps
       - name: Install/upgrade Python setup deps
-        run: python3 -m pip install --upgrade pip setuptools wheel
+        run: python3 -m pip install --upgrade pip setuptools wheel uv
       - name: Replace scarf urls
         if: contains(fromJSON('["data_tests", "inference_tests", "test_aux", "test_tts", "test_tts2", "test_xtts", "test_zoo0", "test_zoo1", "test_zoo2"]'), matrix.subset)
         run: |
           sed -i 's/https:\/\/coqui.gateway.scarf.sh\//https:\/\/github.com\/coqui-ai\/TTS\/releases\/download\//g' TTS/.models.json
       - name: Install TTS
         run: |
-          python3 -m pip install .[all]
+          python3 -m uv pip install --system "coqui-tts[dev,server,ja] @ ."
           python3 setup.py egg_info
       - name: Unit tests
         run: make ${{ matrix.subset }}
