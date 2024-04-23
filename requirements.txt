@@ -19,7 +19,7 @@ umap-learn>=0.5.1
 # deps for training
 matplotlib>=3.7.0
 # coqui stack
-trainer>=0.0.36
+coqui-tts-trainer>=0.1
 # config management
 coqpit>=0.0.16
 # chinese g2p deps
