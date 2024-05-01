@@ -60,9 +60,12 @@ def _espeak_exe(espeak_lib: str, args: List, sync=False) -> List[str]:
     with subprocess.Popen(
         cmd,
         stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
+        stderr=subprocess.PIPE,
     ) as p:
         res = iter(p.stdout.readline, b"")
+        err = iter(p.stderr.readline, b"")
+        for line in err:
+            logger.warning("espeakng: %s", line.decode("utf-8").strip())
         if not sync:
             p.stdout.close()
             if p.stderr:
