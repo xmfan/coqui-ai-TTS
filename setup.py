@@ -31,8 +31,6 @@ from Cython.Build import cythonize
 from setuptools import Extension, setup
 
 cwd = os.path.dirname(os.path.abspath(__file__))
-with open(os.path.join(cwd, "TTS", "VERSION")) as fin:
-    version = fin.read().strip()
 
 
 class build_py(setuptools.command.build_py.build_py):  # pylint: disable=too-many-ancestors
@@ -70,7 +68,6 @@ exts = [
     )
 ]
 setup(
-    version=version,
     # cython
     include_dirs=numpy.get_include(),
     ext_modules=cythonize(exts, language_level=3),

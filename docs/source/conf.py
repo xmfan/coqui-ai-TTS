@@ -10,6 +10,7 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
+import importlib.metadata
 import os
 import sys
 
@@ -23,13 +24,10 @@ project = 'TTS'
 copyright = "2021 Coqui GmbH, 2020 TTS authors"
 author = 'Coqui GmbH'
 
-with open("../../TTS/VERSION", "r") as ver:
-    version = ver.read().strip()
-
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
-release = version
+release = importlib.metadata.version(project)
 
 # The main toctree document.
 master_doc = "index"

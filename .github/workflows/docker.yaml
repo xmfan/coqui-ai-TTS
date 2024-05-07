@@ -42,7 +42,7 @@ jobs:
             branch=${github_ref#*refs/heads/} # strip prefix to get branch name
             tags="${base}:${branch},${base}:${{ github.sha }},"
           elif [[ "${{ startsWith(github.ref, 'refs/tags/') }}" = "true" ]]; then
-            VERSION="v$(cat TTS/VERSION)"
+            VERSION="v$(grep -m 1 version pyproject.toml | grep -P '\d+\.\d+\.\d+' -o)"
             if [[ "${{ github.ref }}" != "refs/tags/${VERSION}" ]]; then
               echo "Pushed tag does not match VERSION file. Aborting push."
               exit 1
