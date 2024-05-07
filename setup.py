@@ -21,35 +21,12 @@
 #                                  ``````
 
 import os
-import subprocess
-import sys
 
 import numpy
-import setuptools.command.build_py
-import setuptools.command.develop
 from Cython.Build import cythonize
 from setuptools import Extension, setup
 
 cwd = os.path.dirname(os.path.abspath(__file__))
-
-
-class build_py(setuptools.command.build_py.build_py):  # pylint: disable=too-many-ancestors
-    def run(self):
-        setuptools.command.build_py.build_py.run(self)
-
-
-class develop(setuptools.command.develop.develop):
-    def run(self):
-        setuptools.command.develop.develop.run(self)
-
-
-# The documentation for this feature is in server/README.md
-package_data = ["TTS/server/templates/*"]
-
-
-def pip_install(package_name):
-    subprocess.call([sys.executable, "-m", "pip", "install", package_name])
-
 
 requirements = open(os.path.join(cwd, "requirements.txt"), "r").readlines()
 with open(os.path.join(cwd, "requirements.notebooks.txt"), "r") as f:
@@ -68,16 +45,8 @@ exts = [
     )
 ]
 setup(
-    # cython
     include_dirs=numpy.get_include(),
     ext_modules=cythonize(exts, language_level=3),
-    # ext_modules=find_cython_extensions(),
-    # package
-    cmdclass={
-        "build_py": build_py,
-        "develop": develop,
-        # 'build_ext': build_ext
-    },
     install_requires=requirements,
     extras_require={
         "all": requirements_all,
