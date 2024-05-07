@@ -7,6 +7,52 @@ requires = [
     "packaging",
 ]
 
+[tool.setuptools.packages.find]
+include = ["TTS*"]
+
+[project]
+name = "coqui-tts"
+description = "Deep learning for Text to Speech."
+readme = "README.md"
+requires-python = ">=3.9, <3.13"
+license = {text = "MPL-2.0"}
+authors = [
+    {name = "Eren Gölge", email = "egolge@coqui.ai"}
+]
+maintainers = [
+    {name = "Enno Hermann", email = "enno.hermann@gmail.com"}
+]
+classifiers = [
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "Operating System :: POSIX :: Linux",
+    "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Multimedia :: Sound/Audio :: Speech",
+    "Topic :: Multimedia :: Sound/Audio",
+    "Topic :: Multimedia",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+[project.urls]
+Homepage = "https://github.com/idiap/coqui-ai-TTS"
+Documentation = "https://coqui-tts.readthedocs.io"
+Repository = "https://github.com/idiap/coqui-ai-TTS"
+Issues = "https://github.com/idiap/coqui-ai-TTS/issues"
+Discussions = "https://github.com/idiap/coqui-ai-TTS/discussions"
+
+[project.scripts]
+tts = "TTS.bin.synthesize:main"
+tts-server = "TTS.server.server:main"
+
 [tool.ruff]
 target-version = "py39"
 line-length = 120
