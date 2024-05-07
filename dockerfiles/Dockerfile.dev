@@ -41,4 +41,3 @@ COPY . /root
 
 # Installing the TTS package itself:
 RUN make install
-
