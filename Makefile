@@ -66,7 +66,8 @@ build-docs: ## build the docs
 	cd docs && make clean && make build
 
 install:	## install 🐸 TTS for development.
-	pip install -e .[all]
+	pip install -e .[all,dev]
+	pre-commit install
 
 docs:	## build the docs
 	$(MAKE) -C docs clean && $(MAKE) -C docs html
