@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := help
-.PHONY: test system-deps dev-deps deps style lint install help docs
+.PHONY: test system-deps dev-deps style lint install help docs
 
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
@@ -64,9 +64,6 @@ dev-deps:  ## install development deps
 
 build-docs: ## build the docs
 	cd docs && make clean && make build
-
-deps:	## install 🐸 requirements.
-	pip install -r requirements.txt
 
 install:	## install 🐸 TTS for development.
 	pip install -e .[all]

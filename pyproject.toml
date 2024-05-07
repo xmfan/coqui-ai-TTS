@@ -41,6 +41,88 @@ classifiers = [
     "Topic :: Multimedia",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
+dependencies = [
+    # Core
+    "numpy>=1.24.3",
+    "cython>=0.29.30",
+    "scipy>=1.11.2",
+    "torch>=2.1",
+    "torchaudio",
+    "soundfile>=0.12.0",
+    "librosa>=0.10.1",
+    "inflect>=5.6.0",
+    "tqdm>=4.64.1",
+    "anyascii>=0.3.0",
+    "pyyaml>=6.0",
+    "fsspec[http]>=2023.6.0",
+    "packaging>=23.1",
+    # Inference
+    "pysbd>=0.3.4",
+    # Notebooks
+    "umap-learn>=0.5.1",
+    # Training
+    "matplotlib>=3.7.0",
+    # Coqui stack
+    "coqui-tts-trainer>=0.1",
+    "coqpit>=0.0.16",
+    # Chinese
+    "jieba",
+    "pypinyin",
+    # Korean
+    "hangul_romanize",
+    "jamo",
+    "g2pkk>=0.1.1",
+    # Gruut + supported languages
+    "gruut[de,es,fr]==2.2.3",
+    # Bangla
+    "bangla",
+    "bnnumerizer",
+    "bnunicodenormalizer",
+    # Tortoise
+    "einops>=0.6.0",
+    "transformers>=4.33.0",
+    # Bark
+    "encodec>=0.1.1",
+    # XTTS
+    "num2words",
+    "spacy[ja]>=3"
+]
+
+[project.optional-dependencies]
+# Development dependencies
+dev = [
+    "black==24.2.0",
+    "coverage[toml]",
+    "nose2",
+    "ruff==0.3.0",
+]
+# Dependencies for building the documentation
+docs = [
+    "furo",
+    "myst-parser==2.0.0",
+    "sphinx==7.2.5",
+    "sphinx_inline_tabs",
+    "sphinx_copybutton",
+    "linkify-it-py",
+]
+# Only used in notebooks
+notebooks = [
+    "bokeh==1.4.0",
+    "pandas>=1.4,<2.0",
+]
+# For running the TTS server
+server = ["flask>=2.0.1"]
+# Language-specific dependencies, mainly for G2P
+# Japanese
+ja = [
+    "mecab-python3",
+    "unidic-lite==1.0.8",
+    "cutlet",
+]
+# Installs all extras (except dev and docs)
+all = [
+    "coqui-tts[notebooks,server,ja]",
+]
 
 [project.urls]
 Homepage = "https://github.com/idiap/coqui-ai-TTS"
