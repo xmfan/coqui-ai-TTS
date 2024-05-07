@@ -3,10 +3,8 @@ repos:
     rev: v4.5.0
     hooks:
       - id: check-yaml
-      # TODO: enable these later; there are plenty of violating
-      #       files that need to be fixed first
-      # - id: end-of-file-fixer
-      # - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
   - repo: "https://github.com/psf/black"
     rev: 24.2.0
     hooks:
