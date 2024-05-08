@@ -5,8 +5,6 @@ import textwrap
 from functools import cached_property
 
 import torch
-from hangul_romanize import Transliter
-from hangul_romanize.rule import academic
 from num2words import num2words
 from spacy.lang.ar import Arabic
 from spacy.lang.en import English
@@ -592,6 +590,11 @@ def japanese_cleaners(text, katsu):
 
 
 def korean_transliterate(text):
+    try:
+        from hangul_romanize import Transliter
+        from hangul_romanize.rule import academic
+    except ImportError as e:
+        raise ImportError("Korean requires: hangul_romanize") from e
     r = Transliter(academic)
     return r.translit(text)
 

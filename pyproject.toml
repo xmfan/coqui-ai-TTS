@@ -65,10 +65,6 @@ dependencies = [
     # Coqui stack
     "coqui-tts-trainer>=0.1",
     "coqpit>=0.0.16",
-    # Korean
-    "hangul_romanize",
-    "jamo",
-    "g2pkk>=0.1.1",
     # Gruut + supported languages
     "gruut[de,es,fr]==2.2.3",
     # Tortoise
@@ -114,6 +110,12 @@ bn = [
     "bnnumerizer",
     "bnunicodenormalizer",
 ]
+# Korean
+ko = [
+    "hangul_romanize",
+    "jamo",
+    "g2pkk>=0.1.1",
+]
 # Japanese
 ja = [
     "mecab-python3",
@@ -127,11 +129,11 @@ zh = [
 ]
 # All language-specific dependencies
 languages = [
-    "coqui-tts[bn,ja,zh]",
+    "coqui-tts[bn,ja,ko,zh]",
 ]
 # Installs all extras (except dev and docs)
 all = [
-    "coqui-tts[notebooks,server,bn,ja,zh]",
+    "coqui-tts[notebooks,server,bn,ja,ko,zh]",
 ]
 
 [project.urls]

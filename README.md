@@ -159,6 +159,7 @@ The following extras allow the installation of optional dependencies:
 | `server` | Dependencies to run the TTS server |
 | `bn` | Bangla G2P |
 | `ja` | Japanese G2P |
+| `ko` | Korean G2P |
 | `zh` | Chinese G2P |
 | `languages` | All language-specific dependencies |
 
