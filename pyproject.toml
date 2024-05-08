@@ -65,9 +65,6 @@ dependencies = [
     # Coqui stack
     "coqui-tts-trainer>=0.1",
     "coqpit>=0.0.16",
-    # Chinese
-    "jieba",
-    "pypinyin",
     # Korean
     "hangul_romanize",
     "jamo",
@@ -123,13 +120,18 @@ ja = [
     "unidic-lite==1.0.8",
     "cutlet",
 ]
+# Chinese
+zh = [
+    "jieba",
+    "pypinyin",
+]
 # All language-specific dependencies
 languages = [
-    "coqui-tts[bn,ja]",
+    "coqui-tts[bn,ja,zh]",
 ]
 # Installs all extras (except dev and docs)
 all = [
-    "coqui-tts[notebooks,server,bn,ja]",
+    "coqui-tts[notebooks,server,bn,ja,zh]",
 ]
 
 [project.urls]

@@ -159,9 +159,10 @@ The following extras allow the installation of optional dependencies:
 | `server` | Dependencies to run the TTS server |
 | `bn` | Bangla G2P |
 | `ja` | Japanese G2P |
+| `zh` | Chinese G2P |
 | `languages` | All language-specific dependencies |
 
-You can install them with one of the following commands:
+You can install extras with one of the following commands:
 
 ```bash
 pip install coqui-tts[server,ja]
