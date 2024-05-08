@@ -74,10 +74,6 @@ dependencies = [
     "g2pkk>=0.1.1",
     # Gruut + supported languages
     "gruut[de,es,fr]==2.2.3",
-    # Bangla
-    "bangla",
-    "bnnumerizer",
-    "bnunicodenormalizer",
     # Tortoise
     "einops>=0.6.0",
     "transformers>=4.33.0",
@@ -115,15 +111,25 @@ notebooks = [
 # For running the TTS server
 server = ["flask>=2.0.1"]
 # Language-specific dependencies, mainly for G2P
+# Bangla
+bn = [
+    "bangla",
+    "bnnumerizer",
+    "bnunicodenormalizer",
+]
 # Japanese
 ja = [
     "mecab-python3",
     "unidic-lite==1.0.8",
     "cutlet",
 ]
+# All language-specific dependencies
+languages = [
+    "coqui-tts[bn,ja]",
+]
 # Installs all extras (except dev and docs)
 all = [
-    "coqui-tts[notebooks,server,ja]",
+    "coqui-tts[notebooks,server,bn,ja]",
 ]
 
 [project.urls]
