@@ -26,7 +26,12 @@ This is recommended for development and more control over 🐸TTS.
 git clone https://github.com/idiap/coqui-ai-TTS
 cd coqui-ai-TTS
 make system-deps  # only on Linux systems.
+
+# Install package and optional extras
 make install
+
+# Same as above + dev dependencies and pre-commit
+make install_dev
 ```
 
 ## On Windows
