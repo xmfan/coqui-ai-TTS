@@ -16,29 +16,8 @@ RUN pip3 install llvmlite --ignore-installed
 RUN pip3 install torch torchaudio --extra-index-url https://download.pytorch.org/whl/cu118
 RUN rm -rf /root/.cache/pip
 
-WORKDIR /root
-
-# Copy Dependency Lock Files:
-COPY \
-    Makefile \
-    pyproject.toml \
-    setup.py \
-    requirements.dev.txt \
-    requirements.ja.txt \
-    requirements.notebooks.txt \
-    requirements.txt \
-    /root/
-
-# Install Project Dependencies
-# Separate stage to limit re-downloading:
-RUN pip install \
-    -r requirements.txt \
-    -r requirements.dev.txt \
-    -r requirements.ja.txt \
-    -r requirements.notebooks.txt
-
 # Copy TTS repository contents:
+WORKDIR /root
 COPY . /root
 
-# Installing the TTS package itself:
-RUN make install_dev
+RUN make install
