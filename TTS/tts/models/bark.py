@@ -164,7 +164,7 @@ class Bark(BaseTTS):
         return audio_arr, [x_semantic, c, f]
 
     def generate_voice(self, audio, speaker_id, voice_dir):
-        """Generate a voice from the given audio and text.
+        """Generate a voice from the given audio.
 
         Args:
             audio (str): Path to the audio file.
