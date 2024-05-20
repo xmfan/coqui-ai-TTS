@@ -16,11 +16,12 @@ except ImportError as e:
     raise ImportError("Server requires requires flask, use `pip install coqui-tts[server]`.") from e
 
 from TTS.config import load_config
+from TTS.utils.generic_utils import ConsoleFormatter, setup_logger
 from TTS.utils.manage import ModelManager
 from TTS.utils.synthesizer import Synthesizer
 
 logger = logging.getLogger(__name__)
-logging.getLogger("TTS").setLevel(logging.INFO)
+setup_logger("TTS", level=logging.INFO, screen=True, formatter=ConsoleFormatter())
 
 
 def create_argparser():

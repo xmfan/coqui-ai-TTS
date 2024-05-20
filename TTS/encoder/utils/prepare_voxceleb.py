@@ -29,6 +29,8 @@ import zipfile
 
 import soundfile as sf
 
+from TTS.utils.generic_utils import ConsoleFormatter, setup_logger
+
 logger = logging.getLogger(__name__)
 
 SUBSETS = {
@@ -214,7 +216,7 @@ def processor(directory, subset, force_process):
 
 
 if __name__ == "__main__":
-    logging.getLogger("TTS").setLevel(logging.INFO)
+    setup_logger("TTS", level=logging.INFO, screen=True, formatter=ConsoleFormatter())
     if len(sys.argv) != 4:
         print("Usage: python prepare_data.py save_directory user password")
         sys.exit()
