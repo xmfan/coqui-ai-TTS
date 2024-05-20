@@ -74,10 +74,6 @@ args = create_argparser().parse_args()
 path = Path(__file__).parent / "../.models.json"
 manager = ModelManager(path)
 
-if args.list_models:
-    manager.list_models()
-    sys.exit()
-
 # update in-use models to the specified released models.
 model_path = None
 config_path = None
