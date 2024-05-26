@@ -1,4 +1,7 @@
 #!flask/bin/python
+
+"""TTS demo server."""
+
 import argparse
 import io
 import json
@@ -13,27 +16,23 @@ from urllib.parse import parse_qs
 try:
     from flask import Flask, render_template, render_template_string, request, send_file
 except ImportError as e:
-    raise ImportError("Server requires requires flask, use `pip install coqui-tts[server]`.") from e
+    msg = "Server requires requires flask, use `pip install coqui-tts[server]`"
+    raise ImportError(msg) from e
 
 from TTS.config import load_config
+from TTS.utils.generic_utils import ConsoleFormatter, setup_logger
 from TTS.utils.manage import ModelManager
 from TTS.utils.synthesizer import Synthesizer
 
 logger = logging.getLogger(__name__)
-logging.getLogger("TTS").setLevel(logging.INFO)
+setup_logger("TTS", level=logging.INFO, screen=True, formatter=ConsoleFormatter())
 
 
-def create_argparser():
-    def convert_boolean(x):
-        return x.lower() in ["true", "1", "yes"]
-
+def create_argparser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--list_models",
-        type=convert_boolean,
-        nargs="?",
-        const=True,
-        default=False,
+        action="store_true",
         help="list available pre-trained tts and vocoder models.",
     )
     parser.add_argument(
@@ -61,9 +60,13 @@ def create_argparser():
     parser.add_argument("--vocoder_config_path", type=str, help="Path to vocoder model config file.", default=None)
     parser.add_argument("--speakers_file_path", type=str, help="JSON file for multi-speaker model.", default=None)
     parser.add_argument("--port", type=int, default=5002, help="port to listen on.")
-    parser.add_argument("--use_cuda", type=convert_boolean, default=False, help="true to use CUDA.")
-    parser.add_argument("--debug", type=convert_boolean, default=False, help="true to enable Flask debug mode.")
-    parser.add_argument("--show_details", type=convert_boolean, default=False, help="Generate model detail page.")
+    parser.add_argument("--use_cuda", action=argparse.BooleanOptionalAction, default=False, help="true to use CUDA.")
+    parser.add_argument(
+        "--debug", action=argparse.BooleanOptionalAction, default=False, help="true to enable Flask debug mode."
+    )
+    parser.add_argument(
+        "--show_details", action=argparse.BooleanOptionalAction, default=False, help="Generate model detail page."
+    )
     return parser
 
 
@@ -72,10 +75,6 @@ args = create_argparser().parse_args()
 
 path = Path(__file__).parent / "../.models.json"
 manager = ModelManager(path)
-
-if args.list_models:
-    manager.list_models()
-    sys.exit()
 
 # update in-use models to the specified released models.
 model_path = None
@@ -171,17 +170,15 @@ def index():
 def details():
     if args.config_path is not None and os.path.isfile(args.config_path):
         model_config = load_config(args.config_path)
-    else:
-        if args.model_name is not None:
-            model_config = load_config(config_path)
+    elif args.model_name is not None:
+        model_config = load_config(config_path)
 
     if args.vocoder_config_path is not None and os.path.isfile(args.vocoder_config_path):
         vocoder_config = load_config(args.vocoder_config_path)
+    elif args.vocoder_name is not None:
+        vocoder_config = load_config(vocoder_config_path)
     else:
-        if args.vocoder_name is not None:
-            vocoder_config = load_config(vocoder_config_path)
-        else:
-            vocoder_config = None
+        vocoder_config = None
 
     return render_template(
         "details.html",
