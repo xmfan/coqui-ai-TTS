@@ -1,11 +1,151 @@
 [build-system]
 requires = [
     "setuptools",
-    "wheel",
     "cython~=0.29.30",
-    "numpy>=1.22.0",
-    "packaging",
+    "numpy>=1.24.3",
 ]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["TTS*"]
+
+[project]
+name = "coqui-tts"
+version = "0.24.0"
+description = "Deep learning for Text to Speech."
+readme = "README.md"
+requires-python = ">=3.9, <3.13"
+license = {text = "MPL-2.0"}
+authors = [
+    {name = "Eren Gölge", email = "egolge@coqui.ai"}
+]
+maintainers = [
+    {name = "Enno Hermann", email = "enno.hermann@gmail.com"}
+]
+classifiers = [
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "Operating System :: POSIX :: Linux",
+    "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Multimedia :: Sound/Audio :: Speech",
+    "Topic :: Multimedia :: Sound/Audio",
+    "Topic :: Multimedia",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    # Core
+    "numpy>=1.24.3",
+    "cython>=0.29.30",
+    "scipy>=1.11.2",
+    "torch>=2.1",
+    "torchaudio",
+    "soundfile>=0.12.0",
+    "librosa>=0.10.1",
+    "inflect>=5.6.0",
+    "tqdm>=4.64.1",
+    "anyascii>=0.3.0",
+    "pyyaml>=6.0",
+    "fsspec[http]>=2023.6.0",
+    "packaging>=23.1",
+    # Inference
+    "pysbd>=0.3.4",
+    # Notebooks
+    "umap-learn>=0.5.1",
+    # Training
+    "matplotlib>=3.7.0",
+    # Coqui stack
+    "coqui-tts-trainer>=0.1",
+    "coqpit>=0.0.16",
+    # Gruut + supported languages
+    "gruut[de,es,fr]==2.2.3",
+    # Tortoise
+    "einops>=0.6.0",
+    "transformers>=4.33.0",
+    # Bark
+    "encodec>=0.1.1",
+    # XTTS
+    "num2words",
+    "spacy[ja]>=3"
+]
+
+[project.optional-dependencies]
+# Development dependencies
+dev = [
+    "black==24.2.0",
+    "coverage[toml]",
+    "nose2",
+    "pre-commit",
+    "ruff==0.3.0",
+    "tomli; python_version < '3.11'",
+]
+# Dependencies for building the documentation
+docs = [
+    "furo",
+    "myst-parser==2.0.0",
+    "sphinx==7.2.5",
+    "sphinx_inline_tabs",
+    "sphinx_copybutton",
+    "linkify-it-py",
+]
+# Only used in notebooks
+notebooks = [
+    "bokeh==1.4.0",
+    "pandas>=1.4,<2.0",
+]
+# For running the TTS server
+server = ["flask>=2.0.1"]
+# Language-specific dependencies, mainly for G2P
+# Bangla
+bn = [
+    "bangla",
+    "bnnumerizer",
+    "bnunicodenormalizer",
+]
+# Korean
+ko = [
+    "hangul_romanize",
+    "jamo",
+    "g2pkk>=0.1.1",
+]
+# Japanese
+ja = [
+    "mecab-python3",
+    "unidic-lite==1.0.8",
+    "cutlet",
+]
+# Chinese
+zh = [
+    "jieba",
+    "pypinyin",
+]
+# All language-specific dependencies
+languages = [
+    "coqui-tts[bn,ja,ko,zh]",
+]
+# Installs all extras (except dev and docs)
+all = [
+    "coqui-tts[notebooks,server,bn,ja,ko,zh]",
+]
+
+[project.urls]
+Homepage = "https://github.com/idiap/coqui-ai-TTS"
+Documentation = "https://coqui-tts.readthedocs.io"
+Repository = "https://github.com/idiap/coqui-ai-TTS"
+Issues = "https://github.com/idiap/coqui-ai-TTS/issues"
+Discussions = "https://github.com/idiap/coqui-ai-TTS/discussions"
+
+[project.scripts]
+tts = "TTS.bin.synthesize:main"
+tts-server = "TTS.server.server:main"
 
 [tool.ruff]
 target-version = "py39"
@@ -32,14 +172,9 @@ lint.extend-select = [
 ]
 
 lint.ignore = [
-    "E501", # line too long
     "E722", # bare except (TODO: fix these)
     "E731", # don't use lambdas
     "E741", # ambiguous variable name
-    "PLR0912", # too-many-branches
-    "PLR0913", # too-many-arguments
-    "PLR0915", # too-many-statements
-    "UP004", # useless-object-inheritance
     "F821", # TODO: enable
     "F841", # TODO: enable
     "PLW0602", # TODO: enable

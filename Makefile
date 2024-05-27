@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := help
-.PHONY: test system-deps dev-deps deps style lint install help docs
+.PHONY: test system-deps dev-deps style lint install install_dev help docs
 
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
@@ -62,20 +62,15 @@ system-deps:	## install linux system deps
 dev-deps:  ## install development deps
 	pip install -r requirements.dev.txt
 
-doc-deps:  ## install docs dependencies
-	pip install -r docs/requirements.txt
-
 build-docs: ## build the docs
 	cd docs && make clean && make build
 
-hub-deps:  ## install deps for torch hub use
-	pip install -r requirements.hub.txt
-
-deps:	## install 🐸 requirements.
-	pip install -r requirements.txt
-
-install:	## install 🐸 TTS for development.
+install:	## install 🐸 TTS
 	pip install -e .[all]
+
+install_dev:	## install 🐸 TTS for development.
+	pip install -e .[all,dev]
+	pre-commit install
 
 docs:	## build the docs
 	$(MAKE) -C docs clean && $(MAKE) -C docs html

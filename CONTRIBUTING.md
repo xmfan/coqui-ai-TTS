@@ -60,7 +60,7 @@ The following steps are tested on an Ubuntu system.
 
     ```bash
     $ make system-deps  # intended to be used on Ubuntu (Debian). Let us know if you have a different OS.
-    $ make install
+    $ make install_dev
     ```
 
 4. Create a new branch with an informative name for your goal.

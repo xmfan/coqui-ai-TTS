@@ -143,8 +143,34 @@ If you plan to code or train models, clone 🐸TTS and install it locally.
 
 ```bash
 git clone https://github.com/idiap/coqui-ai-TTS
-pip install -e .[all,dev,notebooks,server]  # Select the relevant extras
+pip install -e .
 ```
+
+### Optional dependencies
+
+The following extras allow the installation of optional dependencies:
+
+| Name | Description |
+|------|-------------|
+| `all` | All optional dependencies, except `dev` and `docs` |
+| `dev` | Development dependencies |
+| `dev` | Dependencies for building the documentation |
+| `notebooks` | Dependencies only used in notebooks |
+| `server` | Dependencies to run the TTS server |
+| `bn` | Bangla G2P |
+| `ja` | Japanese G2P |
+| `ko` | Korean G2P |
+| `zh` | Chinese G2P |
+| `languages` | All language-specific dependencies |
+
+You can install extras with one of the following commands:
+
+```bash
+pip install coqui-tts[server,ja]
+pip install -e .[server,ja]
+```
+
+### Platforms
 
 If you are on Ubuntu (Debian), you can also run following commands for installation.
 
