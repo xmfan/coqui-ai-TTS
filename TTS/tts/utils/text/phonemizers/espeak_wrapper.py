@@ -50,7 +50,7 @@ else:
     _DEF_ESPEAK_VER = None
 
 
-def _espeak_exe(espeak_lib: str, args: list, *, sync: bool = False) -> list[bytes]:
+def _espeak_exe(espeak_lib: str, args: list) -> list[bytes]:
     """Run espeak with the given arguments."""
     cmd = [
         espeak_lib,
@@ -70,13 +70,6 @@ def _espeak_exe(espeak_lib: str, args: list, *, sync: bool = False) -> list[byte
         err = iter(p.stderr.readline, b"")
         for line in err:
             logger.warning("espeakng: %s", line.decode("utf-8").strip())
-        if not sync:
-            p.stdout.close()
-            if p.stderr:
-                p.stderr.close()
-            if p.stdin:
-                p.stdin.close()
-            return res
         res2 = list(res)
         p.stdout.close()
         if p.stderr:
@@ -201,7 +194,7 @@ class ESpeak(BasePhonemizer):
         args.append(text)
         # compute phonemes
         phonemes = ""
-        for line in _espeak_exe(self.backend, args, sync=True):
+        for line in _espeak_exe(self.backend, args):
             logger.debug("line: %s", repr(line))
             ph_decoded = line.decode("utf8").strip()
             # espeak:
@@ -232,7 +225,7 @@ class ESpeak(BasePhonemizer):
             return {}
         args = ["--voices"]
         langs = {}
-        for count, line in enumerate(_espeak_exe(_DEF_ESPEAK_LIB, args, sync=True)):
+        for count, line in enumerate(_espeak_exe(_DEF_ESPEAK_LIB, args)):
             line = line.decode("utf8").strip()
             if count > 0:
                 cols = line.split()
