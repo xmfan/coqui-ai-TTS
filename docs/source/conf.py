@@ -20,7 +20,7 @@ sys.path.insert(0, os.path.abspath("../.."))
 autodoc_mock_imports = ["soundfile"]
 
 # -- Project information -----------------------------------------------------
-project = "TTS"
+project = "coqui-tts"
 copyright = "2021 Coqui GmbH, 2020 TTS authors"
 author = "Coqui GmbH"
 
