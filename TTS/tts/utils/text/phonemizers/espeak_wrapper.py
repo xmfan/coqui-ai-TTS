@@ -50,7 +50,7 @@ else:
     _DEF_ESPEAK_VER = None
 
 
-def _espeak_exe(espeak_lib: str, args: list) -> list[bytes]:
+def _espeak_exe(espeak_lib: str, args: list) -> list[str]:
     """Run espeak with the given arguments."""
     cmd = [
         espeak_lib,
@@ -59,25 +59,18 @@ def _espeak_exe(espeak_lib: str, args: list) -> list[bytes]:
         "1",  # UTF8 text encoding
     ]
     cmd.extend(args)
-    logger.debug("espeakng: executing %s", repr(cmd))
+    logger.debug("Executing: %s", repr(cmd))
 
-    with subprocess.Popen(
-        cmd,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-    ) as p:
-        res = iter(p.stdout.readline, b"")
-        err = iter(p.stderr.readline, b"")
-        for line in err:
-            logger.warning("espeakng: %s", line.decode("utf-8").strip())
-        res2 = list(res)
-        p.stdout.close()
-        if p.stderr:
-            p.stderr.close()
-        if p.stdin:
-            p.stdin.close()
-        p.wait()
-    return res2
+    p = subprocess.run(cmd, capture_output=True, encoding="utf8", check=True)
+    for line in p.stderr.strip().split("\n"):
+        if line.strip() != "":
+            logger.warning("%s: %s", espeak_lib, line.strip())
+    res = []
+    for line in p.stdout.strip().split("\n"):
+        if line.strip() != "":
+            logger.debug("%s: %s", espeak_lib, line.strip())
+            res.append(line.strip())
+    return res
 
 
 class ESpeak(BasePhonemizer):
@@ -195,8 +188,6 @@ class ESpeak(BasePhonemizer):
         # compute phonemes
         phonemes = ""
         for line in _espeak_exe(self.backend, args):
-            logger.debug("line: %s", repr(line))
-            ph_decoded = line.decode("utf8").strip()
             # espeak:
             #   version 1.48.15: " p_ɹ_ˈaɪ_ɚ t_ə n_oʊ_v_ˈɛ_m_b_ɚ t_w_ˈɛ_n_t_i t_ˈuː\n"
             # espeak-ng:
@@ -206,7 +197,7 @@ class ESpeak(BasePhonemizer):
             #   "sɛʁtˈɛ̃ mˈo kɔm (en)fˈʊtbɔːl(fr) ʒenˈɛʁ de- flˈaɡ də- lˈɑ̃ɡ."
             # phonemize needs to remove the language flags of the returned text:
             #   "sɛʁtˈɛ̃ mˈo kɔm fˈʊtbɔːl ʒenˈɛʁ de- flˈaɡ də- lˈɑ̃ɡ."
-            ph_decoded = re.sub(r"\(.+?\)", "", ph_decoded)
+            ph_decoded = re.sub(r"\(.+?\)", "", line)
 
             phonemes += ph_decoded.strip()
         return phonemes.replace("_", separator)
@@ -226,13 +217,11 @@ class ESpeak(BasePhonemizer):
         args = ["--voices"]
         langs = {}
         for count, line in enumerate(_espeak_exe(_DEF_ESPEAK_LIB, args)):
-            line = line.decode("utf8").strip()
             if count > 0:
                 cols = line.split()
                 lang_code = cols[1]
                 lang_name = cols[3]
                 langs[lang_code] = lang_name
-            logger.debug("line: %s", repr(line))
         return langs
 
     def version(self) -> str:
