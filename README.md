@@ -154,7 +154,7 @@ The following extras allow the installation of optional dependencies:
 |------|-------------|
 | `all` | All optional dependencies, except `dev` and `docs` |
 | `dev` | Development dependencies |
-| `dev` | Dependencies for building the documentation |
+| `docs` | Dependencies for building the documentation |
 | `notebooks` | Dependencies only used in notebooks |
 | `server` | Dependencies to run the TTS server |
 | `bn` | Bangla G2P |
@@ -270,11 +270,10 @@ You can find the language ISO codes [here](https://dl.fbaipublicfiles.com/mms/tt
 and learn about the Fairseq models [here](https://github.com/facebookresearch/fairseq/tree/main/examples/mms).
 
 ```python
-# TTS with on the fly voice conversion
+# TTS with fairseq models
 api = TTS("tts_models/deu/fairseq/vits")
-api.tts_with_vc_to_file(
+api.tts_to_file(
     "Wie sage ich auf Italienisch, dass ich dich liebe?",
-    speaker_wav="target/speaker.wav",
     file_path="output.wav"
 )
 ```
