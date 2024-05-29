@@ -3,6 +3,8 @@
 import logging
 import re
 import subprocess
+import tempfile
+from pathlib import Path
 from typing import Optional
 
 from packaging.version import Version
@@ -184,7 +186,12 @@ class ESpeak(BasePhonemizer):
         if tie:
             args.append("--tie=%s" % tie)
 
-        args.append(text)
+        tmp = tempfile.NamedTemporaryFile(mode="w+t", delete=False, encoding="utf8")
+        tmp.write(text)
+        tmp.close()
+        args.append("-f")
+        args.append(tmp.name)
+
         # compute phonemes
         phonemes = ""
         for line in _espeak_exe(self.backend, args):
@@ -200,6 +207,7 @@ class ESpeak(BasePhonemizer):
             ph_decoded = re.sub(r"\(.+?\)", "", line)
 
             phonemes += ph_decoded.strip()
+        Path(tmp.name).unlink()
         return phonemes.replace("_", separator)
 
     def _phonemize(self, text: str, separator: str = "") -> str:

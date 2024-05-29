@@ -116,6 +116,12 @@ class TestEspeakNgPhonemizer(unittest.TestCase):
         output = self.phonemizer.phonemize(text, separator="")
         self.assertEqual(output, gt)
 
+        # UTF8 characters
+        text = "źrebię"
+        gt = "ʑrˈɛbjɛ"
+        output = ESpeak("pl").phonemize(text, separator="")
+        self.assertEqual(output, gt)
+
     def test_name(self):
         self.assertEqual(self.phonemizer.name(), "espeak")
 
