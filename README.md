@@ -55,6 +55,10 @@ Please use our dedicated channels for questions and discussion. Help is much mor
 [discord]: https://discord.gg/5eXr5seRrv
 [Tutorials and Examples]: https://github.com/coqui-ai/TTS/wiki/TTS-Notebooks-and-Tutorials
 
+The [issues](https://github.com/coqui-ai/TTS/issues) and
+[discussions](https://github.com/coqui-ai/TTS/discussions) in the original
+repository are also still a useful source of information.
+
 
 ## 🔗 Links and Resources
 | Type                            | Links                               |
@@ -143,6 +147,7 @@ If you plan to code or train models, clone 🐸TTS and install it locally.
 
 ```bash
 git clone https://github.com/idiap/coqui-ai-TTS
+cd coqui-ai-TTS
 pip install -e .
 ```
 
