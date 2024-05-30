@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+
+"""Command line interface."""
 
 import argparse
 import contextlib
@@ -136,19 +137,8 @@ $ tts --out_path output/path/speech.wav --model_name "<language>/<dataset>/<mode
 """
 
 
-def str2bool(v):
-    if isinstance(v, bool):
-        return v
-    if v.lower() in ("yes", "true", "t", "y", "1"):
-        return True
-    if v.lower() in ("no", "false", "f", "n", "0"):
-        return False
-    raise argparse.ArgumentTypeError("Boolean value expected.")
-
-
-def main():
-    setup_logger("TTS", level=logging.INFO, screen=True, formatter=ConsoleFormatter())
-
+def parse_args() -> argparse.Namespace:
+    """Parse arguments."""
     parser = argparse.ArgumentParser(
         description=description.replace("    ```\n", ""),
         formatter_class=RawTextHelpFormatter,
@@ -156,10 +146,7 @@ def main():
 
     parser.add_argument(
         "--list_models",
-        type=str2bool,
-        nargs="?",
-        const=True,
-        default=False,
+        action="store_true",
         help="list available pre-trained TTS and vocoder models.",
     )
 
@@ -207,7 +194,7 @@ def main():
         default="tts_output.wav",
         help="Output wav file path.",
     )
-    parser.add_argument("--use_cuda", type=bool, help="Run model on CUDA.", default=False)
+    parser.add_argument("--use_cuda", action="store_true", help="Run model on CUDA.")
     parser.add_argument("--device", type=str, help="Device to run model on.", default="cpu")
     parser.add_argument(
         "--vocoder_path",
@@ -226,10 +213,7 @@ def main():
     parser.add_argument(
         "--pipe_out",
         help="stdout the generated TTS wav file for shell pipe.",
-        type=str2bool,
-        nargs="?",
-        const=True,
-        default=False,
+        action="store_true",
     )
 
     # args for multi-speaker synthesis
@@ -261,25 +245,18 @@ def main():
     parser.add_argument(
         "--list_speaker_idxs",
         help="List available speaker ids for the defined multi-speaker model.",
-        type=str2bool,
-        nargs="?",
-        const=True,
-        default=False,
+        action="store_true",
     )
     parser.add_argument(
         "--list_language_idxs",
         help="List available language ids for the defined multi-lingual model.",
-        type=str2bool,
-        nargs="?",
-        const=True,
-        default=False,
+        action="store_true",
     )
     # aux args
     parser.add_argument(
         "--save_spectogram",
-        type=bool,
-        help="If true save raw spectogram for further (vocoder) processing in out_path.",
-        default=False,
+        action="store_true",
+        help="Save raw spectogram for further (vocoder) processing in out_path.",
     )
     parser.add_argument(
         "--reference_wav",
@@ -295,8 +272,8 @@ def main():
     )
     parser.add_argument(
         "--progress_bar",
-        type=str2bool,
-        help="If true shows a progress bar for the model download. Defaults to True",
+        action=argparse.BooleanOptionalAction,
+        help="Show a progress bar for the model download.",
         default=True,
     )
 
@@ -337,19 +314,23 @@ def main():
     ]
     if not any(check_args):
         parser.parse_args(["-h"])
+    return args
+
+
+def main():
+    setup_logger("TTS", level=logging.INFO, screen=True, formatter=ConsoleFormatter())
+    args = parse_args()
 
     pipe_out = sys.stdout if args.pipe_out else None
 
     with contextlib.redirect_stdout(None if args.pipe_out else sys.stdout):
         # Late-import to make things load faster
-        from TTS.api import TTS
         from TTS.utils.manage import ModelManager
         from TTS.utils.synthesizer import Synthesizer
 
         # load model manager
         path = Path(__file__).parent / "../.models.json"
         manager = ModelManager(path, progress_bar=args.progress_bar)
-        api = TTS()
 
         tts_path = None
         tts_config_path = None

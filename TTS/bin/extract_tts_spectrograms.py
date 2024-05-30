@@ -282,7 +282,7 @@ if __name__ == "__main__":
     parser.add_argument("--debug", default=False, action="store_true", help="Save audio files for debug")
     parser.add_argument("--save_audio", default=False, action="store_true", help="Save audio files")
     parser.add_argument("--quantize_bits", type=int, default=0, help="Save quantized audio files if non-zero")
-    parser.add_argument("--eval", type=bool, help="compute eval.", default=True)
+    parser.add_argument("--eval", action=argparse.BooleanOptionalAction, help="compute eval.", default=True)
     args = parser.parse_args()
 
     c = load_config(args.config_path)

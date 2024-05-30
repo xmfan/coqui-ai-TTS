@@ -150,7 +150,7 @@ if __name__ == "__main__":
         default=False,
         action="store_true",
     )
-    parser.add_argument("--disable_cuda", type=bool, help="Flag to disable cuda.", default=False)
+    parser.add_argument("--disable_cuda", action="store_true", help="Flag to disable cuda.", default=False)
     parser.add_argument("--no_eval", help="Do not compute eval?. Default False", default=False, action="store_true")
     parser.add_argument(
         "--formatter_name",

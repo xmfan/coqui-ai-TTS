@@ -75,8 +75,8 @@ if __name__ == "__main__":
         type=str,
         help="Path to dataset config file.",
     )
-    parser.add_argument("--use_cuda", type=bool, help="flag to set cuda.", default=True)
-    parser.add_argument("--eval", type=bool, help="compute eval.", default=True)
+    parser.add_argument("--use_cuda", action=argparse.BooleanOptionalAction, help="flag to set cuda.", default=True)
+    parser.add_argument("--eval", action=argparse.BooleanOptionalAction, help="compute eval.", default=True)
 
     args = parser.parse_args()
 
