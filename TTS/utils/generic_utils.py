@@ -126,7 +126,7 @@ def format_aux_input(def_args: Dict, kwargs: Dict) -> Dict:
 
 
 def get_timestamp() -> str:
-    return datetime.now().strftime("%y%m%d-%H%M%S")
+    return datetime.datetime.now().strftime("%y%m%d-%H%M%S")
 
 
 class ConsoleFormatter(logging.Formatter):
