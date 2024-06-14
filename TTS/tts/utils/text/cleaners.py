@@ -3,6 +3,7 @@
 # TODO: pick the cleaner for languages dynamically
 
 import re
+from typing import Optional
 
 from anyascii import anyascii
 
@@ -44,8 +45,8 @@ def remove_aux_symbols(text):
     return text
 
 
-def replace_symbols(text, lang="en"):
-    """Replace symbols based on the lenguage tag.
+def replace_symbols(text, lang: Optional[str] = "en"):
+    """Replace symbols based on the language tag.
 
     Args:
       text:
@@ -122,10 +123,22 @@ def english_cleaners(text):
 
 
 def phoneme_cleaners(text):
-    """Pipeline for phonemes mode, including number and abbreviation expansion."""
+    """Pipeline for phonemes mode, including number and abbreviation expansion.
+
+    NB: This cleaner converts numbers into English words, for other languages
+    use multilingual_phoneme_cleaners().
+    """
     text = en_normalize_numbers(text)
     text = expand_abbreviations(text)
     text = replace_symbols(text)
+    text = remove_aux_symbols(text)
+    text = collapse_whitespace(text)
+    return text
+
+
+def multilingual_phoneme_cleaners(text):
+    """Pipeline for phonemes mode, including number and abbreviation expansion."""
+    text = replace_symbols(text, lang=None)
     text = remove_aux_symbols(text)
     text = collapse_whitespace(text)
     return text
