@@ -35,7 +35,7 @@ Example run:
         --data_path /root/LJSpeech-1.1/
         --batch_size 32
         --dataset ljspeech
-        --use_cuda True
+        --use_cuda
 """,
         formatter_class=RawTextHelpFormatter,
     )
@@ -62,7 +62,7 @@ Example run:
         help="Dataset metafile inclusing file paths with transcripts.",
     )
     parser.add_argument("--data_path", type=str, default="", help="Defines the data path. It overwrites config.json.")
-    parser.add_argument("--use_cuda", type=bool, default=False, help="enable/disable cuda.")
+    parser.add_argument("--use_cuda", action=argparse.BooleanOptionalAction, default=False, help="enable/disable cuda.")
 
     parser.add_argument(
         "--batch_size", default=16, type=int, help="Batch size for the model. Use batch_size=1 if you have no CUDA."
