@@ -382,8 +382,7 @@ class FreeVC(BaseVC):
         """Load pretrained speaker encoder model as mentioned in the paper."""
         logger.info("Loading pretrained speaker encoder model ...")
         self.enc_spk_ex = SpeakerEncoderEx(
-            "https://github.com/coqui-ai/TTS/releases/download/v0.13.0_models/speaker_encoder.pt",
-            device=self.device
+            "https://github.com/coqui-ai/TTS/releases/download/v0.13.0_models/speaker_encoder.pt", device=self.device
         )
 
     def init_multispeaker(self, config: Coqpit):

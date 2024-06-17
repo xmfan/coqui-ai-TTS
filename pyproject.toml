@@ -2,7 +2,7 @@
 requires = [
     "setuptools",
     "cython~=0.29.30",
-    "numpy>=1.24.3",
+    "numpy>=2.0.0",
 ]
 build-backend = "setuptools.build_meta"
 
@@ -84,7 +84,7 @@ dev = [
     "coverage[toml]",
     "nose2",
     "pre-commit",
-    "ruff==0.3.0",
+    "ruff==0.4.9",
     "tomli; python_version < '3.11'",
 ]
 # Dependencies for building the documentation
@@ -169,6 +169,7 @@ lint.extend-select = [
     "PLR1711", # useless-return
     "PLW",
     "W291", # trailing-whitespace
+    "NPY201",  # NumPy 2.0 deprecation
 ]
 
 lint.ignore = [
