@@ -14,6 +14,7 @@ from torch.nn.utils.parametrize import remove_parametrizations
 
 import TTS.vc.modules.freevc.commons as commons
 import TTS.vc.modules.freevc.modules as modules
+from TTS.tts.utils.helpers import sequence_mask
 from TTS.tts.utils.speakers import SpeakerManager
 from TTS.utils.io import load_fsspec
 from TTS.vc.configs.freevc_config import FreeVCConfig
@@ -80,7 +81,7 @@ class Encoder(nn.Module):
         self.proj = nn.Conv1d(hidden_channels, out_channels * 2, 1)
 
     def forward(self, x, x_lengths, g=None):
-        x_mask = torch.unsqueeze(commons.sequence_mask(x_lengths, x.size(2)), 1).to(x.dtype)
+        x_mask = torch.unsqueeze(sequence_mask(x_lengths, x.size(2)), 1).to(x.dtype)
         x = self.pre(x) * x_mask
         x = self.enc(x, x_mask, g=g)
         stats = self.proj(x) * x_mask

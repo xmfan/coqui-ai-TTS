@@ -3,7 +3,7 @@ import math
 import torch
 from torch.nn import functional as F
 
-from TTS.tts.utils.helpers import convert_pad_shape
+from TTS.tts.utils.helpers import convert_pad_shape, sequence_mask
 
 
 def init_weights(m, mean=0.0, std=0.01):
@@ -115,20 +115,11 @@ def shift_1d(x):
     return x
 
 
-def sequence_mask(length, max_length=None):
-    if max_length is None:
-        max_length = length.max()
-    x = torch.arange(max_length, dtype=length.dtype, device=length.device)
-    return x.unsqueeze(0) < length.unsqueeze(1)
-
-
 def generate_path(duration, mask):
     """
     duration: [b, 1, t_x]
     mask: [b, 1, t_y, t_x]
     """
-    device = duration.device
-
     b, _, t_y, t_x = mask.shape
     cum_duration = torch.cumsum(duration, -1)
 
