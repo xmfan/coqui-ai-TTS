@@ -31,7 +31,7 @@ def test_sequence_mask():
 
 
 def test_segment():
-    x = T.range(0, 11)
+    x = T.arange(0, 12)
     x = x.repeat(8, 1).unsqueeze(1)
     segment_ids = T.randint(0, 7, (8,))
 
