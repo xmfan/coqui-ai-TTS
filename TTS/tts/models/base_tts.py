@@ -144,7 +144,7 @@ class BaseTTS(BaseTrainerModel):
                 if speaker_name is None:
                     d_vector = self.speaker_manager.get_random_embedding()
                 else:
-                    d_vector = self.speaker_manager.get_d_vector_by_name(speaker_name)
+                    d_vector = self.speaker_manager.get_mean_embedding(speaker_name)
             elif config.use_speaker_embedding:
                 if speaker_name is None:
                     speaker_id = self.speaker_manager.get_random_id()
