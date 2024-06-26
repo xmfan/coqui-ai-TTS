@@ -6,7 +6,7 @@ from torch.nn import functional as F
 from TTS.tts.utils.helpers import convert_pad_shape, sequence_mask
 
 
-def init_weights(m, mean=0.0, std=0.01):
+def init_weights(m: torch.nn.Module, mean: float = 0.0, std: float = 0.01) -> None:
     classname = m.__class__.__name__
     if classname.find("Conv") != -1:
         m.weight.data.normal_(mean, std)
