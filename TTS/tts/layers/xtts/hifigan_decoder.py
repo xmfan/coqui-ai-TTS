@@ -9,14 +9,11 @@ from torch.nn.utils.parametrizations import weight_norm
 from torch.nn.utils.parametrize import remove_parametrizations
 
 from TTS.utils.io import load_fsspec
+from TTS.vocoder.models.hifigan_generator import get_padding
 
 logger = logging.getLogger(__name__)
 
 LRELU_SLOPE = 0.1
-
-
-def get_padding(k, d):
-    return int((k * d - d) / 2)
 
 
 class ResBlock1(torch.nn.Module):

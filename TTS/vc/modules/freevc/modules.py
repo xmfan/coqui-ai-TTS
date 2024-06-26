@@ -7,7 +7,8 @@ from torch.nn.utils.parametrize import remove_parametrizations
 
 import TTS.vc.modules.freevc.commons as commons
 from TTS.tts.layers.generic.normalization import LayerNorm2
-from TTS.vc.modules.freevc.commons import get_padding, init_weights
+from TTS.vc.modules.freevc.commons import init_weights
+from TTS.vocoder.models.hifigan_generator import get_padding
 
 LRELU_SLOPE = 0.1
 

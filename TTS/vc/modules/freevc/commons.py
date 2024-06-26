@@ -12,10 +12,6 @@ def init_weights(m: torch.nn.Module, mean: float = 0.0, std: float = 0.01) -> No
         m.weight.data.normal_(mean, std)
 
 
-def get_padding(kernel_size, dilation=1):
-    return int((kernel_size * dilation - dilation) / 2)
-
-
 def intersperse(lst, item):
     result = [item] * (len(lst) * 2 + 1)
     result[1::2] = lst

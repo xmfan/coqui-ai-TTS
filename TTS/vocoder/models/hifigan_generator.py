@@ -15,8 +15,8 @@ logger = logging.getLogger(__name__)
 LRELU_SLOPE = 0.1
 
 
-def get_padding(k, d):
-    return int((k * d - d) / 2)
+def get_padding(kernel_size: int, dilation: int = 1) -> int:
+    return int((kernel_size * dilation - dilation) / 2)
 
 
 class ResBlock1(torch.nn.Module):

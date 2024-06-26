@@ -19,10 +19,11 @@ from TTS.tts.utils.speakers import SpeakerManager
 from TTS.utils.io import load_fsspec
 from TTS.vc.configs.freevc_config import FreeVCConfig
 from TTS.vc.models.base_vc import BaseVC
-from TTS.vc.modules.freevc.commons import get_padding, init_weights
+from TTS.vc.modules.freevc.commons import init_weights
 from TTS.vc.modules.freevc.mel_processing import mel_spectrogram_torch
 from TTS.vc.modules.freevc.speaker_encoder.speaker_encoder import SpeakerEncoder as SpeakerEncoderEx
 from TTS.vc.modules.freevc.wavlm import get_wavlm
+from TTS.vocoder.models.hifigan_generator import get_padding
 
 logger = logging.getLogger(__name__)
 

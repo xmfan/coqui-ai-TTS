@@ -10,10 +10,6 @@ from TTS.tts.utils.helpers import sequence_mask
 LRELU_SLOPE = 0.1
 
 
-def get_padding(kernel_size, dilation=1):
-    return int((kernel_size * dilation - dilation) / 2)
-
-
 class TextEncoder(nn.Module):
     def __init__(
         self,
