@@ -88,12 +88,6 @@ def pad(input_ele: List[torch.Tensor], max_len: int) -> torch.Tensor:
     return out_padded
 
 
-def init_weights(m: nn.Module, mean: float = 0.0, std: float = 0.01):
-    classname = m.__class__.__name__
-    if classname.find("Conv") != -1:
-        m.weight.data.normal_(mean, std)
-
-
 def stride_lens(lens: torch.Tensor, stride: int = 2) -> torch.Tensor:
     return torch.ceil(lens / stride).int()
 

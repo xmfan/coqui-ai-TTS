@@ -161,9 +161,6 @@ def train(model, optimizer, scheduler, criterion, data_loader, eval_data_loader,
             loader_time = time.time() - end_time
             global_step += 1
 
-            # setup lr
-            if c.lr_decay:
-                scheduler.step()
             optimizer.zero_grad()
 
             # dispatch data to GPU
@@ -181,6 +178,10 @@ def train(model, optimizer, scheduler, criterion, data_loader, eval_data_loader,
             loss.backward()
             grad_norm, _ = check_update(model, c.grad_clip)
             optimizer.step()
+
+            # setup lr
+            if c.lr_decay:
+                scheduler.step()
 
             step_time = time.time() - start_time
             epoch_time += step_time

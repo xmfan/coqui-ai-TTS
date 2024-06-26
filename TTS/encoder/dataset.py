@@ -55,7 +55,7 @@ class EncoderDataset(Dataset):
         logger.info(" | Number of instances: %d", len(self.items))
         logger.info(" | Sequence length: %d", self.seq_len)
         logger.info(" | Number of classes: %d", len(self.classes))
-        logger.info(" | Classes: %d", self.classes)
+        logger.info(" | Classes: %s", self.classes)
 
     def load_wav(self, filename):
         audio = self.ap.load_wav(filename, sr=self.ap.sample_rate)
