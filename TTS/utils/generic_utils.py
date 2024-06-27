@@ -4,25 +4,11 @@ import importlib
 import logging
 import os
 import re
-import subprocess
 import sys
 from pathlib import Path
 from typing import Dict, Optional
 
 logger = logging.getLogger(__name__)
-
-
-# TODO: This method is duplicated in Trainer but out of date there
-def get_git_branch():
-    try:
-        out = subprocess.check_output(["git", "branch"]).decode("utf8")
-        current = next(line for line in out.split("\n") if line.startswith("*"))
-        current.replace("* ", "")
-    except subprocess.CalledProcessError:
-        current = "inside_docker"
-    except (FileNotFoundError, StopIteration) as e:
-        current = "unknown"
-    return current
 
 
 def to_camel(text):
