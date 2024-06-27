@@ -103,7 +103,8 @@ class BaseTacotron(BaseTTS):
             config (Coqpi): model configuration.
             checkpoint_path (str): path to checkpoint file.
             eval (bool, optional): whether to load model for evaluation.
-            cache (bool, optional): If True, cache the file locally for subsequent calls. It is cached under `get_user_data_dir()/tts_cache`. Defaults to False.
+            cache (bool, optional): If True, cache the file locally for subsequent calls.
+                It is cached under `trainer.io.get_user_data_dir()/tts_cache`. Defaults to False.
         """
         state = load_fsspec(checkpoint_path, map_location=torch.device("cpu"), cache=cache)
         self.load_state_dict(state["model"])
