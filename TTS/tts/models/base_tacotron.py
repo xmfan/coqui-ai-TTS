@@ -6,6 +6,7 @@ from typing import Dict, Tuple
 import torch
 from coqpit import Coqpit
 from torch import nn
+from trainer.io import load_fsspec
 
 from TTS.tts.layers.losses import TacotronLoss
 from TTS.tts.models.base_tts import BaseTTS
@@ -15,7 +16,6 @@ from TTS.tts.utils.synthesis import synthesis
 from TTS.tts.utils.text.tokenizer import TTSTokenizer
 from TTS.tts.utils.visual import plot_alignment, plot_spectrogram
 from TTS.utils.generic_utils import format_aux_input
-from TTS.utils.io import load_fsspec
 from TTS.utils.training import gradual_training_scheduler
 
 logger = logging.getLogger(__name__)
