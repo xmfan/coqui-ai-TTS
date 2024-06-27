@@ -29,7 +29,7 @@ def process_args(args, config=None):
         args (argparse.Namespace or dict like): Parsed input arguments.
         config (Coqpit): Model config. If none, it is generated from `args`. Defaults to None.
     Returns:
-        c (TTS.utils.io.AttrDict): Config paramaters.
+        c (Coqpit): Config paramaters.
         out_path (str): Path to save models and logging.
         audio_path (str): Path to save generated test audios.
         c_logger (TTS.utils.console_logger.ConsoleLogger): Class that does
