@@ -1,6 +1,7 @@
 import logging
 import os
 from dataclasses import dataclass
+from pathlib import Path
 
 import librosa
 import torch
@@ -760,7 +761,11 @@ class Xtts(BaseTTS):
         """
 
         model_path = checkpoint_path or os.path.join(checkpoint_dir, "model.pth")
-        vocab_path = vocab_path or os.path.join(checkpoint_dir, "vocab.json")
+        if vocab_path is None:
+            if checkpoint_dir is not None and (Path(checkpoint_dir) / "vocab.json").is_file():
+                vocab_path = str(Path(checkpoint_dir) / "vocab.json")
+            else:
+                vocab_path = config.model_args.tokenizer_file
 
         if speaker_file_path is None and checkpoint_dir is not None:
             speaker_file_path = os.path.join(checkpoint_dir, "speakers_xtts.pth")
