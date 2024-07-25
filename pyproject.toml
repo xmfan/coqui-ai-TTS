@@ -59,8 +59,6 @@ dependencies = [
     "packaging>=23.1",
     # Inference
     "pysbd>=0.3.4",
-    # Notebooks
-    "umap-learn>=0.5.1",
     # Training
     "matplotlib>=3.7.0",
     # Coqui stack
@@ -101,6 +99,7 @@ docs = [
 notebooks = [
     "bokeh==1.4.0",
     "pandas>=1.4,<2.0",
+    "umap-learn>=0.5.1",
 ]
 # For running the TTS server
 server = ["flask>=3.0.0"]
