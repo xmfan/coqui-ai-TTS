@@ -124,7 +124,7 @@ def load_voice(voice: str, extra_voice_dirs: List[str] = []):
     voices = get_voices(extra_voice_dirs)
     paths = voices[voice]
     if len(paths) == 1 and paths[0].endswith(".pth"):
-        return None, torch.load(paths[0])
+        return None, torch.load(paths[0], weights_only=True)
     else:
         conds = []
         for cond_path in paths:
