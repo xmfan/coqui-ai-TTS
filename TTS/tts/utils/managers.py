@@ -17,7 +17,7 @@ def load_file(path: str):
             return json.load(f)
     elif path.endswith(".pth"):
         with fsspec.open(path, "rb") as f:
-            return torch.load(f, map_location="cpu")
+            return torch.load(f, map_location="cpu", weights_only=True)
     else:
         raise ValueError("Unsupported file type")
 

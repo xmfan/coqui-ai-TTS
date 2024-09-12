@@ -96,7 +96,6 @@ class BarkConfig(BaseTTSConfig):
             "coarse": os.path.join(self.CACHE_DIR, "coarse_2.pt"),
             "fine": os.path.join(self.CACHE_DIR, "fine_2.pt"),
             "hubert_tokenizer": os.path.join(self.CACHE_DIR, "tokenizer.pth"),
-            "hubert": os.path.join(self.CACHE_DIR, "hubert.pt"),
         }
         self.SMALL_REMOTE_MODEL_PATHS = {
             "text": {"path": os.path.join(self.REMOTE_BASE_URL, "text.pt")},

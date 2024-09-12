@@ -120,7 +120,7 @@ class Overflow(BaseTTS):
 
     def preprocess_batch(self, text, text_len, mels, mel_len):
         if self.mean.item() == 0 or self.std.item() == 1:
-            statistics_dict = torch.load(self.mel_statistics_parameter_path)
+            statistics_dict = torch.load(self.mel_statistics_parameter_path, weights_only=True)
             self.update_mean_std(statistics_dict)
 
         mels = self.normalize(mels)
@@ -308,7 +308,7 @@ class Overflow(BaseTTS):
                 "Data parameters found for: %s. Loading mel normalization parameters...",
                 trainer.config.mel_statistics_parameter_path,
             )
-            statistics = torch.load(trainer.config.mel_statistics_parameter_path)
+            statistics = torch.load(trainer.config.mel_statistics_parameter_path, weights_only=True)
             data_mean, data_std, init_transition_prob = (
                 statistics["mean"],
                 statistics["std"],
