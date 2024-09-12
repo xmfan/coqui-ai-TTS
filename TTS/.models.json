@@ -48,7 +48,6 @@
                         "https://coqui.gateway.scarf.sh/hf/bark/fine_2.pt",
                         "https://coqui.gateway.scarf.sh/hf/bark/text_2.pt",
                         "https://coqui.gateway.scarf.sh/hf/bark/config.json",
-                        "https://coqui.gateway.scarf.sh/hf/bark/hubert.pt",
                         "https://coqui.gateway.scarf.sh/hf/bark/tokenizer.pth"
                     ],
                     "default_vocoder": null,

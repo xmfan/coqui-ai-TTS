@@ -134,10 +134,9 @@ def generate_voice(
     # generate semantic tokens
     # Load the HuBERT model
     hubert_manager = HubertManager()
-    # hubert_manager.make_sure_hubert_installed(model_path=model.config.LOCAL_MODEL_PATHS["hubert"])
     hubert_manager.make_sure_tokenizer_installed(model_path=model.config.LOCAL_MODEL_PATHS["hubert_tokenizer"])
 
-    hubert_model = CustomHubert(checkpoint_path=model.config.LOCAL_MODEL_PATHS["hubert"]).to(model.device)
+    hubert_model = CustomHubert().to(model.device)
 
     # Load the CustomTokenizer model
     tokenizer = HubertTokenizer.load_from_checkpoint(

@@ -40,7 +40,7 @@ class CustomHubert(nn.Module):
     or you can train your own
     """
 
-    def __init__(self, checkpoint_path, target_sample_hz=16000, seq_len_multiple_of=None, output_layer=9, device=None):
+    def __init__(self, target_sample_hz=16000, seq_len_multiple_of=None, output_layer=9, device=None):
         super().__init__()
         self.target_sample_hz = target_sample_hz
         self.seq_len_multiple_of = seq_len_multiple_of
