@@ -44,10 +44,10 @@ classifiers = [
 ]
 dependencies = [
     # Core
-    "numpy>=1.24.3,<2.0.0",  # TODO: remove upper bound after spacy/thinc release
+    "numpy>=1.25.2,<2.0.0",  # TODO: remove upper bound after spacy/thinc release
     "cython>=0.29.30",
     "scipy>=1.11.2",
-    "torch>=2.1",
+    "torch>=2.4",
     "torchaudio",
     "soundfile>=0.12.0",
     "librosa>=0.10.1",

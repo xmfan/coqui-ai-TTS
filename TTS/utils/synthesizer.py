@@ -12,9 +12,6 @@ from TTS.config import load_config
 from TTS.tts.configs.vits_config import VitsConfig
 from TTS.tts.models import setup_model as setup_tts_model
 from TTS.tts.models.vits import Vits
-
-# pylint: disable=unused-wildcard-import
-# pylint: disable=wildcard-import
 from TTS.tts.utils.synthesis import synthesis, transfer_voice, trim_silence
 from TTS.utils.audio import AudioProcessor
 from TTS.utils.audio.numpy_transforms import save_wav
