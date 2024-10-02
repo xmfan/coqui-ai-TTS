@@ -1,9 +1,8 @@
 """Set of default text cleaners"""
 
-# TODO: pick the cleaner for languages dynamically
-
 import re
 from typing import Optional
+from unicodedata import normalize
 
 from anyascii import anyascii
 
@@ -83,6 +82,7 @@ def replace_symbols(text: str, lang: Optional[str] = "en") -> str:
 
 def basic_cleaners(text: str) -> str:
     """Basic pipeline that lowercases and collapses whitespace without transliteration."""
+    text = normalize_unicode(text)
     text = lowercase(text)
     text = collapse_whitespace(text)
     return text
@@ -90,6 +90,7 @@ def basic_cleaners(text: str) -> str:
 
 def transliteration_cleaners(text: str) -> str:
     """Pipeline for non-English text that transliterates to ASCII."""
+    text = normalize_unicode(text)
     # text = convert_to_ascii(text)
     text = lowercase(text)
     text = collapse_whitespace(text)
@@ -98,6 +99,7 @@ def transliteration_cleaners(text: str) -> str:
 
 def basic_german_cleaners(text: str) -> str:
     """Pipeline for German text"""
+    text = normalize_unicode(text)
     text = lowercase(text)
     text = collapse_whitespace(text)
     return text
@@ -106,6 +108,7 @@ def basic_german_cleaners(text: str) -> str:
 # TODO: elaborate it
 def basic_turkish_cleaners(text: str) -> str:
     """Pipeline for Turkish text"""
+    text = normalize_unicode(text)
     text = text.replace("I", "ı")
     text = lowercase(text)
     text = collapse_whitespace(text)
@@ -114,6 +117,7 @@ def basic_turkish_cleaners(text: str) -> str:
 
 def english_cleaners(text: str) -> str:
     """Pipeline for English text, including number and abbreviation expansion."""
+    text = normalize_unicode(text)
     # text = convert_to_ascii(text)
     text = lowercase(text)
     text = expand_time_english(text)
@@ -131,6 +135,7 @@ def phoneme_cleaners(text: str) -> str:
     NB: This cleaner converts numbers into English words, for other languages
     use multilingual_phoneme_cleaners().
     """
+    text = normalize_unicode(text)
     text = en_normalize_numbers(text)
     text = expand_abbreviations(text)
     text = replace_symbols(text)
@@ -141,6 +146,7 @@ def phoneme_cleaners(text: str) -> str:
 
 def multilingual_phoneme_cleaners(text: str) -> str:
     """Pipeline for phonemes mode, including number and abbreviation expansion."""
+    text = normalize_unicode(text)
     text = replace_symbols(text, lang=None)
     text = remove_aux_symbols(text)
     text = collapse_whitespace(text)
@@ -149,6 +155,7 @@ def multilingual_phoneme_cleaners(text: str) -> str:
 
 def french_cleaners(text: str) -> str:
     """Pipeline for French text. There is no need to expand numbers, phonemizer already does that"""
+    text = normalize_unicode(text)
     text = expand_abbreviations(text, lang="fr")
     text = lowercase(text)
     text = replace_symbols(text, lang="fr")
@@ -160,6 +167,7 @@ def french_cleaners(text: str) -> str:
 def portuguese_cleaners(text: str) -> str:
     """Basic pipeline for Portuguese text. There is no need to expand abbreviation and
     numbers, phonemizer already does that"""
+    text = normalize_unicode(text)
     text = lowercase(text)
     text = replace_symbols(text, lang="pt")
     text = remove_aux_symbols(text)
@@ -169,12 +177,14 @@ def portuguese_cleaners(text: str) -> str:
 
 def chinese_mandarin_cleaners(text: str) -> str:
     """Basic pipeline for chinese"""
+    text = normalize_unicode(text)
     text = replace_numbers_to_characters_in_text(text)
     return text
 
 
 def multilingual_cleaners(text: str) -> str:
     """Pipeline for multilingual text"""
+    text = normalize_unicode(text)
     text = lowercase(text)
     text = replace_symbols(text, lang=None)
     text = remove_aux_symbols(text)
@@ -185,4 +195,10 @@ def multilingual_cleaners(text: str) -> str:
 def no_cleaners(text: str) -> str:
     # remove newline characters
     text = text.replace("\n", "")
+    return text
+
+
+def normalize_unicode(text: str) -> str:
+    """Normalize Unicode characters."""
+    text = normalize("NFC", text)
     return text
