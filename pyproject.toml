@@ -2,7 +2,7 @@
 requires = [
     "setuptools",
     "setuptools-scm",
-    "cython~=0.29.30",
+    "cython>=3.0.0",
     "numpy>=2.0.0",
 ]
 build-backend = "setuptools.build_meta"
@@ -45,7 +45,7 @@ classifiers = [
 dependencies = [
     # Core
     "numpy>=1.25.2",
-    "cython>=0.29.30",
+    "cython>=3.0.0",
     "scipy>=1.11.2",
     "torch>=2.4",
     "torchaudio",
@@ -73,7 +73,7 @@ dependencies = [
     "encodec>=0.1.1",
     # XTTS
     "num2words>=0.5.11",
-    "spacy[ja]>=3"
+    "spacy[ja]>=3,<3.8",
 ]
 
 [project.optional-dependencies]
