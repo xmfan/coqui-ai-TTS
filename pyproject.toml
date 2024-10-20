@@ -147,6 +147,9 @@ Discussions = "https://github.com/idiap/coqui-ai-TTS/discussions"
 tts = "TTS.bin.synthesize:main"
 tts-server = "TTS.server.server:main"
 
+[tool.uv]
+constraint-dependencies = ["numba>0.58.0"]
+
 [tool.ruff]
 target-version = "py39"
 line-length = 120
