@@ -1,13 +1,21 @@
 # AGPL: a notification must be added stating that changes have been made to that file.
 import functools
+from typing import Optional
 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import transformers
+from packaging.version import Version
 from transformers import GPT2Config, GPT2PreTrainedModel, LogitsProcessorList
 from transformers.modeling_outputs import CausalLMOutputWithCrossAttentions
 
 from TTS.tts.layers.tortoise.arch_utils import AttentionBlock, TypicalLogitsWarper
+
+if Version(transformers.__version__) >= Version("4.45"):
+    isin = transformers.pytorch_utils.isin_mps_friendly
+else:
+    isin = torch.isin
 
 
 def null_position_embeddings(range, dim):
@@ -596,6 +604,8 @@ class UnifiedVoice(nn.Module):
         max_length = (
             trunc_index + self.max_mel_tokens - 1 if max_generate_length is None else trunc_index + max_generate_length
         )
+        stop_token_tensor = torch.tensor(self.stop_mel_token, device=inputs.device, dtype=torch.long)
+        attention_mask = _prepare_attention_mask_for_generation(inputs, stop_token_tensor, stop_token_tensor)
         gen = self.inference_model.generate(
             inputs,
             bos_token_id=self.start_mel_token,
@@ -604,9 +614,37 @@ class UnifiedVoice(nn.Module):
             max_length=max_length,
             logits_processor=logits_processor,
             num_return_sequences=num_return_sequences,
+            attention_mask=attention_mask,
             **hf_generate_kwargs,
         )
         return gen[:, trunc_index:]
+
+
+def _prepare_attention_mask_for_generation(
+    inputs: torch.Tensor,
+    pad_token_id: Optional[torch.Tensor],
+    eos_token_id: Optional[torch.Tensor],
+) -> torch.LongTensor:
+    # No information for attention mask inference -> return default attention mask
+    default_attention_mask = torch.ones(inputs.shape[:2], dtype=torch.long, device=inputs.device)
+    if pad_token_id is None:
+        return default_attention_mask
+
+    is_input_ids = len(inputs.shape) == 2 and inputs.dtype in [torch.int, torch.long]
+    if not is_input_ids:
+        return default_attention_mask
+
+    is_pad_token_in_inputs = (pad_token_id is not None) and (isin(elements=inputs, test_elements=pad_token_id).any())
+    is_pad_token_not_equal_to_eos_token_id = (eos_token_id is None) or ~(
+        isin(elements=eos_token_id, test_elements=pad_token_id).any()
+    )
+    can_infer_attention_mask = is_pad_token_in_inputs * is_pad_token_not_equal_to_eos_token_id
+    attention_mask_from_padding = inputs.ne(pad_token_id).long()
+
+    attention_mask = (
+        attention_mask_from_padding * can_infer_attention_mask + default_attention_mask * ~can_infer_attention_mask
+    )
+    return attention_mask
 
 
 if __name__ == "__main__":
