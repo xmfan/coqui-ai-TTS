@@ -18,7 +18,7 @@ from TTS.tts.models.base_tts import BaseTTS
 from TTS.tts.utils.speakers import SpeakerManager
 from TTS.tts.utils.text.tokenizer import TTSTokenizer
 from TTS.tts.utils.visual import plot_alignment, plot_spectrogram
-from TTS.utils.generic_utils import format_aux_input
+from TTS.utils.generic_utils import format_aux_input, is_pytorch_at_least_2_4
 
 logger = logging.getLogger(__name__)
 
@@ -107,7 +107,7 @@ class NeuralhmmTTS(BaseTTS):
 
     def preprocess_batch(self, text, text_len, mels, mel_len):
         if self.mean.item() == 0 or self.std.item() == 1:
-            statistics_dict = torch.load(self.mel_statistics_parameter_path, weights_only=True)
+            statistics_dict = torch.load(self.mel_statistics_parameter_path, weights_only=is_pytorch_at_least_2_4())
             self.update_mean_std(statistics_dict)
 
         mels = self.normalize(mels)
@@ -292,7 +292,9 @@ class NeuralhmmTTS(BaseTTS):
                 "Data parameters found for: %s. Loading mel normalization parameters...",
                 trainer.config.mel_statistics_parameter_path,
             )
-            statistics = torch.load(trainer.config.mel_statistics_parameter_path, weights_only=True)
+            statistics = torch.load(
+                trainer.config.mel_statistics_parameter_path, weights_only=is_pytorch_at_least_2_4()
+            )
             data_mean, data_std, init_transition_prob = (
                 statistics["mean"],
                 statistics["std"],

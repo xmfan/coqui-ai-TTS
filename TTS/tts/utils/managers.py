@@ -9,6 +9,7 @@ import torch
 from TTS.config import load_config
 from TTS.encoder.utils.generic_utils import setup_encoder_model
 from TTS.utils.audio import AudioProcessor
+from TTS.utils.generic_utils import is_pytorch_at_least_2_4
 
 
 def load_file(path: str):
@@ -17,7 +18,7 @@ def load_file(path: str):
             return json.load(f)
     elif path.endswith(".pth"):
         with fsspec.open(path, "rb") as f:
-            return torch.load(f, map_location="cpu", weights_only=True)
+            return torch.load(f, map_location="cpu", weights_only=is_pytorch_at_least_2_4())
     else:
         raise ValueError("Unsupported file type")
 

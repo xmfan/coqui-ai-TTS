@@ -9,6 +9,7 @@ from torch.nn.utils.parametrizations import weight_norm
 from torch.nn.utils.parametrize import remove_parametrizations
 from trainer.io import load_fsspec
 
+from TTS.utils.generic_utils import is_pytorch_at_least_2_4
 from TTS.vocoder.models.hifigan_generator import get_padding
 
 logger = logging.getLogger(__name__)
@@ -328,7 +329,7 @@ class HifiganGenerator(torch.nn.Module):
     def load_checkpoint(
         self, config, checkpoint_path, eval=False, cache=False
     ):  # pylint: disable=unused-argument, redefined-builtin
-        state = torch.load(checkpoint_path, map_location=torch.device("cpu"), weights_only=True)
+        state = torch.load(checkpoint_path, map_location=torch.device("cpu"), weights_only=is_pytorch_at_least_2_4())
         self.load_state_dict(state["model"])
         if eval:
             self.eval()

@@ -6,6 +6,9 @@ import re
 from pathlib import Path
 from typing import Dict, Optional
 
+import torch
+from packaging.version import Version
+
 logger = logging.getLogger(__name__)
 
 
@@ -131,3 +134,8 @@ def setup_logger(
         sh = logging.StreamHandler()
         sh.setFormatter(formatter)
         lg.addHandler(sh)
+
+
+def is_pytorch_at_least_2_4() -> bool:
+    """Check if the installed Pytorch version is 2.4 or higher."""
+    return Version(torch.__version__) >= Version("2.4")
