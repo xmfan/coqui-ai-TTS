@@ -8,6 +8,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from transformers import GPT2Config
 
+from TTS.tts.layers.tortoise.autoregressive import _prepare_attention_mask_for_generation
 from TTS.tts.layers.xtts.gpt_inference import GPT2InferenceModel
 from TTS.tts.layers.xtts.latent_encoder import ConditioningEncoder
 from TTS.tts.layers.xtts.perceiver_encoder import PerceiverResampler
@@ -586,12 +587,15 @@ class GPT(nn.Module):
         **hf_generate_kwargs,
     ):
         gpt_inputs = self.compute_embeddings(cond_latents, text_inputs)
+        stop_token_tensor = torch.tensor(self.stop_audio_token, device=gpt_inputs.device, dtype=torch.long)
+        attention_mask = _prepare_attention_mask_for_generation(gpt_inputs, stop_token_tensor, stop_token_tensor)
         gen = self.gpt_inference.generate(
             gpt_inputs,
             bos_token_id=self.start_audio_token,
             pad_token_id=self.stop_audio_token,
             eos_token_id=self.stop_audio_token,
             max_length=self.max_gen_mel_tokens + gpt_inputs.shape[-1],
+            attention_mask=attention_mask,
             **hf_generate_kwargs,
         )
         if "return_dict_in_generate" in hf_generate_kwargs:

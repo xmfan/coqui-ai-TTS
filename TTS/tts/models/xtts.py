@@ -667,6 +667,7 @@ class Xtts(BaseTTS):
                 repetition_penalty=float(repetition_penalty),
                 output_attentions=False,
                 output_hidden_states=True,
+                return_dict_in_generate=True,
                 **hf_generate_kwargs,
             )
 
