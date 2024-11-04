@@ -12,7 +12,7 @@ include = ["TTS*"]
 
 [project]
 name = "coqui-tts"
-version = "0.24.2"
+version = "0.24.3"
 description = "Deep learning for Text to Speech."
 readme = "README.md"
 requires-python = ">=3.9, <3.13"
