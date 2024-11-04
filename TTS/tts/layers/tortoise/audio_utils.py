@@ -10,6 +10,7 @@ import torchaudio
 from scipy.io.wavfile import read
 
 from TTS.utils.audio.torch_transforms import TorchSTFT
+from TTS.utils.generic_utils import is_pytorch_at_least_2_4
 
 logger = logging.getLogger(__name__)
 
@@ -124,7 +125,7 @@ def load_voice(voice: str, extra_voice_dirs: List[str] = []):
     voices = get_voices(extra_voice_dirs)
     paths = voices[voice]
     if len(paths) == 1 and paths[0].endswith(".pth"):
-        return None, torch.load(paths[0], weights_only=True)
+        return None, torch.load(paths[0], weights_only=is_pytorch_at_least_2_4())
     else:
         conds = []
         for cond_path in paths:

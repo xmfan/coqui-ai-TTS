@@ -5,6 +5,7 @@ import urllib.request
 import torch
 from trainer.io import get_user_data_dir
 
+from TTS.utils.generic_utils import is_pytorch_at_least_2_4
 from TTS.vc.modules.freevc.wavlm.wavlm import WavLM, WavLMConfig
 
 logger = logging.getLogger(__name__)
@@ -26,7 +27,7 @@ def get_wavlm(device="cpu"):
         logger.info("Downloading WavLM model to %s ...", output_path)
         urllib.request.urlretrieve(model_uri, output_path)
 
-    checkpoint = torch.load(output_path, map_location=torch.device(device), weights_only=True)
+    checkpoint = torch.load(output_path, map_location=torch.device(device), weights_only=is_pytorch_at_least_2_4())
     cfg = WavLMConfig(checkpoint["cfg"])
     wavlm = WavLM(cfg).to(device)
     wavlm.load_state_dict(checkpoint["model"])
