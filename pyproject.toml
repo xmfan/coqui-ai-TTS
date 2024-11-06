@@ -64,6 +64,7 @@ dependencies = [
     # Coqui stack
     "coqui-tts-trainer>=0.1.4,<0.2.0",
     "coqpit>=0.0.16",
+    "monotonic-alignment-search>=0.1.0",
     # Gruut + supported languages
     "gruut[de,es,fr]>=2.4.0",
     # Tortoise

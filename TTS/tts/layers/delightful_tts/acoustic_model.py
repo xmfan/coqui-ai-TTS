@@ -5,6 +5,7 @@ from typing import Callable, Dict, Tuple
 import torch
 import torch.nn.functional as F
 from coqpit import Coqpit
+from monotonic_alignment_search import maximum_path
 from torch import nn
 
 from TTS.tts.layers.delightful_tts.conformer import Conformer
@@ -19,7 +20,7 @@ from TTS.tts.layers.delightful_tts.phoneme_prosody_predictor import PhonemeProso
 from TTS.tts.layers.delightful_tts.pitch_adaptor import PitchAdaptor
 from TTS.tts.layers.delightful_tts.variance_predictor import VariancePredictor
 from TTS.tts.layers.generic.aligner import AlignmentNetwork
-from TTS.tts.utils.helpers import generate_path, maximum_path, sequence_mask
+from TTS.tts.utils.helpers import generate_path, sequence_mask
 
 logger = logging.getLogger(__name__)
 
