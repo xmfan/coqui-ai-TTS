@@ -77,15 +77,6 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-# Dependencies for building the documentation
-docs = [
-    "furo>=2023.5.20",
-    "myst-parser==2.0.0",
-    "sphinx==7.2.5",
-    "sphinx_inline_tabs>=2023.4.21",
-    "sphinx_copybutton>=0.1",
-    "linkify-it-py>=2.0.0",
-]
 # Only used in notebooks
 notebooks = [
     "bokeh==1.4.0",
@@ -135,6 +126,15 @@ dev = [
     "nose2>=0.15",
     "pre-commit>=3",
     "ruff==0.7.0",
+]
+# Dependencies for building the documentation
+docs = [
+    "furo>=2023.5.20",
+    "myst-parser==2.0.0",
+    "sphinx==7.2.5",
+    "sphinx_inline_tabs>=2023.4.21",
+    "sphinx_copybutton>=0.1",
+    "linkify-it-py>=2.0.0",
 ]
 
 [project.urls]
