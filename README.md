@@ -147,9 +147,7 @@ The following extras allow the installation of optional dependencies:
 
 | Name | Description |
 |------|-------------|
-| `all` | All optional dependencies, except `dev` and `docs` |
-| `dev` | Development dependencies |
-| `docs` | Dependencies for building the documentation |
+| `all` | All optional dependencies |
 | `notebooks` | Dependencies only used in notebooks |
 | `server` | Dependencies to run the TTS server |
 | `bn` | Bangla G2P |
