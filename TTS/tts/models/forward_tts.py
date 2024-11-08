@@ -4,6 +4,7 @@ from typing import Dict, List, Tuple, Union
 
 import torch
 from coqpit import Coqpit
+from monotonic_alignment_search import maximum_path
 from torch import nn
 from torch.cuda.amp.autocast_mode import autocast
 from trainer.io import load_fsspec
@@ -14,7 +15,7 @@ from TTS.tts.layers.generic.aligner import AlignmentNetwork
 from TTS.tts.layers.generic.pos_encoding import PositionalEncoding
 from TTS.tts.layers.glow_tts.duration_predictor import DurationPredictor
 from TTS.tts.models.base_tts import BaseTTS
-from TTS.tts.utils.helpers import average_over_durations, generate_path, maximum_path, sequence_mask
+from TTS.tts.utils.helpers import average_over_durations, generate_path, sequence_mask
 from TTS.tts.utils.speakers import SpeakerManager
 from TTS.tts.utils.text.tokenizer import TTSTokenizer
 from TTS.tts.utils.visual import plot_alignment, plot_avg_energy, plot_avg_pitch, plot_spectrogram

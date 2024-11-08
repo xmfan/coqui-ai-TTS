@@ -4,6 +4,7 @@ from typing import Dict, List, Tuple, Union
 
 import torch
 from coqpit import Coqpit
+from monotonic_alignment_search import maximum_path
 from torch import nn
 from torch.cuda.amp.autocast_mode import autocast
 from torch.nn import functional as F
@@ -13,7 +14,7 @@ from TTS.tts.configs.glow_tts_config import GlowTTSConfig
 from TTS.tts.layers.glow_tts.decoder import Decoder
 from TTS.tts.layers.glow_tts.encoder import Encoder
 from TTS.tts.models.base_tts import BaseTTS
-from TTS.tts.utils.helpers import generate_path, maximum_path, sequence_mask
+from TTS.tts.utils.helpers import generate_path, sequence_mask
 from TTS.tts.utils.speakers import SpeakerManager
 from TTS.tts.utils.synthesis import synthesis
 from TTS.tts.utils.text.tokenizer import TTSTokenizer
