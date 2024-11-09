@@ -429,7 +429,7 @@ def main():
             logger.info(
                 "Available speaker ids: (Set --speaker_idx flag to one of these values to use the multi-speaker model."
             )
-            logger.info(synthesizer.tts_model.speaker_manager.name_to_id)
+            logger.info(list(synthesizer.tts_model.speaker_manager.name_to_id.keys()))
             return
 
         # query langauge ids of a multi-lingual model.
