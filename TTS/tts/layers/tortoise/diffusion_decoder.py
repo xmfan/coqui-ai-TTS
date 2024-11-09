@@ -5,7 +5,6 @@ from abc import abstractmethod
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torch import autocast
 
 from TTS.tts.layers.tortoise.arch_utils import AttentionBlock, normalization
 
@@ -385,7 +384,7 @@ class DiffusionTts(nn.Module):
                 unused_params.extend(list(lyr.parameters()))
             else:
                 # First and last blocks will have autocast disabled for improved precision.
-                with autocast(x.device.type, enabled=self.enable_fp16 and i != 0):
+                with torch.autocast(x.device.type, enabled=self.enable_fp16 and i != 0):
                     x = lyr(x, time_emb)
 
         x = x.float()

@@ -6,7 +6,6 @@ import torch
 from coqpit import Coqpit
 from monotonic_alignment_search import maximum_path
 from torch import nn
-from torch.cuda.amp.autocast_mode import autocast
 from torch.nn import functional as F
 from trainer.io import load_fsspec
 
@@ -416,7 +415,7 @@ class GlowTTS(BaseTTS):
                 aux_input={"d_vectors": d_vectors, "speaker_ids": speaker_ids},
             )
 
-            with autocast(enabled=False):  # avoid mixed_precision in criterion
+            with torch.autocast("cuda", enabled=False):  # avoid mixed_precision in criterion
                 loss_dict = criterion(
                     outputs["z"].float(),
                     outputs["y_mean"].float(),

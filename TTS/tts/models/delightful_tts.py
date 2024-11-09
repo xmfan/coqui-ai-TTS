@@ -12,7 +12,6 @@ import torchaudio
 from coqpit import Coqpit
 from librosa.filters import mel as librosa_mel_fn
 from torch import nn
-from torch.cuda.amp.autocast_mode import autocast
 from torch.nn import functional as F
 from torch.utils.data import DataLoader
 from torch.utils.data.sampler import WeightedRandomSampler
@@ -952,7 +951,7 @@ class DelightfulTTS(BaseTTSE2E):
                 )
 
                 # compute loss
-                with autocast(enabled=False):  # use float32 for the criterion
+                with torch.autocast("cuda", enabled=False):  # use float32 for the criterion
                     loss_dict = criterion[optimizer_idx](
                         scores_disc_fake=scores_d_fake,
                         scores_disc_real=scores_d_real,
@@ -963,7 +962,7 @@ class DelightfulTTS(BaseTTSE2E):
         if optimizer_idx == 1:
             mel = batch["mel_input"]
             # compute melspec segment
-            with autocast(enabled=False):
+            with torch.autocast("cuda", enabled=False):
                 mel_slice = segment(
                     mel.float(), self.model_outputs_cache["slice_ids"], self.args.spec_segment_size, pad_short=True
                 )
@@ -991,7 +990,7 @@ class DelightfulTTS(BaseTTSE2E):
                 )
 
             # compute losses
-            with autocast(enabled=True):  # use float32 for the criterion
+            with torch.autocast("cuda", enabled=True):  # use float32 for the criterion
                 loss_dict = criterion[optimizer_idx](
                     mel_output=self.model_outputs_cache["acoustic_model_outputs"].transpose(1, 2),
                     mel_target=batch["mel_input"],

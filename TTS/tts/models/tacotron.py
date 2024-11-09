@@ -4,7 +4,6 @@ from typing import Dict, List, Tuple, Union
 
 import torch
 from torch import nn
-from torch.cuda.amp.autocast_mode import autocast
 from trainer.trainer_utils import get_optimizer, get_scheduler
 
 from TTS.tts.layers.tacotron.capacitron_layers import CapacitronVAE
@@ -310,7 +309,7 @@ class Tacotron(BaseTacotron):
             alignment_lengths = mel_lengths // self.decoder.r
 
         # compute loss
-        with autocast(enabled=False):  # use float32 for the criterion
+        with torch.autocast("cuda", enabled=False):  # use float32 for the criterion
             loss_dict = criterion(
                 outputs["model_outputs"].float(),
                 outputs["decoder_outputs"].float(),

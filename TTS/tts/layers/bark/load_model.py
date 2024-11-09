@@ -12,13 +12,8 @@ from TTS.tts.layers.bark.model import GPT, GPTConfig
 from TTS.tts.layers.bark.model_fine import FineGPT, FineGPTConfig
 from TTS.utils.generic_utils import is_pytorch_at_least_2_4
 
-if (
-    torch.cuda.is_available()
-    and hasattr(torch.cuda, "amp")
-    and hasattr(torch.cuda.amp, "autocast")
-    and torch.cuda.is_bf16_supported()
-):
-    autocast = functools.partial(torch.cuda.amp.autocast, dtype=torch.bfloat16)
+if torch.cuda.is_available() and torch.cuda.is_bf16_supported():
+    autocast = functools.partial(torch.autocast, device_type="cuda", dtype=torch.bfloat16)
 else:
 
     @contextlib.contextmanager

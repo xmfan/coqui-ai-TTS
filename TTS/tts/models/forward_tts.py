@@ -6,7 +6,6 @@ import torch
 from coqpit import Coqpit
 from monotonic_alignment_search import maximum_path
 from torch import nn
-from torch.cuda.amp.autocast_mode import autocast
 from trainer.io import load_fsspec
 
 from TTS.tts.layers.feed_forward.decoder import Decoder
@@ -744,7 +743,7 @@ class ForwardTTS(BaseTTS):
         if self.use_aligner:
             durations = outputs["o_alignment_dur"]
         # use float32 in AMP
-        with autocast(enabled=False):
+        with torch.autocast("cuda", enabled=False):
             # compute loss
             loss_dict = criterion(
                 decoder_output=outputs["model_outputs"],
