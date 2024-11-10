@@ -30,10 +30,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends git make gcc
           make system-deps
-      - name: Replace scarf urls
-        if: contains(fromJSON('["data_tests", "inference_tests", "test_aux", "test_tts", "test_tts2", "test_xtts", "test_zoo0", "test_zoo1", "test_zoo2"]'), matrix.subset)
-        run: |
-          sed -i 's/https:\/\/coqui.gateway.scarf.sh\//https:\/\/github.com\/coqui-ai\/TTS\/releases\/download\//g' TTS/.models.json
       - name: Unit tests
         run: |
           resolution=highest
