@@ -16,12 +16,8 @@ jobs:
         subset: ["data_tests", "inference_tests", "test_aux", "test_text", "test_tts", "test_tts2", "test_vocoder", "test_xtts", "test_zoo0", "test_zoo1", "test_zoo2"]
     steps:
       - uses: actions/checkout@v4
-      - name: Install uv
-        uses: astral-sh/setup-uv@v3
-        with:
-          version: "0.4.27"
-          enable-cache: true
-          cache-dependency-glob: "**/pyproject.toml"
+      - name: Setup uv
+        uses: ./.github/actions/setup-uv
       - name: Set up Python ${{ matrix.python-version }}
         run: uv python install ${{ matrix.python-version }}
       - name: Install Espeak
@@ -58,10 +54,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install uv
-        uses: astral-sh/setup-uv@v3
-        with:
-          version: "0.4.27"
+      - name: Setup uv
+        uses: ./.github/actions/setup-uv
       - uses: actions/download-artifact@v4
         with:
           pattern: coverage-data-*
