@@ -1,4 +1,4 @@
-name: unit
+name: integration
 
 on:
   push:
@@ -12,8 +12,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.9, "3.10", "3.11", "3.12"]
-        subset: ["data_tests", "inference_tests", "test_aux", "test_text"]
+        python-version: ["3.9", "3.12"]
+        subset: ["test_tts", "test_tts2", "test_vocoder", "test_xtts", "test_zoo0", "test_zoo1", "test_zoo2"]
     steps:
       - uses: actions/checkout@v4
       - name: Setup uv
@@ -21,7 +21,7 @@ jobs:
       - name: Set up Python ${{ matrix.python-version }}
         run: uv python install ${{ matrix.python-version }}
       - name: Install Espeak
-        if: contains(fromJSON('["inference_tests", "test_text"]'), matrix.subset)
+        if: contains(fromJSON('["test_tts", "test_tts2", "test_xtts", "test_zoo0", "test_zoo1", "test_zoo2"]'), matrix.subset)
         run: |
           sudo apt-get update
           sudo apt-get install espeak espeak-ng
@@ -30,7 +30,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends git make gcc
           make system-deps
-      - name: Unit tests
+      - name: Integration tests
         run: |
           resolution=highest
           if [ "${{ matrix.python-version }}" == "3.9" ]; then

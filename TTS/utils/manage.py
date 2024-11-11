@@ -230,7 +230,7 @@ class ModelManager(object):
             self._download_zip_file(model_item["hf_url"], output_path, self.progress_bar)
 
     def download_fairseq_model(self, model_name, output_path):
-        URI_PREFIX = "https://coqui.gateway.scarf.sh/fairseq/"
+        URI_PREFIX = "https://dl.fbaipublicfiles.com/mms/tts/"
         _, lang, _, _ = model_name.split("/")
         model_download_uri = os.path.join(URI_PREFIX, f"{lang}.tar.gz")
         self._download_tar_file(model_download_uri, output_path, self.progress_bar)
@@ -243,9 +243,9 @@ class ModelManager(object):
         elif "hf_url" in model_item:
             model_item["model_url"] = model_item["hf_url"]
         elif "fairseq" in model_item["model_name"]:
-            model_item["model_url"] = "https://coqui.gateway.scarf.sh/fairseq/"
+            model_item["model_url"] = "https://dl.fbaipublicfiles.com/mms/tts/"
         elif "xtts" in model_item["model_name"]:
-            model_item["model_url"] = "https://coqui.gateway.scarf.sh/xtts/"
+            model_item["model_url"] = "https://huggingface.co/coqui/"
         return model_item
 
     def _set_model_item(self, model_name):
@@ -278,11 +278,11 @@ class ModelManager(object):
                 "contact": "info@coqui.ai",
                 "tos_required": True,
                 "hf_url": [
-                    f"https://coqui.gateway.scarf.sh/hf-coqui/XTTS-v2/{model_version}/model.pth",
-                    f"https://coqui.gateway.scarf.sh/hf-coqui/XTTS-v2/{model_version}/config.json",
-                    f"https://coqui.gateway.scarf.sh/hf-coqui/XTTS-v2/{model_version}/vocab.json",
-                    f"https://coqui.gateway.scarf.sh/hf-coqui/XTTS-v2/{model_version}/hash.md5",
-                    f"https://coqui.gateway.scarf.sh/hf-coqui/XTTS-v2/{model_version}/speakers_xtts.pth",
+                    f"https://huggingface.co/coqui/XTTS-v2/resolve/{model_version}/model.pth",
+                    f"https://huggingface.co/coqui/XTTS-v2/resolve/{model_version}/config.json",
+                    f"https://huggingface.co/coqui/XTTS-v2/resolve/{model_version}/vocab.json",
+                    f"https://huggingface.co/coqui/XTTS-v2/resolve/{model_version}/hash.md5",
+                    f"https://huggingface.co/coqui/XTTS-v2/resolve/{model_version}/speakers_xtts.pth",
                 ],
             }
         else:

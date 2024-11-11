@@ -50,7 +50,7 @@ class GPTArgs(XttsArgs):
     max_wav_length: int = 255995  # ~11.6 seconds
     max_text_length: int = 200
     tokenizer_file: str = ""
-    mel_norm_file: str = "https://coqui.gateway.scarf.sh/v0.14.0_models/mel_norms.pth"
+    mel_norm_file: str = "https://github.com/coqui-ai/TTS/releases/download/v0.14.0_models/mel_norms.pth"
     dvae_checkpoint: str = ""
     xtts_checkpoint: str = ""
     gpt_checkpoint: str = ""  # if defined it will replace the gpt weights on xtts model
