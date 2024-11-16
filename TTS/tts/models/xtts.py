@@ -779,6 +779,12 @@ class Xtts(BaseTTS):
 
         if os.path.exists(vocab_path):
             self.tokenizer = VoiceBpeTokenizer(vocab_file=vocab_path)
+        else:
+            msg = (
+                f"`vocab.json` file not found in `{checkpoint_dir}`. Move the file there or "
+                "specify alternative path in `model_args.tokenizer_file` in `config.json`"
+            )
+            raise FileNotFoundError(msg)
 
         self.init_models()
 
