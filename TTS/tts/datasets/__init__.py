@@ -166,6 +166,11 @@ def load_attention_mask_meta_data(metafile_path):
 def _get_formatter_by_name(name):
     """Returns the respective preprocessing function."""
     thismodule = sys.modules[__name__]
+    if not hasattr(thismodule, name.lower()):
+        msg = (
+            f"{name} formatter not found. If it is a custom formatter, pass the function to load_tts_samples() instead."
+        )
+        raise ValueError(msg)
     return getattr(thismodule, name.lower())
 
 
