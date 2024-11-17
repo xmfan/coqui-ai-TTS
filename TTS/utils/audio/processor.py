@@ -547,19 +547,6 @@ class AudioProcessor:
         """
         return volume_norm(x=x)
 
-    def rms_volume_norm(self, x: np.ndarray, db_level: float = None) -> np.ndarray:
-        """Normalize the volume based on RMS of the signal.
-
-        Args:
-            x (np.ndarray): Raw waveform.
-
-        Returns:
-            np.ndarray: RMS normalized waveform.
-        """
-        if db_level is None:
-            db_level = self.db_level
-        return rms_volume_norm(x=x, db_level=db_level)
-
     ### save and load ###
     def load_wav(self, filename: str, sr: Optional[int] = None) -> np.ndarray:
         """Read a wav file using Librosa and optionally resample, silence trim, volume normalize.
@@ -585,7 +572,7 @@ class AudioProcessor:
         if self.do_sound_norm:
             x = self.sound_norm(x)
         if self.do_rms_norm:
-            x = self.rms_volume_norm(x, self.db_level)
+            x = rms_volume_norm(x=x, db_level=self.db_level)
         return x
 
     def save_wav(self, wav: np.ndarray, path: str, sr: Optional[int] = None, pipe_out=None) -> None:
