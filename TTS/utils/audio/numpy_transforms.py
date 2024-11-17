@@ -427,6 +427,9 @@ def load_wav(*, filename: str, sample_rate: int = None, resample: bool = False, 
     else:
         # SF is faster than librosa for loading files
         x, _ = sf.read(filename)
+    if x.ndim != 1:
+        logger.warning("Found multi-channel audio. Converting to mono: %s", filename)
+        x = librosa.to_mono(x)
     return x
 
 
