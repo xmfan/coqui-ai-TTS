@@ -431,7 +431,16 @@ def load_wav(*, filename: str, sample_rate: Optional[int] = None, resample: bool
     return x
 
 
-def save_wav(*, wav: np.ndarray, path: str, sample_rate: int, pipe_out=None, **kwargs) -> None:
+def save_wav(
+    *,
+    wav: np.ndarray,
+    path: str,
+    sample_rate: int,
+    pipe_out=None,
+    do_rms_norm: bool = False,
+    db_level: float = -27.0,
+    **kwargs,
+) -> None:
     """Save float waveform to a file using Scipy.
 
     Args:
@@ -439,8 +448,16 @@ def save_wav(*, wav: np.ndarray, path: str, sample_rate: int, pipe_out=None, **k
         path (str): Path to a output file.
         sr (int): Sampling rate used for saving to the file. Defaults to None.
         pipe_out (BytesIO, optional): Flag to stdout the generated TTS wav file for shell pipe.
+        do_rms_norm (bool): Whether to apply RMS normalization
+        db_level (float): Target dB level in RMS.
     """
-    wav_norm = wav * (32767 / max(0.01, np.max(np.abs(wav))))
+    if do_rms_norm:
+        if db_level is None:
+            msg = "`db_level` cannot be None with `do_rms_norm=True`"
+            raise ValueError(msg)
+        wav_norm = rms_volume_norm(x=wav, db_level=db_level)
+    else:
+        wav_norm = wav * (32767 / max(0.01, np.max(np.abs(wav))))
 
     wav_norm = wav_norm.astype(np.int16)
     if pipe_out:
