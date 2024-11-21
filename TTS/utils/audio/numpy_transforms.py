@@ -1,6 +1,7 @@
 import logging
 from io import BytesIO
 from typing import Optional
+import torch
 
 import librosa
 import numpy as np
@@ -327,6 +328,7 @@ def compute_energy(y: np.ndarray, **kwargs) -> np.ndarray:
 
 
 ### Audio Processing ###
+@torch._dynamo.disable
 def find_endpoint(
     *,
     wav: np.ndarray,

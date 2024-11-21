@@ -620,6 +620,7 @@ class UnifiedVoice(nn.Module):
         return gen[:, trunc_index:]
 
 
+@torch._dynamo.disable()
 def _prepare_attention_mask_for_generation(
     inputs: torch.Tensor,
     pad_token_id: Optional[torch.Tensor],

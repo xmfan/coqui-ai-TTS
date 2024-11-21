@@ -81,7 +81,8 @@ def build_hf_gpt_transformer(
         if max_mel_seq_len != -1
         else functools.partial(null_position_embeddings, dim=model_dim)
     )
-    # gpt = torch.compile(gpt, mode="reduce-overhead", fullgraph=True)
+    # note need to do this after loading the checkpoint
+    # gpt = torch.compile(gpt)
     return gpt, mel_pos_emb, text_pos_emb, None, None
 
 
@@ -230,6 +231,7 @@ class GPT(nn.Module):
             )
             self.gpt_inference = self.ds_engine.module.eval()
 
+    @torch._dynamo.disable
     def set_inputs_and_targets(self, input, start_token, stop_token):
         inp = F.pad(input, (1, 0), value=start_token)
         tar = F.pad(input, (0, 1), value=stop_token)
@@ -248,6 +250,7 @@ class GPT(nn.Module):
                 mel_input_tokens[b, actual_end:] = self.stop_audio_token
         return mel_input_tokens
 
+    @torch._dynamo.disable
     def get_logits(
         self,
         first_inputs,

@@ -376,7 +376,13 @@ class Synthesizer(nn.Module):
         vocoder_device = "cpu"
         use_gl = self.vocoder_model is None
         if not use_gl:
-            vocoder_device = next(self.vocoder_model.parameters()).device
+            @torch._dynamo.disable
+            def get_device():
+                return next(self.vocoder_model.parameters()).device
+            
+            vocoder_device = get_device()
+
+        assert self.use_cuda
         if self.use_cuda:
             vocoder_device = "cuda"
 
